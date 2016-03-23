@@ -1,5 +1,9 @@
 # React + Noscript
 
+[![Build Status](https://travis-ci.org/yandex-ui/noscript-react.svg?branch=master)](https://travis-ci.org/yandex-ui/noscript-react)
+[![npm version](https://badge.fury.io/js/noscript-react.svg)](https://badge.fury.io/js/noscript-react)
+[![Dependency Status](https://david-dm.org/yandex-ui/noscript-react.svg)](https://david-dm.org/yandex-ui/noscript-react)
+
 ## Оглавление
 
  * [TodoMVC](https://github.com/yandex-ui/noscript-react-todomvc)
