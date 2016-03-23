@@ -1,0 +1,5 @@
+match .*[!!/.isReactView] ns-view-content {
+}
+
+match .*[!!/.isReactView] ns-view-async-content {
+}
