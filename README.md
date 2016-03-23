@@ -2,6 +2,7 @@
 
 ## Оглавление
 
+ * [TodoMVC](https://github.com/yandex-ui/noscript-react-todomvc)
  * [CommonJS подключеие](#commonjs-require)
  * [Как это работает](#how-do-it-works)
  * [API ns.ViewReact](#ns-view-react)
