@@ -223,10 +223,8 @@ describe('ns.BaseReactMixin', function() {
                 }.bind(this));
             });
 
-            it('должен вызвать ошибку, если запрашивают создание компонента для несуществующего вида', function() {
-                expect(function() {
-                    this.renderedElement.createChildren('child-view4')
-                }).to.throw(TypeError);
+            it('должен вернуть [null], если запрашивают создание компонента для несуществующего вида', function() {
+                expect(this.renderedElement.createChildren('child-view4')).to.deep.equal([null]);
             });
         });
 
@@ -345,16 +343,14 @@ describe('ns.BaseReactMixin', function() {
                 }.bind(this));
             });
 
-            it('должен вызвать ошибку, если запрашивают создание компонента для несуществующего вида', function() {
+            it('должен вернуть [null], если запрашивают создание компонента для несуществующего вида', function() {
                 ns.Model.define('child-view4');
-                expect(function() {
-                    this.renderedElement.createChildren(ns.Model.get('child-view4'));
-                }).to.throw(TypeError);
+                expect(this.renderedElement.createChildren(ns.Model.get('child-view4'))).to.deep.equal([null]);
             });
         });
 
     });
-    
+
     describe('#getModelData', function() {
 
         it('должен вызвать ошибку, если указанная модель не привязана к компоненту', function() {
@@ -379,6 +375,6 @@ describe('ns.BaseReactMixin', function() {
         it('должен вернуть указанные в jpath данные модели', function() {
             expect(this.renderedElement.getModelData('test', '.someJpath')).to.equal(1);
         });
-        
+
     });
 });
