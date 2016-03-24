@@ -98,7 +98,7 @@
             var idCount = id.length;
             var children = [];
             var idIndex;
-            for(idIndex = 0; idIndex < idCount; idIndex++) {
+            for (idIndex = 0; idIndex < idCount; idIndex++) {
                 children.push(this.__createChild(id[idIndex], props));
             }
 
@@ -134,10 +134,10 @@
          */
         __createChildren: function(props) {
             var children = [];
-            var that = this;
+            var _this = this;
 
             this.props.view.forEachItem(function(childView) {
-                children.push(childView.createElement(that.__extendDestroyToProps(props)));
+                children.push(childView.createElement(_this.__extendDestroyToProps(props)));
             });
 
             return children;
@@ -189,7 +189,7 @@
                  * Базовый метод отображения реактивного элемента
                  * @returns {ReactElement}
                  */
-                component.render = ns.ViewReactStaticMixin.render
+                component.render = ns.ViewReactStaticMixin.render;
             }
             component.mixins = component.mixins || [];
             component.mixins.push(ns.BaseReactMixin);
@@ -213,7 +213,7 @@
                     'div',
                     this.props,
                     this.createChildren()
-                )
+                );
             }
         },
 
@@ -255,7 +255,9 @@
             switch (this.reactComponentType) {
                 case 'root':
                     // FIXME (rebulus) для совместимости с ns v0.7.x
-                    this._hideNode && this._hideNode();
+                    if (typeof this._hideNode === 'function') {
+                        this._hideNode();
+                    }
                     this.reactComponentType = 'none';
                     ReactDOM.unmountComponentAtNode(this.node);
                     break;
@@ -368,9 +370,9 @@
                 case 'none':
                     if (!this.isValid()) {
                         this._updateNode(node);
-                    } else {
-                        // FIXME (rebulus) для совместимости с ns v0.7.x
-                        this._showNode && this._showNode();
+                    // FIXME (rebulus) для совместимости с ns v0.7.x
+                    } else if (typeof this._showNode === 'function') {
+                        this._showNode();
                     }
                     this._prepareRenderElement('root');
                     this._renderElement();
@@ -405,7 +407,9 @@
             this.$node = $(viewNode);
 
             // FIXME (rebulus) для совместимости с ns v0.7.x
-            this._showNode && this._showNode();
+            if (typeof this._showNode === 'function') {
+                this._showNode();
+            }
         },
 
         /**
@@ -549,7 +553,7 @@
          * @private
          */
         _destroyComponent: function() {
-            switch(this.reactComponentType) {
+            switch (this.reactComponentType) {
                 case 'child':
                     this._applyDestroyedComponentType();
                     this.trigger('ns-view-react-destroy');
@@ -593,8 +597,8 @@
 
             this._baseClass.destroy.apply(this);
         }
-    }
-}).apply(null ,
+    };
+}).apply(null,
     (typeof require === 'function' ?
         [require('react'), require('react-dom')] :
         [window.React, window.ReactDOM])

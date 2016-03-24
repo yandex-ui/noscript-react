@@ -5,7 +5,7 @@
      * @mixes ns.ViewReactMixin
      * @constructor
      */
-    ns.ViewReactCollection = function(){};
+    ns.ViewReactCollection = function() {};
 
     // унаследуем прототип ns.ViewCollection с расширением его для работы с реакт компонентом
     no.inherit(ns.ViewReactCollection, ns.ViewCollection, ns.ViewReactMixin);
@@ -35,7 +35,7 @@
     ns.ViewReactCollection.eventsModelCollectionDefault = {
         'ns-model-insert': 'invalidate',
         'ns-model-remove': 'invalidate',
-        'ns-model-changed':  'invalidate',
+        'ns-model-changed': 'invalidate',
         'ns-model-destroyed': 'invalidate'
     };
 
@@ -70,4 +70,4 @@
         this.__itemsToRemove = [];
     };
 
-})();
+}());

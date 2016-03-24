@@ -2,8 +2,8 @@ describe('ns.BoxReact', function() {
 
     beforeEach(function() {
         ns.layout.define('app', {
-            'app': {
-                'content': {
+            app: {
+                content: {
                     'contentBox@': true
                 }
             }
@@ -11,13 +11,13 @@ describe('ns.BoxReact', function() {
 
         ns.layout.define('content1', {
             'app content contentBox@': {
-                'content1': {}
+                content1: {}
             }
         }, 'app');
 
         ns.layout.define('content2', {
             'app content contentBox@': {
-                'content2': {}
+                content2: {}
             }
         }, 'app');
 
@@ -29,25 +29,25 @@ describe('ns.BoxReact', function() {
 
         ns.layout.define('content4', {
             'app content contentBox@': {
-                'content4': {}
+                content4: {}
             }
         }, 'app');
 
         ns.layout.define('parent1', {
-            'app': {
-                'parent': {
+            app: {
+                parent: {
                     'content@': {
-                        'content1': true
+                        content1: true
                     }
                 }
             }
         });
 
         ns.layout.define('parent2', {
-            'app': {
-                'parent': {
+            app: {
+                parent: {
                     'content@': {
-                        'content2': true
+                        content2: true
                     }
                 }
             }
@@ -102,17 +102,17 @@ describe('ns.BoxReact', function() {
             this.sinon.spy(ns.ViewReact.prototype, 'destroy');
             this.sinon.spy(ns.BoxReact.prototype, 'destroy');
 
-            var that = this;
+            var _this = this;
 
             var page1Params = {};
             var page1 = ns.layout.page('content2', page1Params);
-            var page2Params = {p: 1};
+            var page2Params = { p: 1 };
             var page2 = ns.layout.page('content1', page2Params);
 
             return new ns.Update(this.APP, page1, page1Params)
                 .render()
                 .then(function() {
-                    return new ns.Update(that.APP, page2, page2Params).render();
+                    return new ns.Update(_this.APP, page2, page2Params).render();
                 });
         });
 
@@ -137,9 +137,9 @@ describe('ns.BoxReact', function() {
                 .render()
                 .then(function() {
                     this.sinon.spy(ns.ViewReact.prototype, 'invalidate');
-                    var layout = ns.layout.page('content1', {p: 1});
+                    var layout = ns.layout.page('content1', { p: 1 });
 
-                    return new ns.Update(this.APP, layout, {p: 1}).render();
+                    return new ns.Update(this.APP, layout, { p: 1 }).render();
                 }, this);
         });
 
@@ -207,7 +207,7 @@ describe('ns.BoxReact', function() {
                     )
                     .render()
                     .then(function() {
-                        var page2Params = {p: 1};
+                        var page2Params = { p: 1 };
                         return new ns.Update(
                                 this.APP,
                                 ns.layout.page('content1', page2Params),
@@ -230,7 +230,7 @@ describe('ns.BoxReact', function() {
         describe('"content1"(p=1) -> "content1"(p=2)', function() {
 
             beforeEach(function() {
-                var page1Params = {p: 1};
+                var page1Params = { p: 1 };
                 return new ns.Update(
                         this.APP,
                         ns.layout.page('content1', page1Params),
@@ -238,7 +238,7 @@ describe('ns.BoxReact', function() {
                     )
                     .render()
                     .then(function() {
-                        var page2Params = {p: 2};
+                        var page2Params = { p: 2 };
                         return new ns.Update(
                                 this.APP,
                                 ns.layout.page('content1', page2Params),
@@ -261,7 +261,7 @@ describe('ns.BoxReact', function() {
         describe('"async-view"(p=1) -> "async-view"(p=2)', function() {
 
             beforeEach(function() {
-                var page1Params = {p: 1};
+                var page1Params = { p: 1 };
                 return new ns.Update(
                         this.APP,
                         ns.layout.page('content3', page1Params),
@@ -273,16 +273,16 @@ describe('ns.BoxReact', function() {
                         // finish first draw
                         this.sinon.server.requests[0].respond(
                             200,
-                            {"Content-Type": "application/json"},
+                            { 'Content-Type': 'application/json' },
                             JSON.stringify({
                                 models: [
-                                    {data: true}
+                                    { data: true }
                                 ]
                             })
                         );
 
                         return Vow.all(promises.async).then(function() {
-                            var page2Params = {p: 2};
+                            var page2Params = { p: 2 };
                             return new ns.Update(
                                     this.APP,
                                     ns.layout.page('content3', page2Params),
@@ -292,10 +292,10 @@ describe('ns.BoxReact', function() {
                                 .then(function() {
                                     this.sinon.server.requests[1].respond(
                                         200,
-                                        {"Content-Type": "application/json"},
+                                        { 'Content-Type': 'application/json' },
                                         JSON.stringify({
                                             models: [
-                                                {data: true}
+                                                { data: true }
                                             ]
                                         })
                                     );
@@ -336,7 +336,7 @@ describe('ns.BoxReact', function() {
 
             beforeEach(function() {
                 var model = ns.Model.get('model4');
-                model.setData({'value': 1});
+                model.setData({ value: 1 });
 
                 return new ns.Update(
                         this.APP,
@@ -368,7 +368,7 @@ describe('ns.BoxReact', function() {
         describe('"parent1"(p=1) -> "parent1"(p=2)', function() {
 
             beforeEach(function() {
-                var params1 = {p: 1};
+                var params1 = { p: 1 };
                 return new ns.Update(
                         this.APP,
                         ns.layout.page('parent1', params1),
@@ -376,13 +376,13 @@ describe('ns.BoxReact', function() {
                     )
                     .render()
                     .then(function() {
-                        var params2 = {p: 2};
+                        var params2 = { p: 2 };
                         return new ns.Update(
                             this.APP,
                             ns.layout.page('parent1', params2),
                             params2
                         ).render();
-                }, this);
+                    }, this);
             });
 
             it('should have one node for view "content1" ', function() {
@@ -397,7 +397,7 @@ describe('ns.BoxReact', function() {
         describe('"parent2"(p=1) -> "parent2"(p=2)', function() {
 
             beforeEach(function() {
-                var params1 = {p: 1};
+                var params1 = { p: 1 };
                 return new ns.Update(
                         this.APP,
                         ns.layout.page('parent2', params1),
@@ -405,7 +405,7 @@ describe('ns.BoxReact', function() {
                     )
                     .render()
                     .then(function() {
-                        var params2 = {p: 2};
+                        var params2 = { p: 2 };
                         return new ns.Update(
                                 this.APP,
                                 ns.layout.page('parent2', params2),
@@ -429,10 +429,10 @@ describe('ns.BoxReact', function() {
 
                 // layout
                 ns.layout.define('parent3', {
-                    'app': {
-                        'vParent': {
+                    app: {
+                        vParent: {
                             'box@': {
-                                'vChild': true
+                                vChild: true
                             }
                         }
                     }
@@ -448,10 +448,10 @@ describe('ns.BoxReact', function() {
                 });
 
                 // set models data
-                ns.Model.get('mParent', {}).setData({'foo': 'bar'});
+                ns.Model.get('mParent', {}).setData({ foo: 'bar' });
 
-                ns.Model.get('mChild', {p: 1}).setData({'foo': 'bar'});
-                ns.Model.get('mChild', {p: 2}).setData({'foo': 'bar2'});
+                ns.Model.get('mChild', { p: 1 }).setData({ foo: 'bar' });
+                ns.Model.get('mChild', { p: 2 }).setData({ foo: 'bar2' });
 
                 // define views
                 ns.ViewReact.define('vParent', {
@@ -469,8 +469,8 @@ describe('ns.BoxReact', function() {
                     // update 1
                     return new ns.Update(
                             this.APP,
-                            ns.layout.page('parent3', {p: 1}),
-                            {p: 1}
+                            ns.layout.page('parent3', { p: 1 }),
+                            { p: 1 }
                         )
                         .render()
                         .then(function() {
@@ -479,8 +479,8 @@ describe('ns.BoxReact', function() {
                             // update 2
                             return new ns.Update(
                                     this.APP,
-                                    ns.layout.page('parent3', {p: 2}),
-                                    {p: 2}
+                                    ns.layout.page('parent3', { p: 2 }),
+                                    { p: 2 }
                                 )
                                 .render();
 
@@ -502,8 +502,8 @@ describe('ns.BoxReact', function() {
                     // update 1
                     return new ns.Update(
                             this.APP,
-                            ns.layout.page('parent3', {p: 1}),
-                            {p: 1}
+                            ns.layout.page('parent3', { p: 1 }),
+                            { p: 1 }
                         )
                         .render()
                         .then(function() {
@@ -512,8 +512,8 @@ describe('ns.BoxReact', function() {
                             // update 2
                             return new ns.Update(
                                     this.APP,
-                                    ns.layout.page('parent3', {p: 2}),
-                                    {p: 2}
+                                    ns.layout.page('parent3', { p: 2 }),
+                                    { p: 2 }
                                 )
                                 .render()
                                 .then(function() {
@@ -522,8 +522,8 @@ describe('ns.BoxReact', function() {
                                     // update 3
                                     return new ns.Update(
                                             this.APP,
-                                            ns.layout.page('parent3', {p: 1}),
-                                            {p: 1}
+                                            ns.layout.page('parent3', { p: 1 }),
+                                            { p: 1 }
                                         ).render();
 
                                 }, this);
@@ -601,18 +601,18 @@ describe('ns.BoxReact', function() {
         beforeEach(function() {
             ns.layout.define('sequence', {
                 'app content contentBox@': {
-                    'a': true,
-                    'b': true
+                    a: true,
+                    b: true
                 }
             }, 'app');
 
-            ns.ViewReact.define('a', { params: { 't': null } });
+            ns.ViewReact.define('a', { params: { t: null } });
             ns.ViewReact.define('b');
 
             return new ns.Update(
                     this.APP,
                     ns.layout.page('sequence'),
-                    { t: 'zero'}
+                    { t: 'zero' }
                 )
                 .render()
                 .then(function() {
@@ -675,17 +675,17 @@ describe('ns.BoxReact', function() {
         beforeEach(function() {
             ns.layout.define('index1', {
                 'app content contentBox@': {
-                    'a': true,
-                    'b': true,
-                    'c': true
+                    a: true,
+                    b: true,
+                    c: true
                 }
             }, 'app');
 
             ns.layout.define('index2', {
                 'app content contentBox@': {
-                    'c': true,
-                    'b': true,
-                    'a': true
+                    c: true,
+                    b: true,
+                    a: true
                 }
             }, 'app');
 
@@ -736,8 +736,8 @@ describe('ns.BoxReact', function() {
         beforeEach(function() {
             ns.layout.define('index', {
                 'app content contentBox@': {
-                    'a': true,
-                    'b': true
+                    a: true,
+                    b: true
                 }
             }, 'app');
 
@@ -776,12 +776,12 @@ describe('ns.BoxReact', function() {
 
         ns.layout.define('index', {
             'app content contentBox@': {
-                'a': {
+                a: {
                     'b-box@': {
-                        'b': true
+                        b: true
                     }
                 },
-                'c': true
+                c: true
             }
         }, 'app');
 
@@ -800,15 +800,15 @@ describe('ns.BoxReact', function() {
 
     describe('Box should hide inactive views only', function() {
         beforeEach(function() {
-            var that = this;
+            var _this = this;
             var page1Params = {};
             var page1 = ns.layout.page('content2', page1Params);
-            var page2Params = {p: 1};
+            var page2Params = { p: 1 };
             var page2 = ns.layout.page('content1', page2Params);
 
             return new ns.Update(this.APP, page1, page1Params).render()
                 .then(function() {
-                    return new ns.Update(that.APP, page2, page2Params).render();
+                    return new ns.Update(_this.APP, page2, page2Params).render();
                 });
         });
 
@@ -829,10 +829,10 @@ describe('ns.BoxReact', function() {
 
         beforeEach(function() {
             ns.layout.define('index', {
-                'app': {
+                app: {
                     'yateBox@': {
-                        'yateView': {
-                            'reactView': true
+                        yateView: {
+                            reactView: true
                         }
                     }
                 }
@@ -844,26 +844,26 @@ describe('ns.BoxReact', function() {
                 }
             });
             this.componentWillUnmount = this.sinon.stub();
-            var that = this;
+            var _this = this;
             ns.ViewReact.define('reactView', {
                 params: {
                     id: null
                 },
                 component: {
                     componentWillUnmount: function() {
-                        that.componentWillUnmount(this);
+                        _this.componentWillUnmount(this);
                     }
                 }
             });
 
             var indexPageLayout = ns.layout.page('index');
 
-            return new ns.Update(this.APP, indexPageLayout, {id: 1})
+            return new ns.Update(this.APP, indexPageLayout, { id: 1 })
                 .render()
                 .then(function() {
-                    return new ns.Update(this.APP, indexPageLayout, {id: 2})
+                    return new ns.Update(this.APP, indexPageLayout, { id: 2 })
                         .render();
-                }, this)
+                }, this);
         });
 
         it('должен показать [data-key="view=reactView&id=2"]', function() {

@@ -22,8 +22,8 @@ describe('ns.ViewReactMixin', function() {
         this.childView2 = ns.View.create('childView2');
 
         this.view.views = {
-            'childView1': this.childView1,
-            'childView2': this.childView2
+            childView1: this.childView1,
+            childView2: this.childView2
         };
     });
 
@@ -95,13 +95,13 @@ describe('ns.ViewReactMixin', function() {
         it('должен пройти по дочерним view и передать их первым аргументом указанной функции', function() {
             var views = [];
             this.view.forEachItem(function(childView) {
-                views.push(childView)
+                views.push(childView);
             });
 
             expect(views).to.deep.equal([
                 this.childView1,
                 this.childView2
-            ])
+            ]);
         });
 
     });
@@ -223,7 +223,7 @@ describe('ns.ViewReactMixin', function() {
                 this.sinon.stub(this.view, 'hideAndUnbindEvents');
                 this.sinon.stub(this.view, '_updateNode', function(node) {
                     this.view.node = node;
-                }.bind(this))
+                }.bind(this));
             });
 
             afterEach(function() {
@@ -231,21 +231,21 @@ describe('ns.ViewReactMixin', function() {
             });
 
             it('должен обновить node и отвязать компонент от старой, если у родительской ns.View изменился HTML', function() {
-                this.view._updateHTML(this.viewNode, {toplevel: false, parent_added: true});
+                this.view._updateHTML(this.viewNode, { toplevel: false, parent_added: true });
 
                 expect(this.view.node).to.be.equal(this.viewNode);
                 expect(this.view.hideAndUnbindEvents).to.be.calledOnce;
             });
 
             it('не должен обновлять node и не отвязывать компонент от старой, если он является родительским элементом обновления', function() {
-                this.view._updateHTML(this.viewNode, {toplevel: true, parent_added: false});
+                this.view._updateHTML(this.viewNode, { toplevel: true, parent_added: false });
 
                 expect(this.view.node).to.be.equal(this.oldNode);
                 expect(this.view.hideAndUnbindEvents).to.be.notCalled;
             });
 
             it('не должен обновлять node и не отвязывать компонент от старой, если у родитеского ns.View изменился HTML, но не приминился', function() {
-                this.view._updateHTML(this.viewNode, {toplevel: false, parent_added: false});
+                this.view._updateHTML(this.viewNode, { toplevel: false, parent_added: false });
 
                 expect(this.view.node).to.be.equal(this.oldNode);
                 expect(this.view.hideAndUnbindEvents).to.be.notCalled;

@@ -5,16 +5,16 @@ describe('ns.ViewReact dynamic layouts ->', function() {
         beforeEach(function() {
 
             ns.layout.define('app', {
-                'app': {
-                    'view1': {
-                        'view2': {}
+                app: {
+                    view1: {
+                        view2: {}
                     }
                 }
             });
 
             ns.layout.define('view-layout', {
                 'box@': {
-                    'view3': {}
+                    view3: {}
                 }
             });
 
@@ -82,7 +82,7 @@ describe('ns.ViewReact dynamic layouts ->', function() {
                         var boxView = this.sinon.getViewByKey(this.view, 'box=box');
                         expect(this.view.node.querySelectorAll('.view2 .view3')).to.have.length(0);
                         expect(boxView.views['view=view3']).to.be.exist;
-                        expect(boxView.active['view3']).to.be.empty;
+                        expect(boxView.active.view3).to.be.empty;
 
                         this.view2GetLayoutFn.returns('view-layout');
                         return this.view.update();
@@ -91,7 +91,7 @@ describe('ns.ViewReact dynamic layouts ->', function() {
                         var boxView = this.sinon.getViewByKey(this.view, 'box=box');
                         expect(this.view.node.querySelectorAll('.view2 .view3')).to.have.length(1);
                         expect(boxView.views['view=view3']).to.be.exist;
-                        expect(boxView.active['view3']).to.be.exist;
+                        expect(boxView.active.view3).to.be.exist;
                     }, this);
             });
 
@@ -103,13 +103,13 @@ describe('ns.ViewReact dynamic layouts ->', function() {
 
         beforeEach(function() {
             ns.layout.define('app', {
-                'app': {
-                    'view1': {}
+                app: {
+                    view1: {}
                 }
             });
 
             ns.layout.define('view-layout', {
-                'view3': {}
+                view3: {}
             });
 
             ns.View.define('app');
@@ -167,8 +167,8 @@ describe('ns.ViewReact dynamic layouts ->', function() {
 
             // layouts
             ns.layout.define('app', {
-                'app': {
-                    'vc': {}
+                app: {
+                    vc: {}
                 }
             });
 
@@ -206,7 +206,7 @@ describe('ns.ViewReact dynamic layouts ->', function() {
             ns.View.define('app');
             ns.ViewReactCollection.define('vc', {
                 models: {
-                    'mc': true
+                    mc: true
                 },
                 split: {
                     byModel: 'mc',
@@ -229,9 +229,9 @@ describe('ns.ViewReact dynamic layouts ->', function() {
             // run
             ns.Model.get('mc').setData({
                 item: [
-                    {id: 1, value: 1},
-                    {id: 2, value: 2},
-                    {id: 3, value: 3}
+                    { id: 1, value: 1 },
+                    { id: 2, value: 2 },
+                    { id: 3, value: 3 }
                 ]
             });
 
@@ -290,8 +290,8 @@ describe('ns.ViewReact dynamic layouts ->', function() {
             beforeEach(function() {
                 // layouts
                 ns.layout.define('app-vc2', {
-                    'app': {
-                        'vc2': {}
+                    app: {
+                        vc2: {}
                     }
                 });
 
@@ -316,7 +316,7 @@ describe('ns.ViewReact dynamic layouts ->', function() {
                 });
                 ns.Model.get('mc2').setData({
                     item: [
-                        {id: 1, value: 1}
+                        { id: 1, value: 1 }
                     ]
                 });
 
@@ -324,7 +324,7 @@ describe('ns.ViewReact dynamic layouts ->', function() {
                 ns.View.define('app');
                 ns.ViewReactCollection.define('vc2', {
                     models: {
-                        'mc2': false
+                        mc2: false
                     },
                     split: {
                         byModel: 'mc2',
@@ -373,7 +373,7 @@ describe('ns.ViewReact dynamic layouts ->', function() {
 
                         ns.Model.get('mc2').setData({
                             item: [
-                                {id: 1, value: 1}
+                                { id: 1, value: 1 }
                             ]
                         });
 
@@ -382,7 +382,7 @@ describe('ns.ViewReact dynamic layouts ->', function() {
                             .then(function() {
                                 expect(vc2Item1.hasStateOfUpdate()).to.be.true;
                                 expect(vc2Item2.hasStateOfUpdate()).to.be.true;
-                            }, this)
+                            }, this);
                     }, this);
             });
 
