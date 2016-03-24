@@ -5,7 +5,7 @@
      * @mixes ns.ViewReactMixin
      * @constructor
      */
-    ns.ViewReact = function(){};
+    ns.ViewReact = function() {};
 
     // унаследуем прототип ns.View с расширением его для работы с реакт компонентом
     no.inherit(ns.ViewReact, ns.View, ns.ViewReactMixin);
@@ -50,4 +50,4 @@
         }
         return view;
     };
-})();
+}());

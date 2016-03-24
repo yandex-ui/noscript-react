@@ -4,7 +4,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
 
         beforeEach(function() {
             ns.layout.define('app', {
-                'app': {
+                app: {
                     'view-1': {
                         'view-1-1': true,
                         'view-1-2': {
@@ -18,7 +18,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             });
 
             ns.layout.define('app2', {
-                'app': {
+                app: {
                     'view-1': {
                         'view-1-1': true,
                         'view-1-2': {
@@ -63,16 +63,16 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
         describe('данных хватает для отрисовки ->', function() {
 
             beforeEach(function() {
-                return new ns.Update(this.APP, ns.layout.page('app2'), {p: 1}).render();
+                return new ns.Update(this.APP, ns.layout.page('app2'), { p: 1 }).render();
             });
 
             [
                 '.view-1',
-                    '.view-1 > .view-1-1',
-                    '.view-1 > .view-1-2',
-                        '.view-1 > .view-1-2 > .view-1-2-1',
+                '.view-1 > .view-1-1',
+                '.view-1 > .view-1-2',
+                '.view-1 > .view-1-2 > .view-1-2-1',
                 '.view-3',
-                    '.view-3 > .view-3-1'
+                '.view-3 > .view-3-1'
             ].forEach(function(trunk) {
 
                 it('должен отрисовать ветку дерева `' + trunk + '`', function() {
@@ -117,7 +117,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                         view === this.view_1 ||
                         view === this.view_1_2 ||
                         view === this.view_1_2_1
-                    )
+                    );
                 });
 
             });
@@ -156,7 +156,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
 
             beforeEach(function() {
                 ns.layout.define('app', {
-                    'app': {
+                    app: {
                         'async-view&': {
                             'async-view-child': true
                         }
@@ -172,18 +172,18 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                                 return React.createElement(
                                     'span',
                                     this.props
-                                )
+                                );
                             } else {
                                 return React.createElement(
                                     'div',
                                     this.props,
                                     this.createChildren()
-                                )
+                                );
                             }
                         }
                     }
                 });
-                ns.ViewReact.define('async-view-child', {models: ['async-view-model'] });
+                ns.ViewReact.define('async-view-child', { models: ['async-view-model'] });
 
                 ns.Model.define('async-view-model');
 
@@ -236,9 +236,9 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
     describe('обновление HTML ns.View с вложенной ns.ViewReact', function() {
         beforeEach(function() {
             ns.layout.define('index', {
-                'app': {
-                    'yateView': {
-                        'reactView': true
+                app: {
+                    yateView: {
+                        reactView: true
                     }
                 }
             });
@@ -246,12 +246,12 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             ns.View.define('app');
             ns.View.define('yateView');
 
-            var that = this;
+            var _this = this;
             this.componentWillUnmount = this.sinon.stub();
             ns.ViewReact.define('reactView', {
                 component: {
                     componentWillUnmount: function() {
-                        that.componentWillUnmount(this,  ReactDOM.findDOMNode(this).parentNode);
+                        _this.componentWillUnmount(this, ReactDOM.findDOMNode(this).parentNode);
                     }
                 }
             });

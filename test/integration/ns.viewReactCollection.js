@@ -16,10 +16,10 @@ describe('ns.ViewCollection', function() {
 
             this.model = ns.Model.get('m-collection');
             // insert first item
-            this.model.insert(ns.Model.get('m-collection-item', {p: 1}).setData({data: 1}));
+            this.model.insert(ns.Model.get('m-collection-item', { p: 1 }).setData({ data: 1 }));
 
             ns.Model.define('wrap-model');
-            ns.Model.get('wrap-model', {}).setData({data: true});
+            ns.Model.get('wrap-model', {}).setData({ data: true });
 
             // define views
             ns.View.define('app');
@@ -27,21 +27,21 @@ describe('ns.ViewCollection', function() {
                 models: ['wrap-model']
             });
             ns.ViewReactCollection.define('v-collection', {
-                models: [ 'm-collection' ],
+                models: ['m-collection'],
                 split: {
                     byModel: 'm-collection',
                     intoViews: 'v-collection-item'
                 }
             });
             ns.ViewReact.define('v-collection-item', {
-                models: [ 'm-collection-item' ]
+                models: ['m-collection-item']
             });
             this.APP = ns.View.create('app');
 
             // define layout
             ns.layout.define('app', {
-                'app': {
-                    'wrap': {
+                app: {
+                    wrap: {
                         'v-collection': {}
                     }
                 }
@@ -74,7 +74,7 @@ describe('ns.ViewCollection', function() {
         function shouldSaveVCollectionNode() {
             it('should save view-collection node', function() {
                 var newVCollectionNode = this.APP.node.getElementsByClassName('v-collection')[0];
-                expect(newVCollectionNode).to.be.equal(this.vCollectionNodeList[0])
+                expect(newVCollectionNode).to.be.equal(this.vCollectionNodeList[0]);
             });
         }
 
@@ -91,7 +91,7 @@ describe('ns.ViewCollection', function() {
             it('should have ' + n + ' view-collection-item nodes', function() {
                 expect(
                     this.APP.node.getElementsByClassName('v-collection-item')
-                ).to.have.length(n)
+                ).to.have.length(n);
             });
         }
 
@@ -110,26 +110,26 @@ describe('ns.ViewCollection', function() {
 
             // insert items in collection
             ns.Model.get('m-collection').insert([
-                ns.Model.get('m-collection-item', {p: 1}).setData({data: 1}),
-                ns.Model.get('m-collection-item', {p: 2}).setData({data: 2})
+                ns.Model.get('m-collection-item', { p: 1 }).setData({ data: 1 }),
+                ns.Model.get('m-collection-item', { p: 2 }).setData({ data: 2 })
             ]);
 
             // define views
             ns.View.define('app');
             ns.ViewReactCollection.define('v-collection', {
-                models: [ 'm-collection' ],
+                models: ['m-collection'],
                 split: {
                     byModel: 'm-collection',
                     intoViews: 'v-collection-item'
                 }
             });
             ns.ViewReact.define('v-collection-item', {
-                models: [ 'm-collection-item' ]
+                models: ['m-collection-item']
             });
 
             // define layout
             ns.layout.define('app', {
-                'app': {
+                app: {
                     'v-collection': {}
                 }
             });
@@ -154,7 +154,7 @@ describe('ns.ViewCollection', function() {
             it('should have view-collection node', function() {
                 expect(
                     this.vCollectionNodeList
-                ).to.have.length(1)
+                ).to.have.length(1);
             });
 
             shouldHaveNViewCollectionItemNodes(2);
@@ -166,7 +166,7 @@ describe('ns.ViewCollection', function() {
             beforeEach(function() {
                 var layout = ns.layout.page('app', {});
                 return new ns.Update(this.APP, layout, {})
-                    .render()
+                    .render();
             });
 
             shouldSaveVCollectionNode();
@@ -179,7 +179,7 @@ describe('ns.ViewCollection', function() {
 
             beforeEach(function() {
                 // update model collection item
-                ns.Model.get('m-collection-item', {p: 1}).set('.newdata', 1);
+                ns.Model.get('m-collection-item', { p: 1 }).set('.newdata', 1);
 
                 // start update to redraw views
                 var layout = ns.layout.page('app', {});
@@ -192,7 +192,7 @@ describe('ns.ViewCollection', function() {
 
             it('should render new view-collection-item[0] node', function() {
                 var newVCollectionItemNode = this.APP.node.getElementsByClassName('ns-view-v-collection-item')[0];
-                expect(newVCollectionItemNode).to.not.be.equal(this.vCollectionItemNodeList[0])
+                expect(newVCollectionItemNode).to.not.be.equal(this.vCollectionItemNodeList[0]);
             });
 
             shouldSaveNVCollectionItemNode(1);
@@ -206,7 +206,7 @@ describe('ns.ViewCollection', function() {
                 beforeEach(function() {
                     // insert another model-item in collection
                     ns.Model.get('m-collection').insert([
-                        ns.Model.get('m-collection-item', {p: 3}).setData({data: 3})
+                        ns.Model.get('m-collection-item', { p: 3 }).setData({ data: 3 })
                     ]);
 
                     // start update to redraw views
@@ -226,7 +226,7 @@ describe('ns.ViewCollection', function() {
                 beforeEach(function() {
                     // insert another model-item in collection
                     ns.Model.get('m-collection').insert([
-                        ns.Model.get('m-collection-item', {p: 3}).setData({data: 3})
+                        ns.Model.get('m-collection-item', { p: 3 }).setData({ data: 3 })
                     ], 0);
 
                     // start update to redraw views
@@ -263,7 +263,7 @@ describe('ns.ViewCollection', function() {
             it('should save view-collection-item[1] node', function() {
                 var newVCollectionItemNode = this.APP.node.getElementsByClassName('v-collection-item')[0];
                 // we've removed first item, so new item[0] should be the same with old[1]
-                expect(newVCollectionItemNode).to.be.equal(this.vCollectionItemNodeList[1])
+                expect(newVCollectionItemNode).to.be.equal(this.vCollectionItemNodeList[1]);
             });
 
         });
@@ -272,7 +272,7 @@ describe('ns.ViewCollection', function() {
             beforeEach(function() {
                 var layout = ns.layout.page('app', {});
 
-                ns.Model.destroy(ns.Model.get('m-collection-item', {p: 1}));
+                ns.Model.destroy(ns.Model.get('m-collection-item', { p: 1 }));
 
                 return new ns.Update(this.APP, layout, {})
                     .render();
@@ -280,7 +280,7 @@ describe('ns.ViewCollection', function() {
 
             it('should save view-collection-item[1] node', function() {
                 var newVCollectionItemNode = this.APP.node.getElementsByClassName('v-collection-item')[0];
-                expect(newVCollectionItemNode).to.be.equal(this.vCollectionItemNodeList[1])
+                expect(newVCollectionItemNode).to.be.equal(this.vCollectionItemNodeList[1]);
             });
         });
 
@@ -317,7 +317,7 @@ describe('ns.ViewCollection', function() {
         describe('refresh layout after model-item change position', function() {
 
             beforeEach(function() {
-                var secondItem = ns.Model.get('m-collection-item', {p: 2});
+                var secondItem = ns.Model.get('m-collection-item', { p: 2 });
 
                 ns.Model.get('m-collection').remove(secondItem);
                 ns.Model.get('m-collection').insert(secondItem, 0);
@@ -337,8 +337,8 @@ describe('ns.ViewCollection', function() {
         describe('refresh layout after model-item change position and insert new item', function() {
 
             beforeEach(function() {
-                var secondItem = ns.Model.get('m-collection-item', {p: 2});
-                var newItem = ns.Model.get('m-collection-item', {p: 3}).setData({data: 3});
+                var secondItem = ns.Model.get('m-collection-item', { p: 2 });
+                var newItem = ns.Model.get('m-collection-item', { p: 3 }).setData({ data: 3 });
 
                 ns.Model.get('m-collection').remove(secondItem);
                 ns.Model.get('m-collection').insert(secondItem, 0);
@@ -379,26 +379,26 @@ describe('ns.ViewCollection', function() {
             });
 
             // set data to collection
-            ns.Model.get('mCollection').setData({data: [{id: '0'}, {id: '1'}]});
+            ns.Model.get('mCollection').setData({ data: [{ id: '0' }, { id: '1' }] });
 
             // define views
             ns.View.define('app');
 
             ns.ViewReactCollection.define('vCollection', {
-                models: [ 'mCollection' ],
+                models: ['mCollection'],
                 split: {
                     byModel: 'mCollection',
                     intoViews: 'vItem'
                 }
             });
             ns.ViewReact.define('vItem', {
-                models: [ 'mItem' ]
+                models: ['mItem']
             });
 
             // define layout
             ns.layout.define('app', {
-                'app': {
-                    'vCollection': {}
+                app: {
+                    vCollection: {}
                 }
             });
 
@@ -409,18 +409,18 @@ describe('ns.ViewCollection', function() {
                 .render()
                 .then(function() {
                     ns.Model.destroy(ns.Model.get('mCollection'));
-                    ns.Model.destroy(ns.Model.get('mItem', {id: '0'}));
-                    ns.Model.destroy(ns.Model.get('mItem', {id: '1'}));
+                    ns.Model.destroy(ns.Model.get('mItem', { id: '0' }));
+                    ns.Model.destroy(ns.Model.get('mItem', { id: '1' }));
 
-                    ns.Model.get('mCollection').setData({data: [{id: '2'}]});
+                    ns.Model.get('mCollection').setData({ data: [{ id: '2' }] });
 
                     return new ns.Update(this.APP, layout, {}).render();
                 }, this);
         });
 
         it('shouldn`t find destroyed models', function() {
-            expect(ns.Model.getValid('mItem', {id: '0'})).to.be.equal(null);
-            expect(ns.Model.getValid('mItem', {id: '1'})).to.be.equal(null);
+            expect(ns.Model.getValid('mItem', { id: '0' })).to.be.equal(null);
+            expect(ns.Model.getValid('mItem', { id: '1' })).to.be.equal(null);
         });
 
         it('should have 1 node for view vItem', function() {
@@ -446,7 +446,7 @@ describe('ns.ViewCollection', function() {
 
             // recursive view
             ns.ViewReactCollection.define('v-collection-2', {
-                models: [ 'm-collection-2' ],
+                models: ['m-collection-2'],
                 split: {
                     byModel: 'm-collection-2',
                     intoViews: 'v-collection-2'
@@ -457,12 +457,12 @@ describe('ns.ViewCollection', function() {
             this.APP = ns.View.create('app');
 
             ns.layout.define('app-2', {
-                'app': {
+                app: {
                     'v-collection-2': {}
                 }
             });
 
-            this.model = ns.Model.get('m-collection-2', {id: '0'}).setData({
+            this.model = ns.Model.get('m-collection-2', { id: '0' }).setData({
                 data: [{
                     data: [],
                     title: '1',
@@ -477,13 +477,13 @@ describe('ns.ViewCollection', function() {
 
             // first rewdraw
             var layout = ns.layout.page('app-2');
-            return new ns.Update(this.APP, layout, {id: '0'})
+            return new ns.Update(this.APP, layout, { id: '0' })
                 .render()
                 .then(function() {
                     this.collectionViewNode = this.APP.node.getElementsByClassName('v-collection-2')[0];
 
                     // Load subcollection data.
-                    ns.Model.get('m-collection-2', {id: '1'}).setData({
+                    ns.Model.get('m-collection-2', { id: '1' }).setData({
                         data: [
                             {
                                 data: [{
@@ -506,20 +506,20 @@ describe('ns.ViewCollection', function() {
 
                     // start update to redraw views
                     var layout = ns.layout.page('app-2');
-                    return new ns.Update(this.APP, layout, {id: '0'})
+                    return new ns.Update(this.APP, layout, { id: '0' })
                         .render()
                         .then(function() {
                             // Skip this update loop.
 
                             var layout = ns.layout.page('app-2');
-                            return new ns.Update(this.APP, layout, {id: '0'})
+                            return new ns.Update(this.APP, layout, { id: '0' })
                                 .render()
                                 .then(function() {
                                     // Edit subcollection later on.
-                                    ns.Model.get('m-collection-2', {id: '1.1'}).set('.title', '1.1-edit');
+                                    ns.Model.get('m-collection-2', { id: '1.1' }).set('.title', '1.1-edit');
 
                                     var layout = ns.layout.page('app-2');
-                                    return new ns.Update(this.APP, layout, {id: '0'})
+                                    return new ns.Update(this.APP, layout, { id: '0' })
                                         .render();
                                 }, this);
                         }, this);
@@ -564,11 +564,11 @@ describe('ns.ViewCollection', function() {
             });
 
             ns.ViewReact.define('nested-view-collection-item', {
-                models: [ 'nested-model' ]
+                models: ['nested-model']
             });
 
             ns.ViewReactCollection.define('nested-view-collection', {
-                models: [ 'nested-collection' ],
+                models: ['nested-collection'],
                 split: {
                     byModel: 'nested-collection',
                     intoViews: 'nested-view-collection-item'
@@ -576,7 +576,7 @@ describe('ns.ViewCollection', function() {
             });
 
             ns.ViewReactCollection.define('outer-view-collection', {
-                models: [ 'outer-collection-model' ],
+                models: ['outer-collection-model'],
                 split: {
                     byModel: 'outer-collection-model',
                     intoViews: 'nested-view-collection'
@@ -587,19 +587,19 @@ describe('ns.ViewCollection', function() {
             this.APP = ns.View.create('app');
 
             ns.layout.define('app-3', {
-                'app': {
+                app: {
                     'outer-view-collection': true
                 }
             });
 
             var parent = ns.Model.get('outer-collection-model');
 
-            var itemA = ns.Model.get('nested-model', {id: 'A'}).setData({});
-            var itemB = ns.Model.get('nested-model', {id: 'B'}).setData({});
-            var itemC = ns.Model.get('nested-model', {id: 'C'}).setData({});
+            var itemA = ns.Model.get('nested-model', { id: 'A' }).setData({});
+            var itemB = ns.Model.get('nested-model', { id: 'B' }).setData({});
+            var itemC = ns.Model.get('nested-model', { id: 'C' }).setData({});
 
-            var childA = ns.Model.get('nested-collection', {id: 'A'});
-            var childB = ns.Model.get('nested-collection', {id: 'B'});
+            var childA = ns.Model.get('nested-collection', { id: 'A' });
+            var childB = ns.Model.get('nested-collection', { id: 'B' });
 
             childA.insert([itemA]);
             childB.insert([itemB, itemC]);
@@ -610,8 +610,8 @@ describe('ns.ViewCollection', function() {
             return new ns.Update(this.APP, layout, {})
                 .render()
                 .then(function() {
-                    var itemD = ns.Model.get('nested-model', {id: 'D'}).setData({});
-                    var childC = ns.Model.get('nested-collection', {id: 'C'});
+                    var itemD = ns.Model.get('nested-model', { id: 'D' }).setData({});
+                    var childC = ns.Model.get('nested-collection', { id: 'C' });
 
                     childC.insert([itemD]);
                     parent.insert(childC, 2);
@@ -658,11 +658,11 @@ describe('ns.ViewCollection', function() {
             });
 
             ns.ViewReact.define('nested-view-collection-item', {
-                models: [ 'nested-model' ]
+                models: ['nested-model']
             });
 
             ns.ViewReactCollection.define('nested-view-collection', {
-                models: [ 'nested-collection' ],
+                models: ['nested-collection'],
                 split: {
                     byModel: 'nested-collection',
                     intoViews: 'nested-view-collection-item'
@@ -670,7 +670,7 @@ describe('ns.ViewCollection', function() {
             });
 
             ns.ViewReactCollection.define('outer-view-collection', {
-                models: [ 'outer-collection-model' ],
+                models: ['outer-collection-model'],
                 split: {
                     byModel: 'outer-collection-model',
                     intoViews: 'nested-view-collection'
@@ -681,17 +681,17 @@ describe('ns.ViewCollection', function() {
             this.APP = ns.View.create('app');
 
             ns.layout.define('app-3', {
-                'app': 'outer-view-collection'
+                app: 'outer-view-collection'
             });
 
             var parent = ns.Model.get('outer-collection-model');
 
-            var itemA = ns.Model.get('nested-model', {id: 'A'}).setData({});
-            var itemB = ns.Model.get('nested-model', {id: 'B'}).setData({});
-            var itemC = ns.Model.get('nested-model', {id: 'C'}).setData({});
+            var itemA = ns.Model.get('nested-model', { id: 'A' }).setData({});
+            var itemB = ns.Model.get('nested-model', { id: 'B' }).setData({});
+            var itemC = ns.Model.get('nested-model', { id: 'C' }).setData({});
 
-            var childA = ns.Model.get('nested-collection', {id: 'A'});
-            var childB = ns.Model.get('nested-collection', {id: 'B'});
+            var childA = ns.Model.get('nested-collection', { id: 'A' });
+            var childB = ns.Model.get('nested-collection', { id: 'B' });
 
             childA.insert([itemA]);
             childB.insert([itemB, itemC]);
@@ -706,7 +706,7 @@ describe('ns.ViewCollection', function() {
 
             beforeEach(function() {
                 ns.Model.get('outer-collection-model').set('.foo', 'bar');
-                ns.Model.get('nested-model', {id: 'B'}).set('.foo', 'bar');
+                ns.Model.get('nested-model', { id: 'B' }).set('.foo', 'bar');
 
                 this.itemB = this.sinon.getViewByKey(this.APP, 'view=nested-view-collection-item&id=B');
                 this.itemC = this.sinon.getViewByKey(this.APP, 'view=nested-view-collection-item&id=C');
@@ -736,7 +736,7 @@ describe('ns.ViewCollection', function() {
 
             beforeEach(function() {
                 ns.Model.get('outer-collection-model').set('.foo', 'bar');
-                ns.Model.get('nested-model', {id: 'C'}).set('.foo', 'bar');
+                ns.Model.get('nested-model', { id: 'C' }).set('.foo', 'bar');
 
                 this.itemB = this.sinon.getViewByKey(this.APP, 'view=nested-view-collection-item&id=B');
                 this.itemC = this.sinon.getViewByKey(this.APP, 'view=nested-view-collection-item&id=C');
@@ -771,8 +771,8 @@ describe('ns.ViewCollection', function() {
 
         beforeEach(function() {
 
-            ns.Model.define('parent-mc', {isCollection: true});
-            ns.Model.define('parent-mc-item', { params: {pid: null} });
+            ns.Model.define('parent-mc', { isCollection: true });
+            ns.Model.define('parent-mc-item', { params: { pid: null } });
 
             ns.Model.define('child-mc', {
                 isCollection: true,
@@ -784,17 +784,17 @@ describe('ns.ViewCollection', function() {
                     }
                 }
             });
-            ns.Model.define('child-mc-item', { params: {cid: null} });
+            ns.Model.define('child-mc-item', { params: { cid: null } });
 
             ns.ViewReactCollection.define('parent-vc', {
-                models: [ 'parent-mc' ],
+                models: ['parent-mc'],
                 split: {
                     byModel: 'parent-mc',
                     intoViews: 'child-vc'
                 }
             });
             ns.ViewReactCollection.define('child-vc', {
-                models: [ 'parent-mc-item', 'child-mc' ],
+                models: ['parent-mc-item', 'child-mc'],
                 split: {
                     byModel: 'child-mc',
                     intoViews: 'child-vc-item'
@@ -807,17 +807,17 @@ describe('ns.ViewCollection', function() {
             ns.View.define('app');
 
             ns.layout.define('test', {
-                'app': {
+                app: {
                     'parent-vc': {}
                 }
             });
 
             ns.Model.get('parent-mc').insert([
-                ns.Model.get('parent-mc-item', {pid: 1}).setData({pid: 1, val: 1})
+                ns.Model.get('parent-mc-item', { pid: 1 }).setData({ pid: 1, val: 1 })
             ]);
 
-            ns.Model.get('child-mc', {pid: 1}).insert([
-                ns.Model.get('child-mc-item', {cid: 1}).setData({cid: 1, val: 1})
+            ns.Model.get('child-mc', { pid: 1 }).insert([
+                ns.Model.get('child-mc-item', { cid: 1 }).setData({ cid: 1, val: 1 })
             ]);
 
             this.sinon.stub(ns.log, 'debug');
@@ -831,7 +831,7 @@ describe('ns.ViewCollection', function() {
                         {
                             data: {
                                 items: [
-                                    {cid: 3, val: 3}
+                                    { cid: 3, val: 3 }
                                 ]
                             }
                         }
@@ -843,7 +843,7 @@ describe('ns.ViewCollection', function() {
             return new ns.Update(this.view, layout, {})
                 .render()
                 .then(function() {
-                    ns.Model.get('child-mc', {pid: 1}).invalidate();
+                    ns.Model.get('child-mc', { pid: 1 }).invalidate();
                     return new ns.Update(this.view, layout, {}).render();
                 }, this);
         });
@@ -874,9 +874,9 @@ describe('ns.ViewCollection', function() {
                         {
                             data: {
                                 items: [
-                                    {id: '1', val: 1},
-                                    {id: '2', val: 2},
-                                    {id: '3', val: 3}
+                                    { id: '1', val: 1 },
+                                    { id: '2', val: 2 },
+                                    { id: '3', val: 3 }
                                 ]
                             }
                         }
@@ -886,7 +886,7 @@ describe('ns.ViewCollection', function() {
             });
 
             ns.layout.define('app', {
-                'app': {
+                app: {
                     'vc&': {}
                 }
             });
@@ -927,7 +927,7 @@ describe('ns.ViewCollection', function() {
                                 'div',
                                 this.props,
                                 this.createChildren()
-                            )
+                            );
                         }
                     }
                 }

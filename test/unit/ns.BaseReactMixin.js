@@ -161,11 +161,11 @@ describe('ns.BaseReactMixin', function() {
                     this.childView1Element,
                     this.childView2Element,
                     this.childView3Element
-                ])
+                ]);
             });
 
             it('должен передать props для всех дочерних view', function() {
-                this.renderedElement.createChildren({length: 25});
+                this.renderedElement.createChildren({ length: 25 });
 
                 this.view.forEachItem(function(childView) {
                     var childViewProps = childView.createElement.getCall(0).args[0];
@@ -182,7 +182,7 @@ describe('ns.BaseReactMixin', function() {
             });
 
             it('должен создать дочернее view с id=`child-view2` и передать в него props', function() {
-                var elements = this.renderedElement.createChildren('child-view2', {length: 34});
+                var elements = this.renderedElement.createChildren('child-view2', { length: 34 });
                 var childView2Props = this.childView2.createElement.getCall(0).args[0];
 
                 expect(elements).to.deep.equal([
@@ -201,7 +201,7 @@ describe('ns.BaseReactMixin', function() {
             });
 
             it('должен создать переданный массив id view [`child-view2`, `child-view3`] и передать в них props', function() {
-                var elements = this.renderedElement.createChildren(['child-view2', 'child-view3'], {length: 41});
+                var elements = this.renderedElement.createChildren(['child-view2', 'child-view3'], { length: 41 });
                 var childView2Props = this.childView2.createElement.getCall(0).args[0];
                 var childView3Props = this.childView3.createElement.getCall(0).args[0];
 
@@ -281,11 +281,11 @@ describe('ns.BaseReactMixin', function() {
                     this.childView1Element,
                     this.childView2Element,
                     this.childView3Element
-                ])
+                ]);
             });
 
             it('должен передать props для всех дочерних view', function() {
-                this.renderedElement.createChildren({length: 25});
+                this.renderedElement.createChildren({ length: 25 });
 
                 this.view.forEachItem(function(childView) {
                     var childViewProps = childView.createElement.getCall(0).args[0];
@@ -302,7 +302,7 @@ describe('ns.BaseReactMixin', function() {
             });
 
             it('должен создать дочернее view `child-view2`, если указана его модели в качестве id, и передать в него props', function() {
-                var elements = this.renderedElement.createChildren(this.childView2Model, {length: 34});
+                var elements = this.renderedElement.createChildren(this.childView2Model, { length: 34 });
                 var childView2Props = this.childView2.createElement.getCall(0).args[0];
 
                 expect(elements).to.deep.equal([
@@ -321,7 +321,7 @@ describe('ns.BaseReactMixin', function() {
             });
 
             it('должен создать дочернее view `child-view2` и `child-view3`, если указан массив их моделей в качестве id, и передать в них props', function() {
-                var elements = this.renderedElement.createChildren([this.childView2Model, this.childView3Model], {length: 41});
+                var elements = this.renderedElement.createChildren([this.childView2Model, this.childView3Model], { length: 41 });
                 var childView2Props = this.childView2.createElement.getCall(0).args[0];
                 var childView3Props = this.childView3.createElement.getCall(0).args[0];
 

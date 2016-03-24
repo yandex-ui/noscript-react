@@ -5,7 +5,7 @@ beforeEach(function() {
 
     this.sinon.stub(ns.history, 'pushState');
     this.sinon.stub(ns.history, 'replaceState');
-    this.sinon.stub(ns.log, 'exception', function(a,b,c) {
+    this.sinon.stub(ns.log, 'exception', function(a, b, c) {
         console.error('ns.log.exception', a, b, c);
     });
 
@@ -21,8 +21,8 @@ beforeEach(function() {
             return parentView;
         } else {
             var allChildrenViews = parentView._getDescendantsAndSelf();
-            var view = allChildrenViews.filter(function(view){
-                return view.key === viewKey
+            var view = allChildrenViews.filter(function(view) {
+                return view.key === viewKey;
             })[0];
 
             return view || null;
@@ -37,7 +37,7 @@ beforeEach(function() {
             return ns.ViewReactMixin.createElement.call(this, no.extend({
                 className: this.id,
                 'data-key': this.key
-            }, props))
+            }, props));
         };
 });
 
@@ -46,7 +46,7 @@ afterEach(function() {
     ns.reset();
 
     // Очистка контекста тестов от созданных в нём, в процессе выполнения, элементов
-    for(var key in this) {
+    for (var key in this) {
         if (this.hasOwnProperty(key)) {
             delete this[key];
         }
@@ -70,7 +70,7 @@ ns.test = {
             }
             xhr.respond(
                 200,
-                {"Content-Type": "application/json"},
+                { 'Content-Type': 'application/json' },
                 JSON.stringify(mock[xhr.url])
             );
         });

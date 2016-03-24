@@ -4,6 +4,7 @@
   "description": "Расширение noscript, позволяющее использовать React компоненты в качестве отображения",
   "main": "index.js",
   "scripts": {
+    "eslint": "eslint --ignore-path .gitignore --fix src test",
     "test": "yate ./test/test.yate -o ./test/test.yate.js & ./node_modules/karma/bin/karma start karma.conf.js --single-run=true"
   },
   "repository": {
@@ -39,6 +40,8 @@
   },
   "devDependencies": {
     "es5-shim": "^4.4.1",
+    "eslint": "^2.4.0",
+    "eslint-config-loris": "^3.0.0",
     "karma": "^0.13.18",
     "karma-browserify": "^5.0.3",
     "karma-mocha": "^0.2.1",

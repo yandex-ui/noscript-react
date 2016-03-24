@@ -64,7 +64,7 @@
             // Если вид не входит в новый active
             if (this.active[view.id] !== view.key) {
                 // Скроем виды, не попавшие в layout
-                var descs = view._getDescendantsAndSelf( [] );
+                var descs = view._getDescendantsAndSelf([]);
                 for (var i = 0, l = descs.length; i < l; i++) {
                     descs[i].hideAndUnbindEvents();
                 }
@@ -85,7 +85,7 @@
         var previousViewCount = previousActiveView.length;
         var index;
 
-        for(index = 0; index < previousViewCount; index++) {
+        for (index = 0; index < previousViewCount; index++) {
             if (previousActiveView[index] !== activeViews[index]) {
                 // Сбрасываем компонент, т.к. бокс должен перерисоваться
                 this.reactComponentType = 'none';
@@ -125,7 +125,7 @@
     ns.BoxReact.prototype._extractNode = function(node) {
         var newNode = ns.byClass('ns-view-' + this.id, node)[0];
         if (!newNode) {
-            throw new Error("[ns.Box] Can't find node for '" + this.id + "'");
+            throw new Error('[ns.Box] Can\'t find node for "' + this.id + '"');
         }
         return newNode;
     };
@@ -185,6 +185,6 @@
     ns.BoxReact.prototype.destroy = function() {
         this.previousActive = null;
         return ns.ViewReactMixin.destroy.apply(this, arguments);
-    }
+    };
 
-})();
+}());
