@@ -112,15 +112,16 @@
          *
          * @param {string} id имя вьюшки
          * @param {Object} [props] свойства (props) создаваемого компонента для дочернего view
-         * @return {ReactElement}
+         * @return {?ReactElement}
          * @private
          */
         __createChild: function(id, props) {
             var viewChild = this.props.view.getChildView(id);
 
-            ns.View.assert(!!viewChild, 3, [id]);
-
-            return viewChild.createElement(this.__extendDestroyToProps(props));
+            if (viewChild) {
+                return viewChild.createElement(this.__extendDestroyToProps(props));
+            }
+            return null;
         },
 
         /**
