@@ -299,4 +299,76 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
         });
     });
 
+    describe('вывод ns.ViewReact с ошибкой получения данных зависимой модели ->', function() {
+
+        beforeEach(function(done) {
+
+            ns.layout.define('app', {
+                app: {
+                    reactView: true
+                }
+            });
+
+            ns.View.define('app');
+            ns.Model.define('importantModel', {
+                methods: {
+                    request: function() {
+                        var promise = Vow.resolve({
+                            error: {
+                                message: 'some error'
+                            }
+                        });
+                        /**
+                         * @type {ns.Model}
+                         * @private
+                         */
+                        var _this = this;
+                        return promise.then(function(data) {
+                            ns.request.extractModel(_this, data);
+                        });
+                    }
+                }
+            });
+            ns.ViewReact.define('reactView', {
+                models: {
+                    importantModel: true
+                },
+                component: {
+                    render: function() {
+                        if (this.props.view.isError()) {
+                            return React.createElement('div', {
+                                className: 'error'
+                            });
+                        } else {
+                            return React.createElement('div', {
+                                className: 'success'
+                            });
+                        }
+                    }
+                }
+            });
+            // Разрешим рендерить ошибки получения данных
+            ns.Update.handleError = function() {
+                return true;
+            };
+
+            this.APP = ns.View.create('app');
+            var layout = ns.layout.page('app', {});
+            new ns.Update(this.APP, layout, {})
+                .render()
+                .always(function() {
+                    done();
+                });
+        });
+
+        it('должен отобразить reactView', function() {
+            expect(this.APP.node.querySelectorAll('.ns-view-reactView')).to.have.length(1);
+        });
+
+        it('должен отобразить reactView с контентом об ошибке', function() {
+            expect(this.APP.node.querySelectorAll('.error')).to.have.length(1);
+        });
+
+    });
+
 });

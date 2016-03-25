@@ -238,6 +238,7 @@
      *   * __bindModelsEvents
      *   * trigger
      *   * isValidSelf
+     *   * isModelsValid
      *
      * и свойств:
      *
@@ -354,6 +355,14 @@
          */
         resetStateOfUpdate: function() {
             this._needBeUpdated = false;
+        },
+
+        /**
+         * Вью не может быть отрисовано, т.к. часть обязательных моделей не удалось получить
+         * или для них вернулась ошибка
+         */
+        isError: function() {
+            return !this.isModelsValid();
         },
 
         /**
