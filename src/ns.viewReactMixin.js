@@ -1,5 +1,5 @@
-(function(React, ReactDOM) {
-    ns.View.ERROR_CODES['view-react-1'] = 'NS object `%s` is trying to unmount child ns.ViewReact `%s`. But it\'s impossible.';
+(function(React, ReactDOM, ReactDOMServer) {
+    ns.View.ERROR_CODES['view-react-1'] = 'Can\'t render string template of child\'s ns.ViewReact `%s`';
 
     /**
      * Расширяет возможности React компонента, созданного для ns.ViewReact, ns.ViewReactCollection, ns.BoxReact
@@ -366,6 +366,25 @@
         },
 
         /**
+         * Рендерит текстовое представление HTML вьюшки
+         * @desc
+         * Рендер доступен только для root или none компонентов,
+         * none в итоге будет преобразован в root
+         * @returns {?string}
+         */
+        renderToString: function() {
+            switch (this.reactComponentType) {
+                case 'none':
+                case 'root':
+                    this._prepareRenderElement('root');
+                    return ReactDOMServer.renderToString(this.createElement());
+                default:
+                    ns.View.assert(false, 'view-react-1', [this.id]);
+                    return null;
+            }
+        },
+
+        /**
          * Обновление HTML для view
          * @param {Element} [node] корневая нода обновления
          * @param {Object} [options] опции обновления
@@ -541,7 +560,9 @@
         beforePrepareRenderElement: no.nop,
 
         patchTree: function(tree) {
+            tree = ns.View.prototype.patchTree.apply(this, arguments);
             tree.isReactView = true;
+            tree.isServer = Boolean(ns.SERVER);
 
             return tree;
         },
@@ -609,6 +630,6 @@
     };
 }).apply(null,
     (typeof require === 'function' ?
-        [require('react'), require('react-dom')] :
-        [window.React, window.ReactDOM])
+        [require('react'), require('react-dom'), require('react-dom/server')] :
+        [window.React, window.ReactDOM, window.ReactDOMServer])
 );

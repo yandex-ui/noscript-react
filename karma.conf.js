@@ -13,20 +13,15 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            './node_modules/es5-shim/es5-shim.js',
-
             // Plugin's files
             './node_modules/jquery/dist/jquery.js',
             './node_modules/noscript/dist/noscript.js',
             './node_modules/yate/lib/runtime.js',
-            './node_modules/react/dist/react.js',
-            './node_modules/react-dom/dist/react-dom.js',
+            './node_modules/noscript-bosphorus/noscript-bosphorus.js',
             './test/test.yate.js',
-            './src/ns.viewReactMixin.js',
-            './src/*.js',
+            './test/test.bundle.js',
 
             // Test's files and its suite
-            './test/stub/*.js',
             './test/unit/*.js',
             './test/integration/*.js'
         ],
@@ -38,7 +33,7 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            './test/stub/*.js': ['browserify']
+            './test/test.bundle.js': ['browserify']
         },
 
 
@@ -77,5 +72,5 @@ module.exports = function(config) {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity
-    })
-}
+    });
+};

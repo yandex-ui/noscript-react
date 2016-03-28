@@ -3,3 +3,11 @@ match .*[!!/.isReactView] ns-view-content {
 
 match .*[!!/.isReactView] ns-view-async-content {
 }
+
+match .*[!!/.isReactView && !!/.isServer] ns-view-content {
+    html(ns-view-call('renderToString'))
+}
+
+match .*[!!/.isReactView && !!/.isServer] ns-view-async-content {
+    html(ns-view-call('renderToString'))
+}

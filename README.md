@@ -9,6 +9,7 @@
  * [TodoMVC](https://github.com/yandex-ui/noscript-react-todomvc)
  * [CommonJS подключеие](#commonjs-require)
  * [Как это работает](#how-do-it-works)
+ * [Серверный рендринг](#rendering-on-the-server-side)
  * [API ns.ViewReact](#ns-view-react)
    * [#mixComponent](#ns-view-react__mixComponent)
    * [#createClass](#ns-view-react__createClass)
@@ -70,6 +71,34 @@ ns.ViewReact.define('aside', {
   * реактивный бокс создаётся только когда он был описан как дочерний элемент реактивной вьюшки. В этом случае обычный бокс создан не будет. Поэтому стоит озаботится о подключении `ns.BoxReact` к приложению.
 
 Сама реализация `ns.ViewReact`, `ns.ViewReactCollection`, `ns.BoxReact` может находиться в отдельном репо и подключаться к ns в виде плагина, по аналогии с босфорусом.
+
+## <a name="rendering-on-the-server-side"></a>Серверный рендринг
+
+Для использования "реактивных" вью на серверне необходимо подключить плагин [noscript-bosphorus](https://www.npmjs.com/package/noscript-bosphorus) к приложению и установить глобальных флаг `ns.SERVER = true`.
+Это позволит используя `ns.Update` и метод `ns.Update.prototype.generateHTML` сгенерировать на сервере HTML страницы, включая в него "реактивные" вью.
+
+Например,
+
+```js
+ns.SERVER = true;
+
+ns.layout.define('index', {
+    app: {
+        reactView: true
+    }
+});
+
+ns.View.define('app');
+ns.ViewReact.define('reactView');
+
+var appView = ns.View.create('app');
+var appLayout = ns.layout.page('index');
+var update = new ns.Update(appView, appLayout, {});
+update.generateHTML()
+    .then(function(appHTML) {
+        // Тут доступен HTML приложения в appHTML
+    });
+```
 
 ## <a name="ns-view-react"></a>API ns.ViewReact
 `ns.ViewReact` - это наследник `ns.View`, который вместо YATE использует `ReactComponent`.

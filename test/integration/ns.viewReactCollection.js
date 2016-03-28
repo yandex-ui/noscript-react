@@ -968,6 +968,121 @@ describe('ns.ViewCollection', function() {
 
         });
 
+    });
+
+    describe('получение HTML ns.ViewCollection и восстановление приложения по нему ->', function() {
+
+        beforeEach(function() {
+            ns.SERVER = true;
+
+            ns.layout.define('index', {
+                app: {
+                    reactViewCollection: true
+                }
+            });
+
+            ns.Model.define('mCollection', {
+                split: {
+                    items: '.items',
+                    model_id: 'mItem',
+                    params: {
+                        id: '.id'
+                    }
+                }
+            });
+            ns.Model.define('mItem', {
+                params: {
+                    id: null
+                }
+            });
+            ns.Model.get('mCollection').setData({
+                items: [
+                    {
+                        id: 1,
+                        value: 'test1'
+                    },
+                    {
+                        id: 2,
+                        value: 'test2'
+                    }
+                ]
+            });
+
+            ns.View.define('app');
+            ns.ViewReactCollection.define('reactViewCollection', {
+                models: ['mCollection'],
+                split: {
+                    byModel: 'mCollection',
+                    intoViews: 'collectionItem'
+                }
+            });
+            ns.ViewReact.define('collectionItem', {
+                models: ['mItem']
+            });
+            this.app = ns.View.create('app');
+            this.indexPageLayout = ns.layout.page('index');
+
+            this.update = new ns.Update(this.app, this.indexPageLayout, {});
+        });
+
+        afterEach(function() {
+            ns.SERVER = false;
+        });
+
+        describe('получение HTML ->', function() {
+            beforeEach(function(done) {
+                this.update.generateHTML()
+                    .then(function(html) {
+                        this.node = ns.html2node(html);
+                        done();
+                    }, this);
+            });
+
+            it('должен отрендерить в ввиде HTML reactViewCollection', function() {
+                expect(this.node.querySelectorAll('.ns-view-reactViewCollection')).to.have.length(1);
+            });
+
+            it('должен отрендерить элементы коллекции', function() {
+                expect(this.node.querySelectorAll('[data-key="view=collectionItem&id=1"]')).to.have.length(1);
+                expect(this.node.querySelectorAll('[data-key="view=collectionItem&id=2"]')).to.have.length(1);
+            });
+
+        });
+
+        describe('восстановление приложения по HTML-> ', function() {
+            beforeEach(function() {
+                return this.update.generateHTML()
+                    .then(function(html) {
+                        ns.SERVER = false;
+                        this.node = ns.html2node(html);
+                        this.app = ns.View.create('app');
+                        return new ns.Update(this.app, this.indexPageLayout, {})
+                            .reconstruct(this.node);
+                    }, this);
+            });
+
+            it('должен восстановить ноду для reactViewCollection', function() {
+                var reactViewCollection = this.sinon.getViewByKey(this.app, 'view=reactViewCollection');
+
+                expect(reactViewCollection.node).to.be.equal(this.app.node.querySelector('.ns-view-reactViewCollection'));
+            });
+
+            it('должен восстановить ноду для collectionItem1', function() {
+                var reactViewCollection = this.sinon.getViewByKey(this.app, 'view=reactViewCollection');
+                var collectionItem1 = this.sinon.getViewByKey(this.app, 'view=collectionItem&id=1');
+
+                expect(collectionItem1.reactComponentType).to.be.equal('child');
+                expect(reactViewCollection.node.querySelectorAll('[data-key="view=collectionItem&id=1"]')).to.have.length(1);
+            });
+
+            it('должен восстановить ноду для collectionItem2', function() {
+                var reactViewCollection = this.sinon.getViewByKey(this.app, 'view=reactViewCollection');
+                var collectionItem2 = this.sinon.getViewByKey(this.app, 'view=collectionItem&id=2');
+
+                expect(collectionItem2.reactComponentType).to.be.equal('child');
+                expect(reactViewCollection.node.querySelectorAll('[data-key="view=collectionItem&id=2"]')).to.have.length(1);
+            });
+        });
 
     });
 });
