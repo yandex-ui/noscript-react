@@ -9,7 +9,7 @@
  * [TodoMVC](https://github.com/yandex-ui/noscript-react-todomvc)
  * [CommonJS подключеие](#commonjs-require)
  * [Как это работает](#how-do-it-works)
- * [Серверный рендринг](#rendering-on-the-server-side)
+ * [Серверный рендеринг](#rendering-on-the-server-side)
  * [API ns.ViewReact](#ns-view-react)
    * [#mixComponent](#ns-view-react__mixComponent)
    * [#createClass](#ns-view-react__createClass)
@@ -72,10 +72,10 @@ ns.ViewReact.define('aside', {
 
 Сама реализация `ns.ViewReact`, `ns.ViewReactCollection`, `ns.BoxReact` может находиться в отдельном репо и подключаться к ns в виде плагина, по аналогии с босфорусом.
 
-## <a name="rendering-on-the-server-side"></a>Серверный рендринг
+## <a name="rendering-on-the-server-side"></a>Серверный рендеринг
 
-Для использования "реактивных" вью на серверне необходимо подключить плагин [noscript-bosphorus](https://www.npmjs.com/package/noscript-bosphorus) к приложению и установить глобальных флаг `ns.SERVER = true`.
-Это позволит используя `ns.Update` и метод `ns.Update.prototype.generateHTML` сгенерировать на сервере HTML страницы, включая в него "реактивные" вью.
+Для использования "реактивных" вью на сервере необходимо подключить плагин [noscript-bosphorus](https://www.npmjs.com/package/noscript-bosphorus) к приложению и установить глобальных флаг `ns.SERVER = true`.
+Это позволит, используя `ns.Update` и метод `ns.Update.prototype.generateHTML`, сгенерировать на сервере HTML страницы, включая в него "реактивные" вью.
 
 Например,
 
