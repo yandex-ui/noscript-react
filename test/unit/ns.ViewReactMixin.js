@@ -164,6 +164,53 @@ describe('ns.ViewReactMixin', function() {
 
     });
 
+    describe('#renderToString', function() {
+
+        beforeEach(function() {
+            this.sinon.stub(this.view, '_prepareRenderElement');
+            this.sinon.stub(this.view, 'createElement');
+            this.sinon.stub(window.ReactDOMServer, 'renderToString');
+        });
+
+        ['none', 'root'].forEach(function(type) {
+
+            describe('для компонента типа `' + type + '`', function() {
+                beforeEach(function() {
+                    this.view.reactComponentType = type;
+                    this.view.renderToString();
+                });
+
+                it('должен вызвать подготовку данных для отрисовки элемента', function() {
+                    expect(this.view._prepareRenderElement).to.be.calledWithExactly('root');
+                });
+
+                it('должен создать React компонент представления', function() {
+                    expect(this.view.createElement).to.be.called;
+                });
+
+                it('должен вызвать отрисовку текстового HTML компонента', function() {
+                    expect(ReactDOMServer.renderToString).to.be.called;
+                });
+            });
+
+        });
+
+        ['child'].forEach(function(type) {
+            describe('для компонента типа `' + type + '`', function() {
+
+                beforeEach(function() {
+                    this.view.reactComponentType = type;
+                });
+
+                it('должен вызвать ошибку запроса отрисовки', function() {
+                    expect(this.view.renderToString.bind(this.view)).to.be.throw(Error);
+                });
+
+            });
+        });
+
+    });
+
     describe('#_updateHTML', function() {
 
         beforeEach(function() {

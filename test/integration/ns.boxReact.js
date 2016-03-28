@@ -892,4 +892,97 @@ describe('ns.BoxReact', function() {
 
     });
 
+    describe('получение HTML ns.BoxReact и восстановление приложения по нему ->', function() {
+
+        beforeEach(function() {
+            ns.SERVER = true;
+
+            this.defineApp = function() {
+                ns.reset();
+                ns.layout.define('index', {
+                    app: {
+                        reactView: {
+                            'boxReact@': {
+                                itemView: true
+                            }
+                        }
+                    }
+                });
+
+                ns.View.define('app');
+                ns.ViewReact.define('reactView');
+                ns.ViewReact.define('itemView');
+                this.app = ns.View.create('app');
+                this.indexPageLayout = ns.layout.page('index');
+            }.bind(this);
+
+            this.defineApp();
+
+            this.update = new ns.Update(this.app, this.indexPageLayout, {});
+        });
+
+        afterEach(function() {
+            ns.SERVER = false;
+        });
+
+        describe('получение HTML ->', function() {
+            beforeEach(function(done) {
+                this.update.generateHTML()
+                    .then(function(html) {
+                        this.node = ns.html2node(html);
+                        done();
+                    }, this);
+            });
+
+            it('должен отрендерить в ввиде HTML reactView', function() {
+                expect(this.node.querySelectorAll('.ns-view-reactView')).to.have.length(1);
+            });
+
+            it('должен отрендерить в ввиде HTML boxReact', function() {
+                expect(this.node.querySelectorAll('.boxReact')).to.have.length(1);
+            });
+
+            it('должен отрендерить содержимое бокса itemView', function() {
+                expect(this.node.querySelectorAll('.itemView')).to.have.length(1);
+            });
+
+        });
+
+        describe('восстановление приложения по HTML-> ', function() {
+            beforeEach(function() {
+                return this.update.generateHTML()
+                    .then(function(html) {
+                        ns.SERVER = false;
+                        this.node = ns.html2node(html);
+                        this.defineApp();
+                        return new ns.Update(this.app, this.indexPageLayout, {})
+                            .reconstruct(this.node);
+                    }, this);
+            });
+
+            it('должен установить node у reactView', function() {
+                var reactView = this.sinon.getViewByKey(this.app, 'view=reactView');
+
+                expect(reactView.node).to.be.equal(this.app.node.querySelector('.ns-view-reactView'));
+            });
+
+            it('должен установить node у boxReact', function() {
+                var boxReact = this.sinon.getViewByKey(this.app, 'box=boxReact');
+                var reactView = this.sinon.getViewByKey(this.app, 'view=reactView');
+
+                expect(boxReact.reactComponentType).to.be.equal('child');
+                expect(reactView.node.querySelectorAll('.boxReact')).to.have.length(1);
+            });
+
+            it('должен установить node у содержимого бокса itemView', function() {
+                var itemView = this.sinon.getViewByKey(this.app, 'view=itemView');
+                var reactView = this.sinon.getViewByKey(this.app, 'view=reactView');
+
+                expect(itemView.reactComponentType).to.be.equal('child');
+                expect(reactView.node.querySelectorAll('.itemView')).to.have.length(1);
+            });
+        });
+
+    });
+
 });
