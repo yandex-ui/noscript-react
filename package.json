@@ -1,6 +1,6 @@
 {
   "name": "noscript-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Расширение noscript, позволяющее использовать React компоненты в качестве отображения",
   "main": "index.js",
   "scripts": {
