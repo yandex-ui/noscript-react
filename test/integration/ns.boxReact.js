@@ -985,4 +985,89 @@ describe('ns.BoxReact', function() {
 
     });
 
+    describe('сохранение стейта React компонента ns.BoxReact ->', function() {
+        beforeEach(function() {
+            ns.reset();
+
+            ns.layout.define('index', {
+                app: {
+                    reactWrapper: {
+                        'boxReact@': {
+                            reactView: true
+                        }
+                    }
+                }
+            });
+
+            ns.View.define('app');
+            ns.ViewReact.define('reactWrapper');
+            ns.ViewReact.define('reactView', {
+                params: {
+                    p: null
+                },
+                component: {
+                    getInitialState: function() {
+                        return {
+                            content: 'start'
+                        };
+                    },
+                    componentWillMount: function() {
+                        ns.events.on('change-state', this.changeState);
+                    },
+                    componentWillUnmount: function() {
+                        ns.events.off('change-state', this.changeState);
+                    },
+                    changeState: function(eventName, content) {
+                        this.setState({
+                            content: content
+                        });
+                    },
+                    render: function() {
+                        return React.createElement('div', {
+                            className: 'content' + this.props.view.params.p
+                        }, this.state.content);
+                    }
+                }
+            });
+
+            this.app = ns.View.create('app');
+            this.indexPageLayout = ns.layout.page('index');
+            return new ns.Update(this.app, this.indexPageLayout, { p: 1 }).render();
+        });
+
+        it('должен запоминать стейт React компонента отображаемого view', function() {
+            expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('start');
+        });
+
+        it('должен дать перерисоваться React компоненту отображаемого view согласно изменению стейта', function() {
+            ns.events.trigger('change-state', 'change');
+            expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('change');
+        });
+
+        it('должен при смене отображаемого вью показать стейт нового React компонента', function() {
+            ns.events.trigger('change-state', 'change');
+            return new ns.Update(this.app, this.indexPageLayout, { p: 2 })
+                .render()
+                .then(function() {
+                    expect(this.app.node.querySelector('.content2').innerHTML).to.be.equal('start');
+                }, this);
+        });
+
+        it('не должен сохранять стейт React компонента при скрытии, а затем показе связанного с ним вью', function() {
+            ns.events.trigger('change-state', 'change');
+            expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('change');
+            // Скрываем [view=reactView&p=1], в замен отображаем [view=reactView&p=2]
+            return new ns.Update(this.app, this.indexPageLayout, { p: 2 })
+                .render()
+                .then(function() {
+                    // Показываем [view=reactView&p=1]
+                    return new ns.Update(this.app, this.indexPageLayout, { p: 1 })
+                        .render()
+                        .then(function() {
+                            expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('start');
+                        }, this);
+                }, this);
+        });
+    });
+
 });
