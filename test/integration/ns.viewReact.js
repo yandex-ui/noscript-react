@@ -1,5 +1,4 @@
 describe('ns.ViewReact интеграционные тесты ->', function() {
-
     describe('сочетание обычных ns.ViewReact ->', function() {
 
         beforeEach(function() {
@@ -524,6 +523,65 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             });
         });
 
+    });
+
+    describe('сохранение стейта React компонента ns.ViewReact ->', function() {
+        beforeEach(function() {
+            ns.layout.define('app', {
+                app: {
+                    v1: true
+                }
+            });
+            ns.View.define('app');
+            ns.Model.define('m1');
+            ns.Model.get('m1').setData({
+                yo: ''
+            });
+            ns.ViewReact.define('v1', {
+                models: ['m1'],
+                component: {
+                    componentWillMount: function() {
+                        this.props.models.m1.on('ns-model-changed.yo', this.changeState);
+                    },
+                    componentWillUnmount: function() {
+                        this.props.models.m1.off('ns-model-changed.yo', this.changeState);
+                    },
+                    changeState: function() {
+                        this.setState({
+                            hello: 'me'
+                        });
+                    },
+                    getInitialState: function() {
+                        return {
+                            hello: 'you'
+                        };
+                    },
+                    render: function() {
+                        return React.createElement('div', {
+                            className: 'v1-inner'
+                        }, this.state.hello);
+                    }
+                }
+            });
+            this.app = ns.View.create('app');
+            this.layout = ns.layout.page('app', {});
+
+            return new ns.Update(this.app, this.layout, {}).render();
+        });
+
+        it('стейт должен устанавливаться при создании вьюшки в getInitialState', function() {
+            expect(this.app.node.querySelector('.ns-view-v1').innerText).to.be.eql('you');
+        });
+
+        it('стейт должен сохраняться при перерисовках вьюшки [#13]', function() {
+            ns.Model.get('m1').set('.yo', 'yo');
+
+            return new ns.Update(this.app, this.layout, {})
+                .render()
+                .then(function() {
+                    expect(this.app.node.querySelector('.ns-view-v1').innerText).to.be.eql('me');
+                }, this);
+        });
     });
 
 });
