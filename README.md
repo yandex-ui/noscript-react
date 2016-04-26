@@ -23,8 +23,9 @@
  * [API ReactComponent](#react-component)
    * [getModelData](#react-component__getModelData)
    * [createChildren](#react-component__createChildren)
- * [Особенности](#features)
-   * [Работа со стейтом реактивной вьюшки](#features__state)
+ * [Работа со стейтом](#state)
+   * [Сохранение](#state__save)
+   * [Сброс](#state__lost)
 
 ## <a name="commonjs-require"></a>CommonJS подключеие
 
@@ -264,62 +265,17 @@ this.createChildren(['child-view1', 'child-view2'], {length: 25}); // созда
 2. Для `ns.ViewReactCollection` метод принимает модели коллекций, с которыми связаны создаваемые вьюшки, и `props` для компонентов элементов коллекции.
 
 
-## <a name="features"></a>Особенности
+## <a name="state"></a>Работа со стейтом
 
-### <a name="features__state"></a>Работа со стейтом
+Реактивные вьюшки могут использовать стейт реакт-компонента.
 
-Реактивные вьюшки могут использовать стейт реакт-компонента для сохранения некоторых состояних между перерисовками.
+### <a name="state__save"></a>Сохранение
 
-```js
-ns.Model.define('m1');
-var m1 = ns.Model.get('m1');
+Стейт сохраняется между перерисовками вьюшки:
 
-m1.set('.title', 'Hello, me!');
+- при изменении данных в модели
+- при явной инвалидации вьюшки
 
-ns.ViewReact.define('foo', {
-    models: ['m1'],
-    component: {
-        getInitialState: function() {
-            return {
-                isPopupOpen: false
-            };
-        },
-        render: function() {
-            return <Popup
-                title = { this.getModelData('m1', '.title') }
-                isOpen = { this.state.isPopupOpen } />;
-        }
-    }
-});
+### <a name="state__lost"></a>Сброс
 
-// поменяли модельку и запустили апдейт,
-// вьюшка будет перерисована с новым title
-m1.set('.title', 'Hello, you!');
-ns.page.go();
-```
-
-Если во время жизни вьюшки, в стейте поменяли флаг `isPopupOpen`, то после перерисовки попап должен остаться открытым.
-
-Однако, при скрытии вьюшек в боксах, **стейт сбрасывается**.
-
-```js
-// вьюшка находится в боксе
-ns.ViewReact.define('v', {
-    params: {
-        p: null
-    }
-});
-
-// нарисовалась вьюшка [view=v&p=1]
-ns.page.go('?p=1');
-
-// нарисовалась вьюшка [view=v&p=2]
-// скрылась вьюшка [view=v&p=1]
-ns.page.go('?p=2');
-
-// показалась вьюшка [view=v&p=1]
-// скрылась вьюшка [view=v&p=2]
-ns.page.go('?p=1');
-```
-
-После того, как существующий экземпляр вьюшки показался в боксе еще раз, то его стейт устанавливается в дефолтный.
+Стейт компонента **сбрасывается при скрытии вьюшки в боксе**. Соответственно, при показе существующего экземпляра в боксе стейт будет установлен в дефолтный.

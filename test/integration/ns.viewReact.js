@@ -525,7 +525,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
 
     });
 
-    describe('сохранение стейта React компонента ns.ViewReact ->', function() {
+    describe('стейт React компонента ns.ViewReact ->', function() {
         beforeEach(function() {
             ns.layout.define('app', {
                 app: {
@@ -542,14 +542,19 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 component: {
                     componentWillMount: function() {
                         this.props.models.m1.on('ns-model-changed.yo', this.changeState);
+                        ns.events.on('invalidate-v1', this.invalidateView);
                     },
                     componentWillUnmount: function() {
                         this.props.models.m1.off('ns-model-changed.yo', this.changeState);
+                        ns.events.off('invalidate-v1', this.invalidateView);
                     },
                     changeState: function() {
                         this.setState({
                             hello: 'me'
                         });
+                    },
+                    invalidateView: function() {
+                        this.props.view.invalidate();
                     },
                     getInitialState: function() {
                         return {
@@ -569,18 +574,30 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             return new ns.Update(this.app, this.layout, {}).render();
         });
 
-        it('стейт должен устанавливаться при создании вьюшки в getInitialState', function() {
+        it('должен устанавливаться при создании вьюшки в getInitialState', function() {
             expect(this.app.node.querySelector('.ns-view-v1').innerText).to.be.eql('you');
         });
 
-        it('стейт должен сохраняться при перерисовках вьюшки [#13]', function() {
-            ns.Model.get('m1').set('.yo', 'yo');
+        describe('должен сохраняться ->', function() {
+            beforeEach(function() {
+                ns.Model.get('m1').set('.yo', 'yo');
 
-            return new ns.Update(this.app, this.layout, {})
-                .render()
-                .then(function() {
-                    expect(this.app.node.querySelector('.ns-view-v1').innerText).to.be.eql('me');
-                }, this);
+                return new ns.Update(this.app, this.layout, {}).render();
+            });
+
+            it('при перерисовках вьюшки [#13]', function() {
+                expect(this.app.node.querySelector('.ns-view-v1').innerText).to.be.eql('me');
+            });
+
+            it('при инвалидации вьюшки', function() {
+                ns.events.trigger('invalidate-v1');
+
+                return new ns.Update(this.app, this.layout, {})
+                    .render()
+                    .then(function() {
+                        expect(this.app.node.querySelector('.ns-view-v1').innerText).to.be.eql('me');
+                    }, this);
+            });
         });
     });
 
