@@ -304,7 +304,6 @@ describe('ns.ViewReactMixin', function() {
                 expect(this.view._prepareRenderElement).to.be.calledWithExactly('root');
             });
 
-
             it('должен запустить отрисовку `root` компонента', function() {
                 this.view.reactComponentType = 'root';
                 this.view._updateHTML(this.viewNode);

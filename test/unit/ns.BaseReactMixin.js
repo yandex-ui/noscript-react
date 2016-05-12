@@ -213,7 +213,6 @@ describe('ns.BaseReactMixin', function() {
                 expect(childView3Props).to.have.property('length', 41);
             });
 
-
             it('должен создать дочерние элементы, передав в опции _onDestroy обработчик', function() {
                 this.renderedElement.createChildren();
 
@@ -332,7 +331,6 @@ describe('ns.BaseReactMixin', function() {
                 expect(childView2Props).to.have.property('length', 41);
                 expect(childView3Props).to.have.property('length', 41);
             });
-
 
             it('должен создать дочерние элементы, передав в опции _onDestroy обработчик', function() {
                 this.renderedElement.createChildren();
