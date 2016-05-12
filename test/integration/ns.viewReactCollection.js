@@ -935,7 +935,6 @@ describe('ns.ViewCollection', function() {
                 models: ['mc-item']
             });
 
-
             this.view = ns.View.create('app');
             var layout = ns.layout.page('app');
 
