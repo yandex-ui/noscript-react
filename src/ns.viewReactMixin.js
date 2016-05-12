@@ -320,7 +320,7 @@
                  * @see http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
                  * В нашем случае так бывает при вызове createChildren
                  */
-                key: this.__uniqueId
+                key: this.key
             }));
         },
 
