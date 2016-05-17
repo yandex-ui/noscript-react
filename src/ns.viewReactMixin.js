@@ -56,6 +56,11 @@
          */
         __extendDestroyToProps: function(props) {
             props = props || {};
+
+            if (this.props.view.hasInheritingProps && this.props._extendedProps) {
+                props = no.extend({}, this.props._extendedProps, props);
+            }
+
             return no.extend({
                 _onDestroy: this.__handleDestroy
             }, props);
@@ -85,7 +90,12 @@
                 props = id;
                 id = null;
             }
-            props = props || {};
+
+            if (props) {
+                props._extendedProps = props;
+            } else {
+                props = {};
+            }
 
             if (!id) {
                 return this.__createChildren(props);
@@ -249,6 +259,11 @@
      *   * _baseClass - прототип базовый класс, от которого наследуются
      */
     ns.ViewReactMixin = {
+        /**
+         * Позволяет наследовать props, переданные в createElement дочерними вью.
+         * В большей степени нужно ns.BoxReact для возможности прокинуть props дочерним вью бокса.
+         */
+        hasInheritingProps: false,
         /**
          * Скрывает ns.ViewReact, отвязывая компонент от неё
          */

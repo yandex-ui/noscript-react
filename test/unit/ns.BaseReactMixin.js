@@ -29,6 +29,7 @@ describe('ns.BaseReactMixin', function() {
             }
         });
         this.props = {
+            _extendedProps: { length: 42 },
             _onDestroy: this.sinon.stub(),
             content: 'content1',
             models: this.view.models,
@@ -154,6 +155,10 @@ describe('ns.BaseReactMixin', function() {
                 };
             });
 
+            afterEach(function() {
+                this.view.hasInheritingProps = false;
+            });
+
             it('должен создать все дочерние view', function() {
                 var elements = this.renderedElement.createChildren();
 
@@ -170,6 +175,26 @@ describe('ns.BaseReactMixin', function() {
                 this.view.forEachItem(function(childView) {
                     var childViewProps = childView.createElement.getCall(0).args[0];
                     expect(childViewProps).to.have.property('length', 25);
+                });
+            });
+
+            it('должен передать свои props дочерним view, если указан hasInheritingProps', function() {
+                this.view.hasInheritingProps = true;
+                this.renderedElement.createChildren();
+
+                this.view.forEachItem(function(childView) {
+                    var childViewProps = childView.createElement.getCall(0).args[0];
+                    expect(childViewProps).to.have.property('length', 42);
+                });
+            });
+
+            it('не должен передать свои props дочерним view, если не указан hasInheritingProps', function() {
+                this.view.hasInheritingProps = false;
+                this.renderedElement.createChildren();
+
+                this.view.forEachItem(function(childView) {
+                    var childViewProps = childView.createElement.getCall(0).args[0];
+                    expect(childViewProps).to.not.have.property('length');
                 });
             });
 
