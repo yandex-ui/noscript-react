@@ -1070,4 +1070,101 @@ describe('ns.BoxReact', function() {
         });
     });
 
+    describe('установка props для дочерних view ns.BoxReact ->', function() {
+        beforeEach(function() {
+            ns.reset();
+
+            ns.layout.define('index', {
+                app: {
+                    viewWithPatchLayout: true
+                }
+            });
+
+            ns.layout.define('layout-content', {
+                'someBox@': {
+                    viewReact1: true,
+                    viewReact2: true,
+                    viewReact3: {
+                        viewReact4: true
+                    }
+                }
+            });
+
+            ns.View.define('app');
+            ns.ViewReact.define('viewWithPatchLayout', {
+                methods: {
+                    patchLayout: function() {
+                        return 'layout-content';
+                    }
+                },
+                component: {
+                    render: function() {
+                        return React.createElement(
+                            'div',
+                            null,
+                            this.createChildren({
+                                p1: '1',
+                                p2: '2',
+                                p3: '3'
+                            })
+                        );
+                    }
+                }
+            });
+            ns.ViewReact.define('viewReact1', {
+                component: {
+                    render: function() {
+                        return React.createElement(
+                            'div',
+                            {
+                                className: 'content1'
+                            },
+                            this.props.p1
+                        );
+                    }
+                }
+            });
+            ns.ViewReact.define('viewReact2', {
+                component: {
+                    render: function() {
+                        return React.createElement(
+                            'div',
+                            {
+                                className: 'content2'
+                            },
+                            this.props.p2
+                        );
+                    }
+                }
+            });
+            ns.ViewReact.define('viewReact3');
+            ns.ViewReact.define('viewReact4', {
+                component: {
+                    render: function() {
+                        return React.createElement(
+                            'div',
+                            {
+                                className: 'content3'
+                            },
+                            this.props.p3 ? this.props.p3 : 'correct'
+                        );
+                    }
+                }
+            });
+
+            this.app = ns.View.create('app');
+            this.indexPageLayout = ns.layout.page('index');
+            return new ns.Update(this.app, this.indexPageLayout, {}).render();
+        });
+
+        it('должен передать props для бокса его дочерним view', function() {
+            expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('1');
+            expect(this.app.node.querySelector('.content2').innerHTML).to.be.equal('2');
+        });
+
+        it('не должен передать props для потомков дочерних view бокса', function() {
+            expect(this.app.node.querySelector('.content3').innerHTML).to.be.equal('correct');
+        });
+    });
+
 });

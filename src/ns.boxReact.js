@@ -20,6 +20,8 @@
     // Он используется в миксине
     ns.BoxReact.prototype._baseClass = ns.Box.prototype;
 
+    ns.BoxReact.prototype.hasInheritingProps = true;
+
     /**
      * Добавляет ns.View или ns.Box в список дочерних видов, если они не были созданы.
      * @param {string} id
