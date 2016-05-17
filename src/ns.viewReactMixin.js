@@ -1,4 +1,3 @@
-(function(React, ReactDOM, ReactDOMServer) {
     ns.View.ERROR_CODES['view-react-1'] = 'Can\'t render string template of child\'s ns.ViewReact `%s`';
 
     /**
@@ -705,8 +704,3 @@
             this._baseClass.destroy.apply(this);
         }
     };
-}).apply(null,
-    (typeof require === 'function' ?
-        [require('react'), require('react-dom'), require('react-dom/server')] :
-        [window.React, window.ReactDOM, window.ReactDOMServer])
-);
