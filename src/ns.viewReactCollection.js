@@ -1,4 +1,3 @@
-(function() {
     /**
      * @class ns.ViewReactCollection
      * @augments ns.ViewCollection
@@ -69,5 +68,3 @@
         }
         this.__itemsToRemove = [];
     };
-
-}());

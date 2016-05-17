@@ -2,10 +2,13 @@
   "name": "noscript-react",
   "version": "1.0.2",
   "description": "Расширение noscript, позволяющее использовать React компоненты в качестве отображения",
-  "main": "index.js",
+  "main": "./dist/noscript-react.module.js",
+  "browser": "./dist/noscript-react.min.js",
   "scripts": {
     "eslint": "eslint --ignore-path .gitignore --fix src test",
-    "test": "yate ./test/test.yate -o ./test/test.yate.js & ./node_modules/karma/bin/karma start karma.conf.js --single-run=true"
+    "test": "yate ./test/test.yate -o ./test/test.yate.js & ./node_modules/karma/bin/karma start karma.conf.js --single-run=true",
+    "build": "gulp",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -33,10 +36,11 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^2.1.4",
+    "nommon": "0.0.40",
     "noscript": "^0.8.4",
     "noscript-bosphorus": "0.0.5",
-    "react": "^0.14.1",
-    "react-dom": "^0.14.1",
+    "react": "~0.14.1",
+    "react-dom": "~0.14.1",
     "yate": "0.0.79"
   },
   "devDependencies": {
@@ -45,6 +49,11 @@
     "es5-shim": "^4.4.1",
     "eslint": "^2.5.0",
     "eslint-config-loris": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3",
+    "gulp-wrap": "^0.11.0",
     "karma": "^0.13.18",
     "karma-browserify": "^5.0.3",
     "karma-mocha": "^0.2.1",
@@ -57,5 +66,9 @@
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "watchify": "^3.7.0"
-  }
+  },
+  "files": [
+    "dist",
+    "yate"
+  ]
 }
