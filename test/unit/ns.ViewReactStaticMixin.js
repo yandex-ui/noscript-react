@@ -29,6 +29,20 @@ describe('ns.ViewReactStaticMixin', function() {
             expect(componentDecl.displayName).to.equal('view-id');
         });
 
+        it('должен записать в displayName переданный параметр', function() {
+            var componentDecl = ns.ViewReactStaticMixin.mixComponent('viewId', {
+                displayName: 'other-fancy-name'
+            });
+
+            expect(componentDecl.displayName).to.equal('other-fancy-name');
+        });
+
+        it('должен преобразоывать camelCase в camel-case', function() {
+            var componentDecl = ns.ViewReactStaticMixin.mixComponent('camelCase', {});
+
+            expect(componentDecl.displayName).to.equal('camel-case');
+        });
+
     });
 
     describe('#render', function() {
