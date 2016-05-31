@@ -203,7 +203,8 @@
             }
             component.mixins = component.mixins || [];
             component.mixins.push(ns.BaseReactMixin);
-            component.displayName = id;
+
+            component.displayName = component.displayName || String(id).replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
             return component;
         },
