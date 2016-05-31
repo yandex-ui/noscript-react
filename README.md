@@ -26,6 +26,8 @@
  * [Работа со стейтом](#state)
    * [Сохранение](#state__save)
    * [Сброс](#state__lost)
+ * [Особенности](#features)
+   * [Дефолтный displayName](#features__displayName)
 
 ## <a name="commonjs-require"></a>CommonJS подключеие
 
@@ -279,3 +281,24 @@ this.createChildren(['child-view1', 'child-view2'], {length: 25}); // созда
 ### <a name="state__lost"></a>Сброс
 
 Стейт компонента **сбрасывается при скрытии вьюшки в боксе**. Соответственно, при показе существующего экземпляра в боксе стейт будет установлен в дефолтный.
+
+## <a name="features"></a>Особенности
+
+### <a name="features__displayName"></a>Дефолтный displayName
+
+Если не указывать `displayName` у компонента, то он будет сгенерирован автоматически на основании айдишника вьюшки, приведенный из camelCase к минус-разделителям.
+
+```js
+ns.ViewReact.define('myView', {
+    component: {
+        render() {
+            // my-view
+            console.log(this.constructor.displayName)
+        }
+    }
+})
+```
+
+Это удобно, если использовать [реакт-миксин для генерации БЭМ-классов](https://github.com/vitkarpov/bem_), который в качестве имени блока берет `displayName` компонента.
+
+Если `displayName` определен в декларации явно, то будет использован он.
