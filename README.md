@@ -21,6 +21,7 @@
  * [API ns.ViewReactCollection](#ns-view-react-collection)
  * [API ns.BoxReact](#ns-box-react)
  * [API ReactComponent](#react-component)
+   * [getModel](#react-component__getModel)
    * [getModelData](#react-component__getModelData)
    * [createChildren](#react-component__createChildren)
  * [Особенности](#features)
@@ -218,6 +219,10 @@ ns.ViewReact.define('item', {
 ## <a name="react-component"></a>API ReactComponent
 
 Каждый компонент, связанный с реактивной вьюшкой, расширяет поведение реакт-компонента с помощью специального миксина.
+
+### <a name="react-component__getModel"></a>getModel
+
+Возвращает модель по id
 
 ### <a name="react-component__getModelData"></a>getModelData
 
