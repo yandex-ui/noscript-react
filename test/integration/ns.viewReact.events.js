@@ -1,15 +1,15 @@
 describe('ns.ViewReact.events', function() {
     beforeEach(function() {
         ns.layout.define('app', {
-            'app': {
-                'head': true,
+            app: {
+                head: true,
                 'content@': true
             }
         });
 
         ns.layout.define('content1', {
             'app content@': {
-                'content1': {
+                content1: {
                     'content1-inner': true
                 }
             }
@@ -17,7 +17,7 @@ describe('ns.ViewReact.events', function() {
 
         ns.layout.define('content2', {
             'app content@': {
-                'content2': {
+                content2: {
                     'content2-inner': true
                 }
             }
@@ -676,7 +676,7 @@ function genTests(defs) {
     for (var i = 0, j = defs.length; i < j; i++) {
         var def = defs[i];
         (function(view, event, check, not) {
-            it('должен ' + (not == false ? 'не ': '') + ' всплывать "' + event + '" на "' + view + '" (' + check + ')', function() {
+            it('должен ' + (not === false ? 'не ': '') + ' всплывать "' + event + '" на "' + view + '" (' + check + ')', function() {
                 var spyName = view + '-' + event + '-spy';
                 if (not === false) {
                     expect(this.events[spyName][check]).to.be.equal(false);
@@ -684,7 +684,7 @@ function genTests(defs) {
                     expect(this.events[spyName][check]).to.be.equal(true);
                 }
             });
-        })(def[0], def[1], def[2], def[3]);
+        }(def[0], def[1], def[2], def[3]));
     }
 }
 
@@ -702,17 +702,17 @@ function genOrderTests(defs) {
                 var nextSpyName = nextView + '-' + nextEvent + '-spy';
 
                 var spy = this.events[spyName];
-                if (typeof pos == 'number') {
+                if (typeof pos === 'number') {
                     spy = spy.getCall(pos);
                 }
 
                 var nextSpy = this.events[nextSpyName];
-                if (typeof nextPos == 'number') {
+                if (typeof nextPos === 'number') {
                     nextSpy = nextSpy.getCall(nextPos);
                 }
 
                 expect(spy.calledBefore(nextSpy)).to.be.equal(true);
             });
-        })(def[0], def[1], def[2], defNext[0], defNext[1], defNext[2]);
+        }(def[0], def[1], def[2], defNext[0], defNext[1], defNext[2]));
     }
 }
