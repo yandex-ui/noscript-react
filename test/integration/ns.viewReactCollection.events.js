@@ -1,53 +1,7 @@
-describe('ns.ViewСollection ns-view-* events', function() {
-
-    function genTests(defs) {
-        for (var i = 0, j = defs.length; i < j; i++) {
-            var def = defs[i];
-            (function(view, event, check, not) {
-                it('should ' + (not == false ? 'not ' : '') + ' trigger "' + event + '" for "' + view + '" (' + check + ')', function() {
-                    var spyName = view + '-' + event + '-spy';
-                    if (not === false) {
-                        expect(this.events[spyName][check]).to.be.equal(false);
-                    } else if (typeof not === 'number') {
-                        expect(this.events[spyName]).to.have.callCount(not);
-                    } else {
-                        expect(this.events[spyName][check]).to.be.equal(true);
-                    }
-                });
-            })(def[0], def[1], def[2], def[3]);
-
-        }
-    }
-
-    function genOrderTests(defs) {
-        for (var i = 0, j = defs.length - 1; i < j; i++) {
-            var def = defs[i];
-            var defNext = defs[i + 1];
-            (function(view, event, pos, nextView, nextEvent, nextPos) {
-                it('should trigger "' + event + '" for "' + view + '" before "' + nextEvent + '" for "' + nextView + '" ', function() {
-                    var spyName = view + '-' + event + '-spy';
-                    var nextSpyName = nextView + '-' + nextEvent + '-spy';
-
-                    var spy = this.events[spyName];
-                    if (typeof pos == 'number') {
-                        spy = spy.getCall(pos);
-                    }
-
-                    var nextSpy = this.events[nextSpyName];
-                    if (typeof nextPos == 'number') {
-                        nextSpy = nextSpy.getCall(nextPos);
-                    }
-
-                    expect(spy.calledBefore(nextSpy)).to.be.equal(true);
-                });
-            })(def[0], def[1], def[2], defNext[0], defNext[1], defNext[2]);
-
-        }
-    }
-
+describe('ns.ViewReactСollection встроенные события', function() {
     beforeEach(function() {
         ns.layout.define('app', {
-            'app': {
+            app: {
                 'content@': true
             }
         });
@@ -60,7 +14,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
         ns.layout.define('content2', {
             'app content@': {
-                'content2': true
+                content2: true
             }
         }, 'app');
 
@@ -80,7 +34,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
             split: {
                 items: '.item',
                 params: {
-                    'id': '.id'
+                    id: '.id'
                 },
                 model_id: 'model-collection-item'
             }
@@ -152,10 +106,6 @@ describe('ns.ViewСollection ns-view-* events', function() {
         }
         ns.View.define('app');
 
-        /**
-         *
-         * @type {ns.View}
-         */
         this.APP = ns.View.create('app');
     });
 
@@ -164,7 +114,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
         delete this.APP;
     });
 
-    describe('first rendering without data', function() {
+    describe('первая отрисовка без данных', function() {
 
         beforeEach(function() {
             var layout = ns.layout.page('content1', {});
@@ -172,7 +122,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
             update.start();
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content-collection', 'ns-view-async', 'called', false],
             ['content-collection', 'ns-view-init', 'calledOnce'],
             ['content-collection', 'ns-view-htmlinit', 'called', false],
@@ -184,8 +134,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
     });
 
-    describe('first rendering', function() {
-
+    describe('первая отрисовка', function() {
         beforeEach(function(finish) {
             var layout = ns.layout.page('content1', {});
             var update = new ns.Update(this.APP, layout, {});
@@ -194,7 +143,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
             });
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content-collection', 'ns-view-async', 'called', false],
             ['content-collection', 'ns-view-init', 'calledOnce'],
             ['content-collection', 'ns-view-htmlinit', 'calledOnce'],
@@ -211,11 +160,9 @@ describe('ns.ViewСollection ns-view-* events', function() {
             ['content-collection-item', 'ns-view-hide', 'called', false],
             ['content-collection-item', 'ns-view-htmldestroy', 'called', false]
         ]);
-
     });
 
-    describe('change to another layout', function() {
-
+    describe('смена лейаута в боксе', function() {
         beforeEach(function(finish) {
             var layout = ns.layout.page('content1', {});
             var update = new ns.Update(this.APP, layout, {});
@@ -228,7 +175,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content-collection', 'ns-view-async', 'called', false],
             ['content-collection', 'ns-view-init', 'calledOnce'],
             ['content-collection', 'ns-view-htmlinit', 'calledOnce'],
@@ -249,7 +196,6 @@ describe('ns.ViewСollection ns-view-* events', function() {
     });
 
     describe('показать коллекцию -> скрыть коллекцию -> показать коллекцию', function() {
-
         beforeEach(function() {
             var layout1 = ns.layout.page('content1', {});
             var layout2 = ns.layout.page('content2', {});
@@ -261,7 +207,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content-collection', 'ns-view-async', 'called', false],
             ['content-collection', 'ns-view-init', 'calledOnce'],
             ['content-collection', 'ns-view-htmlinit', 'calledOnce'],
@@ -301,7 +247,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content-collection', 'ns-view-async', 'called', false],
             ['content-collection', 'ns-view-init', 'calledOnce'],
             ['content-collection', 'ns-view-htmlinit', '', 2],
@@ -318,7 +264,6 @@ describe('ns.ViewСollection ns-view-* events', function() {
             ['content-collection-item', 'ns-view-hide', '', 3],
             ['content-collection-item', 'ns-view-htmldestroy', '', 3]
         ]);
-
     });
 
     describe('показать коллекцию -> скрыть коллекцию -> показать коллекцию (с перерисовкой, без элементов)', function() {
@@ -340,7 +285,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content-collection', 'ns-view-async', 'called', false],
             ['content-collection', 'ns-view-init', 'calledOnce'],
             ['content-collection', 'ns-view-htmlinit', '', 2],
@@ -357,7 +302,5 @@ describe('ns.ViewСollection ns-view-* events', function() {
             ['content-collection-item', 'ns-view-hide', '', 3],
             ['content-collection-item', 'ns-view-htmldestroy', '', 0]
         ]);
-
     });
-
 });

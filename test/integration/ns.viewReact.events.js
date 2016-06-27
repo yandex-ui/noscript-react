@@ -1,4 +1,4 @@
-describe('ns.ViewReact.events', function() {
+describe('ns.ViewReact встроенные события', function() {
     beforeEach(function() {
         ns.layout.define('app', {
             app: {
@@ -57,7 +57,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('ns-view-init', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['app', 'ns-view-init', 'calledOnce'],
                 ['head', 'ns-view-init', 'calledOnce'],
                 ['content1', 'ns-view-init', 'calledOnce'],
@@ -68,7 +68,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('ns-view-htmlinit', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['app', 'ns-view-htmlinit', 'calledOnce'],
                 ['head', 'ns-view-htmlinit', 'calledOnce'],
                 ['content1', 'ns-view-htmlinit', 'calledOnce'],
@@ -79,7 +79,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('ns-view-show', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['app', 'ns-view-show', 'calledOnce'],
                 ['head', 'ns-view-show', 'calledOnce'],
                 ['content1', 'ns-view-show', 'calledOnce'],
@@ -90,7 +90,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('ns-view-touch', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['app', 'ns-view-touch', 'calledOnce'],
                 ['head', 'ns-view-touch', 'calledOnce'],
                 ['content1', 'ns-view-touch', 'calledOnce'],
@@ -101,7 +101,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('ns-view-hide', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['app', 'ns-view-hide', 'called', false],
                 ['head', 'ns-view-hide', 'called', false],
                 ['content1', 'ns-view-hide', 'called', false],
@@ -112,7 +112,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('ns-view-htmldestroy', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['app', 'ns-view-htmldestroy', 'called', false],
                 ['head', 'ns-view-htmldestroy', 'called', false],
                 ['content1', 'ns-view-htmldestroy', 'called', false],
@@ -123,7 +123,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('порядок всплытия событий', function() {
-            genOrderTests([
+            ns.test.genEventsOrderTests([
                 ['content1-inner', 'ns-view-htmlinit'],
                 ['content1', 'ns-view-htmlinit'],
                 ['head', 'ns-view-htmlinit'],
@@ -150,7 +150,7 @@ describe('ns.ViewReact.events', function() {
             }, this);
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content2-inner', 'ns-view-init', 'calledOnce'],
             ['content2-inner', 'ns-view-htmlinit', 'calledOnce'],
             ['content2-inner', 'ns-view-show', 'calledOnce'],
@@ -174,7 +174,7 @@ describe('ns.ViewReact.events', function() {
         ]);
 
         describe('порядок всплытия событий', function() {
-            genOrderTests([
+            ns.test.genEventsOrderTests([
                 ['content1-inner', 'ns-view-htmlinit', 0],
                 ['content1', 'ns-view-htmlinit', 0],
                 ['head', 'ns-view-htmlinit', 0],
@@ -214,7 +214,7 @@ describe('ns.ViewReact.events', function() {
             }, this);
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content1-inner', 'ns-view-hide', 'called', false],
             ['content1', 'ns-view-hide', 'called', false],
 
@@ -245,7 +245,7 @@ describe('ns.ViewReact.events', function() {
             }, this);
         });
 
-        genTests([
+        ns.test.genEventsTests([
             ['content1-inner', 'ns-view-hide', 'calledOnce'],
             ['content1', 'ns-view-hide', 'calledOnce'],
 
@@ -263,7 +263,7 @@ describe('ns.ViewReact.events', function() {
         ]);
 
         describe('порядок всплытия событий', function() {
-            genOrderTests([
+            ns.test.genEventsOrderTests([
                 ['content1-inner', 'ns-view-htmlinit', 0],
                 ['content1', 'ns-view-htmlinit', 0],
                 ['head', 'ns-view-htmlinit', 0],
@@ -317,7 +317,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('первый апдейт', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['content1-async', 'ns-view-async', 'calledOnce'],
 
                 ['content1-async', 'ns-view-htmldestroy', 'called', false],
@@ -334,7 +334,7 @@ describe('ns.ViewReact.events', function() {
             ]);
 
             describe('порядок всплытия событий', function() {
-                genOrderTests([
+                ns.test.genEventsOrderTests([
                     ['head', 'ns-view-htmlinit', 0],
                     ['app', 'ns-view-htmlinit', 0],
 
@@ -364,7 +364,7 @@ describe('ns.ViewReact.events', function() {
                 return this.asyncPromise1;
             });
 
-            genTests([
+            ns.test.genEventsTests([
                 ['content1-async', 'ns-view-async', 'calledOnce'],
 
                 ['content1-async', 'ns-view-htmlinit', 'calledOnce'],
@@ -383,7 +383,7 @@ describe('ns.ViewReact.events', function() {
             ]);
 
             describe('порядок всплытия событий', function() {
-                genOrderTests([
+                ns.test.genEventsOrderTests([
                     ['head', 'ns-view-htmlinit', 0],
                     ['app', 'ns-view-htmlinit', 0],
 
@@ -428,7 +428,7 @@ describe('ns.ViewReact.events', function() {
         });
 
         describe('первый апдейт', function() {
-            genTests([
+            ns.test.genEventsTests([
                 ['content2-inner', 'ns-view-htmldestroy', 'called', false],
                 ['content2-inner', 'ns-view-hide', 'called', false],
                 ['content2-inner', 'ns-view-htmlinit', 'calledOnce'],
@@ -444,7 +444,7 @@ describe('ns.ViewReact.events', function() {
             ]);
 
             describe('порядок всплытия событий', function() {
-                genOrderTests([
+                ns.test.genEventsOrderTests([
                     ['content2-inner', 'ns-view-htmlinit', 0],
                     ['head', 'ns-view-htmlinit', 0],
                     ['app', 'ns-view-htmlinit', 0],
@@ -476,7 +476,7 @@ describe('ns.ViewReact.events', function() {
                 return this.asyncPromise1;
             });
 
-            genTests([
+            ns.test.genEventsTests([
                 ['content2-inner', 'ns-view-htmldestroy', 'called', false],
                 ['content2-inner', 'ns-view-hide', 'called', false],
                 ['content2-inner', 'ns-view-htmlinit', 'calledOnce'],
@@ -492,7 +492,7 @@ describe('ns.ViewReact.events', function() {
             ]);
 
             describe('порядок всплытия событий', function() {
-                genOrderTests([
+                ns.test.genEventsOrderTests([
                     ['content2-inner', 'ns-view-htmlinit', 0],
                     ['head', 'ns-view-htmlinit', 0],
                     ['app', 'ns-view-htmlinit', 0],
@@ -534,7 +534,7 @@ describe('ns.ViewReact.events', function() {
                 }, this);
             });
 
-            genTests([
+            ns.test.genEventsTests([
                 ['content2-inner', 'ns-view-htmldestroy', 'called', false],
                 ['content2-inner', 'ns-view-hide', 'called', false],
                 ['content2-inner', 'ns-view-htmlinit', 'calledOnce'],
@@ -550,7 +550,7 @@ describe('ns.ViewReact.events', function() {
             ]);
 
             describe('порядок всплытия событий', function() {
-                genOrderTests([
+                ns.test.genEventsOrderTests([
                     ['content2-inner', 'ns-view-htmlinit', 0],
                     ['head', 'ns-view-htmlinit', 0],
                     ['app', 'ns-view-htmlinit', 0],
@@ -611,7 +611,7 @@ describe('ns.ViewReact.events', function() {
                 }, this);
             });
 
-            genTests([
+            ns.test.genEventsTests([
                 ['content2-inner', 'ns-view-htmldestroy', 'called', false],
                 ['content2-inner', 'ns-view-hide', 'called', false],
                 ['content2-inner', 'ns-view-htmlinit', 'calledOnce'],
@@ -627,7 +627,7 @@ describe('ns.ViewReact.events', function() {
             ]);
 
             describe('порядок всплытия событий', function() {
-                genOrderTests([
+                ns.test.genEventsOrderTests([
                     ['content2-inner', 'ns-view-htmlinit', 0],
                     ['head', 'ns-view-htmlinit', 0],
                     ['app', 'ns-view-htmlinit', 0],
@@ -660,59 +660,3 @@ describe('ns.ViewReact.events', function() {
         });
     });
 });
-
-/**
- * Генерирует тесты вида:
- * "Должен всплывать ns-view-htmlinit на v1"
- * "Должен не всплывать ns-view-show на v2"
- *
- * @example
- * // должен не всплывать ns-view-html-destroy на app (called)
- * genTests([
- *     ['app', 'ns-view-htmldestroy', 'called', false]
- * ])
- */
-function genTests(defs) {
-    for (var i = 0, j = defs.length; i < j; i++) {
-        var def = defs[i];
-        (function(view, event, check, not) {
-            it('должен ' + (not === false ? 'не ' : '') + ' всплывать "' + event + '" на "' + view + '" (' + check + ')', function() {
-                var spyName = view + '-' + event + '-spy';
-                if (not === false) {
-                    expect(this.events[spyName][check]).to.be.equal(false);
-                } else {
-                    expect(this.events[spyName][check]).to.be.equal(true);
-                }
-            });
-        }(def[0], def[1], def[2], def[3]));
-    }
-}
-
-/**
- * Генерирует тесты для проверки
- * порядка всплытия событий
- */
-function genOrderTests(defs) {
-    for (var i = 0, j = defs.length - 1; i < j; i++) {
-        var def = defs[i];
-        var defNext = defs[i + 1];
-        (function(view, event, pos, nextView, nextEvent, nextPos) {
-            it('должен всплывать "' + event + '" на "' + view + '" перед "' + nextEvent + '" на "' + nextView + '" ', function() {
-                var spyName = view + '-' + event + '-spy';
-                var nextSpyName = nextView + '-' + nextEvent + '-spy';
-
-                var spy = this.events[spyName];
-                if (typeof pos === 'number') {
-                    spy = spy.getCall(pos);
-                }
-
-                var nextSpy = this.events[nextSpyName];
-                if (typeof nextPos === 'number') {
-                    nextSpy = nextSpy.getCall(nextPos);
-                }
-
-                expect(spy.calledBefore(nextSpy)).to.be.equal(true);
-            });
-        }(def[0], def[1], def[2], defNext[0], defNext[1], defNext[2]));
-    }
-}
