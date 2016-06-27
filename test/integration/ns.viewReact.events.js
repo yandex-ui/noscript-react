@@ -227,8 +227,7 @@ describe('ns.ViewReact встроенные события', function() {
             ['content1-inner', 'ns-view-show', 'calledOnce'],
             ['content1', 'ns-view-show', 'calledOnce'],
 
-            // @todo https://github.com/yandex-ui/noscript-react/issues/35
-            //['content1-inner', 'ns-view-touch', 'calledTwice'],
+            ['content1-inner', 'ns-view-touch', 'calledTwice'],
             ['content1', 'ns-view-touch', 'calledTwice']
         ]);
     });
