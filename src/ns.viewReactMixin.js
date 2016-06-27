@@ -410,12 +410,6 @@
         },
 
         /**
-         * Компонент еще не был создан и ни разу отрисован
-         * @type {Boolean}
-         */
-        _firstUpdate: true,
-
-        /**
          * Обновление HTML для view
          * @param {Element} [node] корневая нода обновления
          * @param {Object} [options] опции обновления
@@ -628,8 +622,7 @@
                 }
                 return;
             }
-
-            if (!this.isValidSelf() && this.status !== this.STATUS.NONE && !this.isLoading()) {
+            if (!this.isValidSelf() && !this.isNone() && !this.isLoading()) {
                 if (this._visible) {
                     events['ns-view-hide'].push(this);
                 }
