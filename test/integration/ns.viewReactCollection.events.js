@@ -4,7 +4,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
         for (var i = 0, j = defs.length; i < j; i++) {
             var def = defs[i];
             (function(view, event, check, not) {
-                it('should ' + (not == false ? 'not ': '') + ' trigger "' + event + '" for "' + view + '" (' + check + ')', function() {
+                it('should ' + (not == false ? 'not ' : '') + ' trigger "' + event + '" for "' + view + '" (' + check + ')', function() {
                     var spyName = view + '-' + event + '-spy';
                     if (not === false) {
                         expect(this.events[spyName][check]).to.be.equal(false);
@@ -24,7 +24,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
             var def = defs[i];
             var defNext = defs[i + 1];
             (function(view, event, pos, nextView, nextEvent, nextPos) {
-                it('should trigger "'+event+'" for "'+view+'" before "'+nextEvent+'" for "'+nextView+'" ', function() {
+                it('should trigger "' + event + '" for "' + view + '" before "' + nextEvent + '" for "' + nextView + '" ', function() {
                     var spyName = view + '-' + event + '-spy';
                     var nextSpyName = nextView + '-' + nextEvent + '-spy';
 
@@ -88,9 +88,9 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
         ns.Model.get('model-collection').setData({
             item: [
-                {id: 1, data: 'item1'},
-                {id: 2, data: 'item2'},
-                {id: 3, data: 'item3'}
+                { id: 1, data: 'item1' },
+                { id: 2, data: 'item2' },
+                { id: 3, data: 'item3' }
             ]
         });
 
@@ -113,7 +113,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
                 'ns-view-hide': this.events['content-collection-item-ns-view-hide-spy'],
                 'ns-view-htmldestroy': this.events['content-collection-item-ns-view-htmldestroy-spy']
             },
-            models: [ 'model-collection-item' ]
+            models: ['model-collection-item']
         });
 
         var views = ['head', 'content-collection@model-collection', 'content2'];
@@ -130,7 +130,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
                 var spy = this.sinon.spy();
 
                 eventsDecl[event + ' .'] = spy;
-                this.events[view + '-' + event + '-spy'] = spy
+                this.events[view + '-' + event + '-spy'] = spy;
             }
 
             if (/-collection$/.test(view)) {
@@ -255,7 +255,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
             var layout2 = ns.layout.page('content2', {});
             return new ns.Update(this.APP, layout1, {}).render().then(function() {
                 return new ns.Update(this.APP, layout2, {}).render().then(function() {
-                    return new ns.Update(this.APP, layout1, {}).render()
+                    return new ns.Update(this.APP, layout1, {}).render();
                 }, null, this);
             }, null, this);
 
@@ -294,7 +294,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
 
                     var mc = ns.Model.get('model-collection');
                     mc.setData(mc.getData());
-                    return new ns.Update(this.APP, layout1, {}).render()
+                    return new ns.Update(this.APP, layout1, {}).render();
 
                 }, null, this);
             }, null, this);
@@ -333,7 +333,7 @@ describe('ns.ViewСollection ns-view-* events', function() {
                 return new ns.Update(this.APP, layout2, {}).render().then(function() {
                     var mc = ns.Model.get('model-collection');
                     mc.set('.test', 1);
-                    return new ns.Update(this.APP, layout1, {}).render()
+                    return new ns.Update(this.APP, layout1, {}).render();
 
                 }, null, this);
             }, null, this);
