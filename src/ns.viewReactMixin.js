@@ -273,6 +273,7 @@
          * В большей степени нужно ns.BoxReact для возможности прокинуть props дочерним вью бокса.
          */
         hasInheritingProps: false,
+
         /**
          * Скрывает ns.ViewReact, отвязывая компонент от неё
          */
@@ -409,6 +410,12 @@
         },
 
         /**
+         * Компонент еще не был создан и ни разу отрисован
+         * @type {Boolean}
+         */
+        _firstUpdate: true,
+
+        /**
          * Обновление HTML для view
          * @param {Element} [node] корневая нода обновления
          * @param {Object} [options] опции обновления
@@ -540,6 +547,8 @@
                 if (!this.isValidSelf()) {
                     events['ns-view-htmlinit'].push(this);
                     events['ns-view-show'].push(this);
+                } else if (!this._visible) {
+                    events['ns-view-show'].push(this);
                 }
                 events['ns-view-touch'].push(this);
             }
@@ -581,6 +590,8 @@
             if (!this.__modelsEventsBinded) {
                 this.__bindModelsEvents();
             }
+
+            this._firstUpdate = false;
         },
 
         /**
@@ -620,14 +631,11 @@
                 return;
             }
 
-            if (!this.isValidSelf()) {
-                // если была видимая нода
-                if (this.hasReactComponent() && !this.isLoading()) {
-                    if (this._visible) {
-                        events['ns-view-hide'].push(this);
-                    }
-                    events['ns-view-htmldestroy'].push(this);
+            if (!this.isValidSelf() && !this._firstUpdate && !this.isLoading()) {
+                if (this._visible) {
+                    events['ns-view-hide'].push(this);
                 }
+                events['ns-view-htmldestroy'].push(this);
             }
         },
 
@@ -668,6 +676,7 @@
                     this._applyDestroyedComponentType();
                     break;
             }
+            this._firstUpdate = true;
         },
 
         /**
