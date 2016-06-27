@@ -612,28 +612,23 @@
         beforePrepareRenderElement: no.nop,
 
         _selfBeforeUpdateHTML: function(events, toHide) {
-            // ничего не делаем, если:
-            // - вьюшка была уничтожена или еще не создана
-            // - это асинхронная вьюшка
-            if (!this.hasReactComponent() || this.isLoading()) {
+            if (toHide) {
+                // этот вид надо гарантированно спрятать, если он был виден
+                if (this._visible && !this.isLoading()) {
+                    events['ns-view-hide'].push(this);
+                }
                 return;
             }
 
-            // добавляемся в события, если:
-            // - вьюшка сама невалидная
-            // - родитель сказал, что вьюшку надо прятать (ему виднее — он сам прячется)
-            if (!this.isValidSelf() || toHide) {
-                if (this._visible) {
-                    events['ns-view-hide'].push(this);
+            if (!this.isValidSelf()) {
+                // если была видимая нода
+                if (this.hasReactComponent() && !this.isLoading()) {
+                    if (this._visible) {
+                        events['ns-view-hide'].push(this);
+                    }
+                    events['ns-view-htmldestroy'].push(this);
                 }
-                events['ns-view-htmldestroy'].push(this);
             }
-
-            // если это коллекция, то так же надо пройтись
-            // по всем видам, которые собираются удаляться
-            (this.__itemsToRemove || []).forEach(function(view) {
-                view.beforeUpdateHTML(events, true);
-            });
         },
 
         patchTree: function(tree) {
