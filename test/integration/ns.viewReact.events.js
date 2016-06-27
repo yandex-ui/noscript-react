@@ -353,7 +353,7 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {'Content-Type': "application/json" },
+                    { 'Content-Type': 'application/json' },
                     JSON.stringify({
                         models: [
                             { data: true }
@@ -466,7 +466,7 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {'Content-Type': "application/json" },
+                    { 'Content-Type': 'application/json' },
                     JSON.stringify({
                         models: [
                             { data: true }
@@ -519,7 +519,7 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {'Content-Type': "application/json" },
+                    { 'Content-Type': 'application/json' },
                     JSON.stringify({
                         models: [
                             { data: true }
@@ -583,7 +583,7 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {'Content-Type': "application/json" },
+                    { 'Content-Type': 'application/json' },
                     JSON.stringify({
                         models: [
                             { data: true }
@@ -599,7 +599,7 @@ describe('ns.ViewReact.events', function() {
                         .then(function(result) {
                             this.sinon.server.requests[1].respond(
                                 200,
-                                {'Content-Type': "application/json" },
+                                { 'Content-Type': 'application/json' },
                                 JSON.stringify({
                                     models: [
                                         { data: true }
