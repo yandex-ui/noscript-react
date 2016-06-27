@@ -413,7 +413,7 @@
          * Обновление HTML для view
          * @param {Element} [node] корневая нода обновления
          * @param {Object} [options] опции обновления
-         * @param {Object} events
+         * @param {Object} [events]
          * @private
          */
         _updateHTML: function(node, options, events) {
@@ -614,6 +614,12 @@
          */
         beforePrepareRenderElement: no.nop,
 
+        /**
+         * Вызывается перед началом _updateHTML вида,
+         * рекурсивно проходится по всем деткам вьюшки.
+         * @param  {Object} events
+         * @param  {Boolean} [toHide]
+         */
         _selfBeforeUpdateHTML: function(events, toHide) {
             if (toHide) {
                 // этот вид надо гарантированно спрятать, если он был виден
