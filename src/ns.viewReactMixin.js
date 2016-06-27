@@ -612,33 +612,27 @@
         beforePrepareRenderElement: no.nop,
 
         _selfBeforeUpdateHTML: function(events, toHide) {
-            if (toHide) {
-                // этот вид надо гарантированно спрятать, если он был виден
-                var isVisible = this._visible === true && !this.isLoading();
-                if (isVisible) {
-                    events['ns-view-hide'].push(this);
-                }
+            // ничего не делаем, если:
+            // - вьюшка была уничтожена или еще не создана
+            // - это асинхронная вьюшка
+            if (!this.hasReactComponent() || this.isLoading()) {
                 return;
             }
 
-            var viewWasInvalid = !this.isValidSelf();
-            if (viewWasInvalid) {
-                // если была видимая нода
-                if (this.hasReactComponent() && !this.isLoading()) {
-                    if (this._visible === true) {
-                        events['ns-view-hide'].push(this);
-                    }
-                    events['ns-view-htmldestroy'].push(this);
+            // добавляемся в события, если:
+            // - вьюшка сама невалидная
+            // - родитель сказал, что вьюшку надо прятать (ему виднее — он сам прячется)
+            if (!this.isValidSelf() || toHide) {
+                if (this._visible) {
+                    events['ns-view-hide'].push(this);
                 }
+                events['ns-view-htmldestroy'].push(this);
             }
 
-            // события для вложенных видов в коллекции,
-            // которые собираются удалять
+            // если это коллекция, то так же надо пройтись
+            // по всем видам, которые собираются удаляться
             (this.__itemsToRemove || []).forEach(function(view) {
-                if (view._visible) {
-                    events['ns-view-hide'].push(view);
-                }
-                events['ns-view-htmldestroy'].push(view);
+                view.beforeUpdateHTML(events, true);
             });
         },
 
