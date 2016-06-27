@@ -188,14 +188,4 @@
         this.previousActive = null;
         return ns.ViewReactMixin.destroy.apply(this, arguments);
     };
-
-    /**
-     * Возвращает события из декларации.
-     * У бокса ее быть не может, поэтому просто вернем пустой объект
-     * @return {object}
-     */
-    ns.BoxReact.prototype._getEvents = function() {
-        return {};
-    };
-
 }());
