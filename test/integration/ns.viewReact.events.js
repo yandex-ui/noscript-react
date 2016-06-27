@@ -241,7 +241,7 @@ describe('ns.ViewReact.events', function() {
                 var vContent1 = this.events['content1-ns-view-init-spy'].getCall(0).thisValue;
                 vContent1.invalidate();
 
-                return new ns.Update(this.APP, layout, {}).render()
+                return new ns.Update(this.APP, layout, {}).render();
             }, this);
         });
 
@@ -353,10 +353,10 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {"Content-Type": "application/json"},
+                    {'Content-Type': "application/json" },
                     JSON.stringify({
                         models: [
-                            {data: true}
+                            { data: true }
                         ]
                     })
                 );
@@ -404,7 +404,7 @@ describe('ns.ViewReact.events', function() {
                     ['content1-inner', 'ns-view-touch', 0],
                     ['content1-async', 'ns-view-touch', 0]
                 ]);
-            })
+            });
         });
     });
 
@@ -466,10 +466,10 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {"Content-Type": "application/json"},
+                    {'Content-Type': "application/json" },
                     JSON.stringify({
                         models: [
-                            {data: true}
+                            { data: true }
                         ]
                     })
                 );
@@ -519,10 +519,10 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {"Content-Type": "application/json"},
+                    {'Content-Type': "application/json" },
                     JSON.stringify({
                         models: [
-                            {data: true}
+                            { data: true }
                         ]
                     })
                 );
@@ -583,10 +583,10 @@ describe('ns.ViewReact.events', function() {
             beforeEach(function() {
                 this.sinon.server.requests[0].respond(
                     200,
-                    {"Content-Type": "application/json"},
+                    {'Content-Type': "application/json" },
                     JSON.stringify({
                         models: [
-                            {data: true}
+                            { data: true }
                         ]
                     })
                 );
@@ -599,10 +599,10 @@ describe('ns.ViewReact.events', function() {
                         .then(function(result) {
                             this.sinon.server.requests[1].respond(
                                 200,
-                                {"Content-Type": "application/json"},
+                                {'Content-Type': "application/json" },
                                 JSON.stringify({
                                     models: [
-                                        {data: true}
+                                        { data: true }
                                     ]
                                 })
                             );
@@ -676,7 +676,7 @@ function genTests(defs) {
     for (var i = 0, j = defs.length; i < j; i++) {
         var def = defs[i];
         (function(view, event, check, not) {
-            it('должен ' + (not === false ? 'не ': '') + ' всплывать "' + event + '" на "' + view + '" (' + check + ')', function() {
+            it('должен ' + (not === false ? 'не ' : '') + ' всплывать "' + event + '" на "' + view + '" (' + check + ')', function() {
                 var spyName = view + '-' + event + '-spy';
                 if (not === false) {
                     expect(this.events[spyName][check]).to.be.equal(false);
@@ -697,7 +697,7 @@ function genOrderTests(defs) {
         var def = defs[i];
         var defNext = defs[i + 1];
         (function(view, event, pos, nextView, nextEvent, nextPos) {
-            it('должен всплывать "'+event+'" на "'+view+'" перед "'+nextEvent+'" на "'+nextView+'" ', function() {
+            it('должен всплывать "' + event + '" на "' + view + '" перед "' + nextEvent + '" на "' + nextView + '" ', function() {
                 var spyName = view + '-' + event + '-spy';
                 var nextSpyName = nextView + '-' + nextEvent + '-spy';
 

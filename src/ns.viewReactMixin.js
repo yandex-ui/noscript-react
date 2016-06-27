@@ -622,7 +622,7 @@
             }
 
             var viewWasInvalid = !this.isValidSelf();
-            if ( viewWasInvalid ) {
+            if (viewWasInvalid) {
                 // если была видимая нода
                 if (this.hasReactComponent() && !this.isLoading()) {
                     if (this._visible === true) {
@@ -631,6 +631,15 @@
                     events['ns-view-htmldestroy'].push(this);
                 }
             }
+
+            // события для вложенных видов в коллекции,
+            // которые собираются удалять
+            (this.__itemsToRemove || []).forEach(function(view) {
+                if (view._visible) {
+                    events['ns-view-hide'].push(view);
+                }
+                events['ns-view-htmldestroy'].push(view);
+            });
         },
 
         patchTree: function(tree) {
