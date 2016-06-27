@@ -590,8 +590,6 @@
             if (!this.__modelsEventsBinded) {
                 this.__bindModelsEvents();
             }
-
-            this._firstUpdate = false;
         },
 
         /**
@@ -631,7 +629,7 @@
                 return;
             }
 
-            if (!this.isValidSelf() && !this._firstUpdate && !this.isLoading()) {
+            if (!this.isValidSelf() && this.status !== this.STATUS.NONE && !this.isLoading()) {
                 if (this._visible) {
                     events['ns-view-hide'].push(this);
                 }
@@ -676,7 +674,6 @@
                     this._applyDestroyedComponentType();
                     break;
             }
-            this._firstUpdate = true;
         },
 
         /**
