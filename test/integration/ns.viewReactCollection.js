@@ -1085,4 +1085,5 @@ describe('ns.ViewCollection', function() {
         });
 
     });
+
 });

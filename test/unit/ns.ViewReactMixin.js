@@ -181,7 +181,7 @@ describe('ns.ViewReactMixin', function() {
                 });
 
                 it('должен вызвать подготовку данных для отрисовки элемента', function() {
-                    expect(this.view._prepareRenderElement).to.be.calledWithExactly('root');
+                    expect(this.view._prepareRenderElement).to.be.calledWith('root');
                 });
 
                 it('должен создать React компонент представления', function() {
@@ -248,7 +248,7 @@ describe('ns.ViewReactMixin', function() {
                 this.view.isValid.returns(true);
                 this.view._updateHTML(this.viewNode);
 
-                expect(this.view._prepareRenderElement).to.be.calledWithExactly('root');
+                expect(this.view._prepareRenderElement).to.be.calledWith('root');
             });
 
             it('должен запустить отрисовку компонента', function() {
@@ -301,7 +301,7 @@ describe('ns.ViewReactMixin', function() {
             it('должен подготовить отрисовку view как `root` компонент', function() {
                 this.view._updateHTML(this.viewNode);
 
-                expect(this.view._prepareRenderElement).to.be.calledWithExactly('root');
+                expect(this.view._prepareRenderElement).to.be.calledWith('root');
             });
 
 
@@ -320,7 +320,7 @@ describe('ns.ViewReactMixin', function() {
                 this.view.reactComponentType = 'child';
                 this.view._updateHTML(this.viewNode);
 
-                expect(this.view._prepareRenderElement).to.be.calledWithExactly('child');
+                expect(this.view._prepareRenderElement).to.be.calledWith('child');
             });
 
             it('должен запустить отрисовку `child` компонента', function() {
@@ -415,7 +415,7 @@ describe('ns.ViewReactMixin', function() {
         it('должен вызывать подготовку отрисовки `root` элемента', function() {
             this.view._onChildrenDestroyed();
 
-            expect(this.view._prepareRenderElement).to.be.calledWithExactly('root');
+            expect(this.view._prepareRenderElement).to.be.calledWith('root');
         });
 
         it('должен вызывать отрисовку компонента', function() {
@@ -577,8 +577,8 @@ describe('ns.ViewReactMixin', function() {
         it('должен подготовить дочерние view к отрисовке', function() {
             this.view.hasChildrenNeedBeUpdated();
 
-            expect(this.childView1._prepareRenderElement).to.be.calledWithExactly('child');
-            expect(this.childView2._prepareRenderElement).to.be.calledWithExactly('child');
+            expect(this.childView1._prepareRenderElement).to.be.calledWith('child');
+            expect(this.childView2._prepareRenderElement).to.be.calledWith('child');
         });
 
         it('должен вернуть true, если хотя бы один потомок нуждается в обновление (отрисовке/перерисовке)', function() {

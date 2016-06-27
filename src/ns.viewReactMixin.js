@@ -273,6 +273,7 @@
          * В большей степени нужно ns.BoxReact для возможности прокинуть props дочерним вью бокса.
          */
         hasInheritingProps: false,
+
         /**
          * Скрывает ns.ViewReact, отвязывая компонент от неё
          */
@@ -412,9 +413,10 @@
          * Обновление HTML для view
          * @param {Element} [node] корневая нода обновления
          * @param {Object} [options] опции обновления
+         * @param {Object} [events]
          * @private
          */
-        _updateHTML: function(node, options) {
+        _updateHTML: function(node, options, events) {
             node = node || null;
             options = options || {};
 
@@ -426,7 +428,7 @@
                     } else if (typeof this._showNode === 'function') {
                         this._showNode();
                     }
-                    this._prepareRenderElement('root');
+                    this._prepareRenderElement('root', events);
                     this._renderElement();
                     break;
                 case 'root':
@@ -436,11 +438,11 @@
                         this.hideAndUnbindEvents();
                         this._updateNode(node);
                     }
-                    this._prepareRenderElement('root');
+                    this._prepareRenderElement('root', events);
                     this._renderElement();
                     break;
                 case 'child':
-                    this._prepareRenderElement('child');
+                    this._prepareRenderElement('child', events);
                     this._renderElement();
                     break;
             }
@@ -524,18 +526,46 @@
         },
 
         /**
+         * Механизм событий совместимый с ns:
+         * - компонент кладет в словарь events
+         *   ссылки на свою вьюшку для соответствующих событий
+         * - когда завершается рекурсивный updateHTML, то ns
+         *   дергает события нужных вьюшек пачками
+         *
+         * @param {Object} events
+         */
+        __fillEventsQueue: function(events) {
+            if (this.asyncState) {
+                events['ns-view-async'].push(this);
+            } else {
+                if (!this.isValidSelf()) {
+                    events['ns-view-htmlinit'].push(this);
+                    events['ns-view-show'].push(this);
+                } else if (!this._visible) {
+                    events['ns-view-show'].push(this);
+                }
+                events['ns-view-touch'].push(this);
+            }
+        },
+
+        /**
          * Подготовка обновления дерева React компонентов
          * @param {string} componentType
+         * @param {Object} [events]
          * @private
          */
-        _prepareRenderElement: function(componentType) {
+        _prepareRenderElement: function(componentType, events) {
             if (this.reactComponentType === 'destroyed') {
                 return;
             }
 
             this.beforePrepareRenderElement(componentType);
 
-            var hasChildrenNeedBeUpdated = this.hasChildrenNeedBeUpdated();
+            if (events) {
+                this.__fillEventsQueue(events);
+            }
+
+            var hasChildrenNeedBeUpdated = this.hasChildrenNeedBeUpdated(events);
 
             /**
              * Условия обновления React компонента
@@ -558,13 +588,14 @@
 
         /**
          * Проверяет, имеются ли у view потомки, которые должны быть обновлены (перерисованы)
+         * @param {Object} [events]
          * @returns {boolean}
          */
-        hasChildrenNeedBeUpdated: function() {
+        hasChildrenNeedBeUpdated: function(events) {
             var hasChildrenNeedBeUpdated = false;
 
             this._apply(function(childView) {
-                childView._prepareRenderElement('child');
+                childView._prepareRenderElement('child', events);
 
                 if (childView._needBeUpdated) {
                     hasChildrenNeedBeUpdated = true;
@@ -582,6 +613,28 @@
          * @param {string} componentType
          */
         beforePrepareRenderElement: no.nop,
+
+        /**
+         * Вызывается перед началом _updateHTML вида,
+         * рекурсивно проходится по всем деткам вьюшки.
+         * @param  {Object} events
+         * @param  {Boolean} [toHide]
+         */
+        _selfBeforeUpdateHTML: function(events, toHide) {
+            if (toHide) {
+                // этот вид надо гарантированно спрятать, если он был виден
+                if (this._visible && !this.isLoading()) {
+                    events['ns-view-hide'].push(this);
+                }
+                return;
+            }
+            if (!this.isValidSelf() && !this.isNone() && !this.isLoading()) {
+                if (this._visible) {
+                    events['ns-view-hide'].push(this);
+                }
+                events['ns-view-htmldestroy'].push(this);
+            }
+        },
 
         patchTree: function(tree) {
             tree = ns.View.prototype.patchTree.apply(this, arguments);

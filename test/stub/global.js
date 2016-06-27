@@ -74,5 +74,66 @@ ns.test = {
                 JSON.stringify(mock[xhr.url])
             );
         });
+    },
+
+    /**
+     * Генерирует тесты для событий:
+     * "Должен всплывать ns-view-htmlinit на v1"
+     * "Должен не всплывать ns-view-show на v2"
+     *
+     * @param {Array} defs
+     *
+     * @example
+     * // должен не всплывать ns-view-html-destroy на app (called)
+     * genTests([
+     *     ['app', 'ns-view-htmldestroy', 'called', false]
+     * ])
+     */
+    genEventsTests: function(defs) {
+        for (var i = 0, j = defs.length; i < j; i++) {
+            var def = defs[i];
+            (function(view, event, check, not) {
+                it('должен ' + (not === false ? 'не ' : '') + ' всплывать "' + event + '" на "' + view + '" (' + check + ')', function() {
+                    var spyName = view + '-' + event + '-spy';
+                    if (not === false) {
+                        expect(this.events[spyName][check]).to.be.equal(false);
+                    } else if (typeof not === 'number') {
+                        expect(this.events[spyName]).to.have.callCount(not);
+                    } else {
+                        expect(this.events[spyName][check]).to.be.equal(true);
+                    }
+                });
+            }(def[0], def[1], def[2], def[3]));
+        }
+    },
+
+    /**
+     * Генерирует тесты для проверки
+     * порядка всплытия событий
+     * @param {Array} defs
+     */
+    genEventsOrderTests: function(defs) {
+        for (var i = 0, j = defs.length - 1; i < j; i++) {
+            var def = defs[i];
+            var defNext = defs[i + 1];
+            (function(view, event, pos, nextView, nextEvent, nextPos) {
+                it('должен всплывать "' + event + '" на "' + view + '" перед "' + nextEvent + '" на "' + nextView + '" ', function() {
+                    var spyName = view + '-' + event + '-spy';
+                    var nextSpyName = nextView + '-' + nextEvent + '-spy';
+
+                    var spy = this.events[spyName];
+                    if (typeof pos === 'number') {
+                        spy = spy.getCall(pos);
+                    }
+
+                    var nextSpy = this.events[nextSpyName];
+                    if (typeof nextPos === 'number') {
+                        nextSpy = nextSpy.getCall(nextPos);
+                    }
+
+                    expect(spy.calledBefore(nextSpy)).to.be.equal(true);
+                });
+            }(def[0], def[1], def[2], defNext[0], defNext[1], defNext[2]));
+        }
     }
 };
