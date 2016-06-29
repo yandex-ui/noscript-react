@@ -4,5 +4,7 @@ node_js:
   - "0.12"
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 script:
+  - "npm rm noscript"
+  - "npm install noscript@0.7.2"
   - "npm test"
   - "npm run eslint"
