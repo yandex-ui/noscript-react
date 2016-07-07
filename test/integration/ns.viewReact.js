@@ -601,4 +601,154 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
         });
     });
 
+    describe('наследование вьюшек ->', function() {
+        beforeEach(function() {
+            ns.layout.define('app', {
+                app: {
+                    'v-child': true
+                }
+            });
+            ns.View.define('app');
+            this.APP = ns.View.create('app');
+        });
+
+        it('должен вызвать метод базового компонента', function(done) {
+            this.helloFromParent = this.sinon.stub();
+
+            ns.ViewReact.define('v-parent', {
+                component: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.ViewReact.define('v-child', {
+                component: {
+                    componentDidMount: function() {
+                        this.hello();
+                    }
+                }
+            }, 'v-parent');
+
+            new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParent.calledOnce).to.be.true;
+                    done();
+                }, this);
+        });
+
+        it('должен переопределить метод базового компонента', function(done) {
+            this.helloFromChild = this.sinon.stub();
+            this.helloFromParent = this.sinon.stub();
+
+            ns.ViewReact.define('v-parent', {
+                component: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.ViewReact.define('v-child', {
+                component: {
+                    componentDidMount: function() {
+                        this.hello();
+                    },
+                    hello: this.helloFromChild
+                }
+            }, 'v-parent');
+
+            new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromChild.calledOnce).to.be.true;
+                    expect(this.helloFromParent.notCalled).to.be.true;
+                    done();
+                }, this);
+        });
+
+        // @todo множественное наследование
+        xit('должен вызвать метод родителя базового компонента при множественном наследовании', function(done) {
+            this.helloFromParentParent = this.sinon.stub();
+
+            ns.ViewReact.define('v-parent-parent', {
+                component: {
+                    hello: this.helloFromParentParent
+                }
+            });
+            ns.ViewReact.define('v-parent', {}, 'v-parent-parent');
+            ns.ViewReact.define('v-child', {
+                component: {
+                    componentDidMount: function() {
+                        this.hello();
+                    }
+                }
+            }, 'v-parent');
+
+            new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParentParent.calledOnce).to.be.true;
+                    done();
+                }, this);
+        });
+
+        it('не должен менять декларацию базового компонента', function() {
+            ns.ViewReact.define('v-parent', {
+                component: {
+                    iAmParent: true
+                }
+            });
+            ns.ViewReact.define('v-child', {
+                component: {
+                    iAmChild: true
+                }
+            }, 'v-parent');
+
+            expect(ns.View.info('v-parent')).to.not.have.property('iAmChild');
+        });
+
+        describe('миксины ->', function() {
+            it('должен вызвать метод, который был в миксине базового компонента', function(done) {
+                this.helloFromParent = this.sinon.stub();
+
+                ns.ViewReact.define('v-parent', {
+                    component: {
+                        mixins: [{ hello: this.helloFromParent }]
+                    }
+                });
+                ns.ViewReact.define('v-child', {
+                    component: {
+                        componentDidMount: function() {
+                            this.hello();
+                        }
+                    }
+                }, 'v-parent');
+
+                new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                    .then(function() {
+                        expect(this.helloFromParent.calledOnce).to.be.true;
+                        done();
+                    }, this);
+            });
+
+            // @todo множественное наследование
+            xit('должен вызвать метод, который был в миксине родителя базового компонента, при множественном наследовании', function(done) {
+                this.helloFromParentParent = this.sinon.stub();
+
+                ns.ViewReact.define('v-parent-parent', {
+                    component: {
+                        mixin: [{ hello: this.helloFromParentParent }]
+                    }
+                });
+                ns.ViewReact.define('v-parent', {}, 'v-parent-parent');
+                ns.ViewReact.define('v-child', {
+                    component: {
+                        componentDidMount: function() {
+                            this.hello();
+                        }
+                    }
+                }, 'v-parent');
+
+                new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                    .then(function() {
+                        expect(this.helloFromParentParent.calledOnce).to.be.true;
+                        done();
+                    }, this);
+            });
+        });
+    });
 });

@@ -37,7 +37,7 @@ describe('ns.ViewReactStaticMixin', function() {
             expect(componentDecl.displayName).to.equal('other-fancy-name');
         });
 
-        it('должен преобразоывать camelCase в camel-case', function() {
+        it('должен приводить displayName из camelCase к camel-case', function() {
             var componentDecl = ns.ViewReactStaticMixin.mixComponent('camelCase', {});
 
             expect(componentDecl.displayName).to.equal('camel-case');
@@ -105,6 +105,12 @@ describe('ns.ViewReactStaticMixin', function() {
             expect(this.renderedElement.render).to.equal(this.componentDecl.render);
         });
 
+    });
+
+    describe('#getDisplayNameById', function() {
+        it('должен возвращать my-super-view по указанному айдишнику вьюшки mySuperView', function() {
+            expect(ns.ViewReactStaticMixin.getDisplayNameById('mySuperView')).to.be.eql('my-super-view');
+        });
     });
 
 });

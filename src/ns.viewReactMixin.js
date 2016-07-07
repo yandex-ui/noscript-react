@@ -82,7 +82,7 @@
          * this.createChildren(['child-view1', 'child-view2']); // создаст дочерние view с id `child-view1`, `child-view2`
          * this.createChildren(['child-view1', 'child-view2'], {length: 25}); // создаст дочерние view с id `child-view1`, `child-view2`  и передаст в них указанные props
          * ```
-         * @return {ReactElement[]}
+         * @returns {ReactElement[]}
          */
         createChildren: function(id, props) {
             // Приведение параметров к полному виду
@@ -122,7 +122,7 @@
          *
          * @param {string} id имя вьюшки
          * @param {Object} [props] свойства (props) создаваемого компонента для дочернего view
-         * @return {?ReactElement}
+         * @returns {?ReactElement}
          * @private
          */
         __createChild: function(id, props) {
@@ -139,7 +139,7 @@
          * для всех детей текущей вьюшки
          *
          * @param {Object} [props] свойства (props) создаваемых компонентов для дочерних view
-         * @return {ReactElement[]}
+         * @returns {ReactElement[]}
          * @private
          */
         __createChildren: function(props) {
@@ -168,7 +168,7 @@
          *
          * @param {String} id имя модели
          * @param {String} [jpath]
-         * @return {Object|*} данные
+         * @returns {Object|*} данные
          */
         getModelData: function(id, jpath) {
             var model = this.props.models[id];
@@ -194,13 +194,30 @@
          * Применяет базовый mixin для описанного во view React компонента
          * @param {string} id идентификатор view
          * @param {Object} [component] описание React компонента
-         * @return {Object}
+         * @param {String} [base] айдишник базовой реактивной вьюшка
+         * @returns {Object}
          * @static
          */
-        mixComponent: function(id, component) {
-            if (!component) {
-                component = {};
+        mixComponent: function(id, component, base) {
+            var components = [{}];
+            var baseComponent = {};
+            component = component || {};
+
+            if (base) {
+                baseComponent = ns.View.infoLite(base).component || {};
             }
+            components.push(baseComponent, component);
+
+            var mixins = components
+                .map(function(component) {
+                    return component.mixins;
+                })
+                .filter(Boolean)
+                .reduce(function(memo, mixins) {
+                    return memo.concat(mixins);
+                }, []);
+
+            component = no.extend.apply(no, components);
 
             if (!component.render) {
                 /**
@@ -209,12 +226,23 @@
                  */
                 component.render = ns.ViewReactStaticMixin.render;
             }
-            component.mixins = component.mixins || [];
+            component.mixins = mixins || [];
             component.mixins.push(ns.BaseReactMixin);
-
-            component.displayName = component.displayName || String(id).replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+            component.displayName = component.displayName || this.getDisplayNameById(String(id));
 
             return component;
+        },
+
+        /**
+         * Возвращает displayName компонента по id вьюшки.
+         * Приводит имя вьюшки из camelCase к camel-case.
+         * @param  {String} id
+         * @returns {String}
+         */
+        getDisplayNameById: function(id) {
+            return id
+                .replace(/([a-z])([A-Z])/g, '$1-$2')
+                .toLowerCase();
         },
 
         /**
@@ -298,7 +326,7 @@
         /**
          * Получает дочернее вью
          * @param {string} viewId
-         * @return {?ns.View} view
+         * @returns {?ns.View} view
          */
         getChildView: function(viewId) {
             var childView = this.views[viewId];
