@@ -19,13 +19,16 @@
      * Объявление конструктура реактивной view
      * @param {string} id идентификатор view
      * @param {Object} [info] объект информации о структуре view
+     * @param {String} [base] айдишник базовой реактивной вьюшка
      * @returns {Function}
      * @static
      */
-    ns.ViewReact.define = function(id, info) {
+    ns.ViewReact.define = function(id, info, base) {
         info = info || {};
-        info.componentDecl = this.mixComponent(id, info.component);
+
+        info.componentDecl = this.mixComponent(id, info.component, base);
         info.componentClass = this.createClass(info.componentDecl);
+
         return ns.View.define(id, info, ns.ViewReact);
     };
 
