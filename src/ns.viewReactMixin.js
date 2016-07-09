@@ -201,10 +201,14 @@
         mixComponent: function(id, component, base) {
             var components = [{}];
             var baseComponent = {};
-            component = component || {};
+            if (component) {
+                component = no.extend({}, component);
+            } else {
+                component = {};
+            }
 
             if (base) {
-                baseComponent = ns.View.infoLite(base).component || {};
+                baseComponent = ns.View.infoLite(base).componentDecl || {};
             }
             components.push(baseComponent, component);
 
@@ -215,7 +219,10 @@
                 .filter(Boolean)
                 .reduce(function(memo, mixins) {
                     return memo.concat(mixins);
-                }, []);
+                }, [])
+                .filter(function(mixin) {
+                    return mixin !== ns.BaseReactMixin;
+                });
 
             component = no.extend.apply(no, components);
 

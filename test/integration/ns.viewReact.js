@@ -717,8 +717,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 }, this);
         });
 
-        // @todo множественное наследование
-        xit('должен вызвать метод родителя базового компонента при множественном наследовании', function(done) {
+        it('должен вызвать метод родителя базового компонента при множественном наследовании', function(done) {
             this.helloFromParentParent = this.sinon.stub();
 
             ns.ViewReact.define('v-parent-parent', {
@@ -754,7 +753,8 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 }
             }, 'v-parent');
 
-            expect(ns.View.info('v-parent')).to.not.have.property('iAmChild');
+            expect(ns.View.infoLite('v-parent').component).to.not.have.property('iAmChild');
+            expect(ns.View.infoLite('v-parent').componentDecl).to.not.have.property('iAmChild');
         });
 
         describe('миксины ->', function() {
@@ -781,13 +781,12 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                     }, this);
             });
 
-            // @todo множественное наследование
-            xit('должен вызвать метод, который был в миксине родителя базового компонента, при множественном наследовании', function(done) {
+            it('должен вызвать метод, который был в миксине родителя базового компонента, при множественном наследовании', function() {
                 this.helloFromParentParent = this.sinon.stub();
 
                 ns.ViewReact.define('v-parent-parent', {
                     component: {
-                        mixin: [{ hello: this.helloFromParentParent }]
+                        mixins: [{ hello: this.helloFromParentParent }]
                     }
                 });
                 ns.ViewReact.define('v-parent', {}, 'v-parent-parent');
@@ -799,10 +798,9 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                     }
                 }, 'v-parent');
 
-                new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
                     .then(function() {
                         expect(this.helloFromParentParent.calledOnce).to.be.true;
-                        done();
                     }, this);
             });
         });
