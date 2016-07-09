@@ -612,6 +612,62 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             this.APP = ns.View.create('app');
         });
 
+        it('должен наследовать методы родительского ns.ViewReact', function() {
+            this.helloFromParent = this.sinon.stub();
+
+            ns.ViewReact.define('v-parent', {
+                methods: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.ViewReact.define('v-child', {
+                component: {
+                    componentDidMount: function() {
+                        this.props.view.hello();
+                    }
+                }
+            }, 'v-parent');
+
+            return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParent.calledOnce).to.be.true;
+                }, this);
+        });
+
+        it('должен наследовать методы родительского ns.View', function() {
+            this.helloFromParent = this.sinon.stub();
+
+            ns.View.define('v-parent', {
+                methods: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.ViewReact.define('v-child', {
+                component: {
+                    componentDidMount: function() {
+                        this.props.view.hello();
+                    }
+                }
+            }, 'v-parent');
+
+            return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParent.calledOnce).to.be.true;
+                }, this);
+        });
+
+        it('должен при наследовании от ns.View в качестве super_ ссылаться на ns.ViewReact', function() {
+            ns.View.define('v-parent', {
+                methods: {
+                    hello: function() {}
+                }
+            });
+            ns.ViewReact.define('v-child', {}, 'v-parent');
+            var vChild = ns.View.create('v-child');
+
+            expect(vChild.super_).to.be.equal(ns.ViewReact.prototype);
+        });
+
         it('должен вызвать метод базового компонента', function(done) {
             this.helloFromParent = this.sinon.stub();
 

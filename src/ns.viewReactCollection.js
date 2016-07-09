@@ -27,7 +27,18 @@
         info = info || {};
         info.componentDecl = this.mixComponent(id, info.component, base);
         info.componentClass = this.createClass(info.componentDecl);
-        return ns.ViewCollection.define.call(this, id, info, ns.ViewReactCollection);
+
+        var ctor = ns.ViewCollection.define.call(this, id, info, base);
+
+        // Если наследуемся не от ns.ViewReactCollection, то нужно переопределить prototype
+        // и добавить методы от наследуемого view
+        if (!(ctor.prototype instanceof ns.ViewReactCollection)) {
+            var proto = ctor.prototype;
+            no.inherit(ctor, ns.ViewReactCollection);
+            ctor.prototype = no.extend({}, proto, ctor.prototype);
+        }
+
+        return ctor;
     };
 
     /**

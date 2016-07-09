@@ -1086,4 +1086,118 @@ describe('ns.ViewCollection', function() {
 
     });
 
+    describe('наследование ns.ViewReactCollection', function() {
+        beforeEach(function() {
+            // define models
+            ns.Model.define('m-collection', {
+                isCollection: true
+            });
+            ns.Model.define('m-collection-item', {
+                params: {
+                    p: null
+                }
+            });
+            var model = ns.Model.get('m-collection');
+            // insert first item
+            model.insert(ns.Model.get('m-collection-item', { p: 1 }).setData({ data: 1 }));
+
+            // define views
+            this.helloFromParent = this.sinon.stub();
+            ns.View.define('app');
+            ns.ViewReactCollection.define('v-react-collection', {
+                models: ['m-collection'],
+                split: {
+                    byModel: 'm-collection',
+                    intoViews: 'v-react-collection-item'
+                },
+                methods: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.ViewReact.define('v-react-collection-item', {
+                models: ['m-collection-item']
+            });
+            ns.ViewCollection.define('v-collection', {
+                models: ['m-collection'],
+                split: {
+                    byModel: 'm-collection',
+                    intoViews: 'v-collection-item'
+                },
+                methods: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.View.define('v-collection-item', {
+                models: ['m-collection-item']
+            });
+
+            // define layout
+            ns.layout.define('app', {
+                app: {
+                    'v-react-collection-child': {}
+                }
+            });
+
+            this.APP = ns.View.create('app');
+        });
+
+        it('должен наследовать методы родительского ns.ViewReactCollection', function() {
+            ns.ViewReactCollection.define('v-react-collection-child', {
+                models: ['m-collection'],
+                split: {
+                    byModel: 'm-collection',
+                    intoViews: 'v-react-collection-item'
+                },
+                component: {
+                    componentDidMount: function() {
+                        this.props.view.hello();
+                    }
+                }
+            }, 'v-react-collection');
+
+            return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParent.calledOnce).to.be.true;
+                }, this);
+        });
+
+        it('должен наследовать методы родительского ns.ViewCollection', function() {
+            ns.ViewReactCollection.define('v-react-collection-child', {
+                models: ['m-collection'],
+                split: {
+                    byModel: 'm-collection',
+                    intoViews: 'v-react-collection-item'
+                },
+                component: {
+                    componentDidMount: function() {
+                        this.props.view.hello();
+                    }
+                }
+            }, 'v-collection');
+
+            return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParent.calledOnce).to.be.true;
+                }, this);
+        });
+
+        it('должен при наследовании от ns.ViewCollection в качестве super_ ссылаться на ns.ViewReactCollection', function() {
+            ns.ViewReactCollection.define('v-react-collection-child', {
+                models: ['m-collection'],
+                split: {
+                    byModel: 'm-collection',
+                    intoViews: 'v-react-collection-item'
+                },
+                component: {
+                    componentDidMount: function() {
+                        this.props.view.hello();
+                    }
+                }
+            }, 'v-collection');
+            var vChild = ns.ViewReactCollection.create('v-react-collection-child');
+
+            expect(vChild.super_).to.be.equal(ns.ViewReactCollection.prototype);
+        });
+    });
+
 });

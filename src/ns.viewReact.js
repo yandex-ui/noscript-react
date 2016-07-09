@@ -29,7 +29,17 @@
         info.componentDecl = this.mixComponent(id, info.component, base);
         info.componentClass = this.createClass(info.componentDecl);
 
-        return ns.View.define(id, info, ns.ViewReact);
+        var ctor = ns.View.define.call(this, id, info, base);
+
+        // Если наследуемся не от ns.ViewReact, то нужно переопределить prototype
+        // и добавить методы от наследуемого view
+        if (!(ctor.prototype instanceof ns.ViewReact)) {
+            var proto = ctor.prototype;
+            no.inherit(ctor, ns.ViewReact);
+            ctor.prototype = no.extend({}, proto, ctor.prototype);
+        }
+
+        return ctor;
     };
 
     // FIXME: метод должен иметь возможность быть переопределёным (расширеным) в ns.View
