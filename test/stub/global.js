@@ -44,6 +44,8 @@ beforeEach(function() {
 afterEach(function() {
     this.sinon.restore();
     ns.reset();
+    // Очистка ns.events от предыдущих подписок
+    ns.events = no.extend({}, ns.Events);
 
     // Очистка контекста тестов от созданных в нём, в процессе выполнения, элементов
     for (var key in this) {

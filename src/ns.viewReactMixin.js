@@ -290,6 +290,7 @@
      *   * _saveModelsVersions
      *   * _apply
      *   * __bindModelsEvents
+     *   * _bindEventHandlers
      *   * trigger
      *   * isValidSelf
      *   * isModelsValid
@@ -561,6 +562,28 @@
         },
 
         /**
+         * Возващает обработчики событий для View.
+         * @param {string} type Тип обработчиков: 'init' или 'show'.
+         * @returns {object}
+         * @private
+         */
+        _getEvents: function(type) {
+            var eventProp = '_' + type + 'Events';
+
+            if (!this[eventProp]) {
+                var nseventsInfo = this.info[type + 'Nsevents'];
+
+                // копируем информацию из info в View и биндим обработчики на этот инстанс
+                this[eventProp] = {
+                    bind: [],
+                    delegate: [],
+                    nsevents: this._bindEventHandlers(nseventsInfo, 1)
+                };
+            }
+            return this[eventProp];
+        },
+
+        /**
          * Механизм событий совместимый с ns:
          * - компонент кладет в словарь events
          *   ссылки на свою вьюшку для соответствующих событий
@@ -576,8 +599,11 @@
                 if (!this.isValidSelf()) {
                     events['ns-view-htmlinit'].push(this);
                     events['ns-view-show'].push(this);
+                    this._bindEvents('init');
+                    this._bindEvents('show');
                 } else if (!this._visible) {
                     events['ns-view-show'].push(this);
+                    this._bindEvents('show');
                 }
                 events['ns-view-touch'].push(this);
             }
@@ -660,14 +686,17 @@
                 // этот вид надо гарантированно спрятать, если он был виден
                 if (this._visible && !this.isLoading()) {
                     events['ns-view-hide'].push(this);
+                    this._unbindEvents('show');
                 }
                 return;
             }
             if (!this.isValidSelf() && !this.isNone() && !this.isLoading()) {
                 if (this._visible) {
                     events['ns-view-hide'].push(this);
+                    this._unbindEvents('show');
                 }
                 events['ns-view-htmldestroy'].push(this);
+                this._unbindEvents('init');
             }
         },
 
@@ -721,6 +750,8 @@
             // FIXME - проходов по дочерним ns.ViewReact сейчас 2. Для получения одного, необходимо рефакторить метод `destroy` в ns.View
             this._applyDestroyedComponentType();
 
+            this._unbindEvents('init');
+            this._unbindEvents('show');
             this._baseClass.destroy.apply(this);
         },
 
@@ -737,6 +768,8 @@
                 this._destroyComponent();
             }
 
+            this._unbindEvents('init');
+            this._unbindEvents('show');
             this._baseClass.destroy.apply(this);
         }
     };

@@ -135,6 +135,9 @@
     ns.BoxReact.prototype._saveModelsVersions = no.nop;
     ns.BoxReact.prototype.__modelsEventsBinded = true;
     ns.BoxReact.prototype.__bindModelsEvents = no.nop;
+    ns.BoxReact.prototype.__fillEventsQueue = no.nop;
+    ns.BoxReact.prototype._bindEvents = no.nop;
+    ns.BoxReact.prototype._unbindEvents = no.nop;
 
     /**
      * Получает дочернее вью
