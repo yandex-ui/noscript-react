@@ -8,8 +8,10 @@
 
  * [TodoMVC](https://github.com/yandex-ui/noscript-react-todomvc)
  * [CommonJS подключеие](#commonjs-require)
- * [Как это работает](#how-do-it-works)
+ * [Как это работает](#how-does-it-work)
  * [Серверный рендеринг](#rendering-on-the-server-side)
+ * [События](#events)
+ * [Наследование](#inheritance)
  * [API ns.ViewReact](#ns-view-react)
    * [#mixComponent](#ns-view-react__mixComponent)
    * [#createClass](#ns-view-react__createClass)
@@ -39,7 +41,7 @@ require('noscript-react')
 
 В этом случае `React` и `ReactDOM` будут подключены через `require`. Стоит помнить, что `noscript` пока не имеет хорошего модульного подключения. Поэтому, он, как и `jQuery`, должен располагаться в `global`
 
-## <a name="how-do-it-works"></a>Как это работает
+## <a name="how-does-it-work"></a>Как это работает
 
 Есть специальные классы `ns.ViewReact`, `ns.ViewReactCollection` и внутренний класс `ns.BoxReact`. Кроме того, что они имеют все те же поля, что и обычные `ns.View`, `ns.ViewCollection` и `ns.Box`, есть еще поле `component` — декларация реакт-компонента.
 
@@ -104,6 +106,67 @@ update.generateHTML()
         // Тут доступен HTML приложения в appHTML
     });
 ```
+
+## <a name="events"></a> События
+
+Для реактивной вьюшки работают [встроенные события](https://github.com/yandex-ui/noscript/blob/master/doc/ns.view.md#Встроенные-события).
+
+```js
+ns.ViewReact.define('foo', {
+    events: {
+        'ns-view-init': function() {
+            // доопределяем инициализацию
+        },
+        'ns-view-htmlinit': function() {
+            // компонент инициализирован (componentWillMount)
+        },
+        'ns-view-show': function() {
+            // компонент в DOM и виден (componentDidMount)
+        },
+        'ns-view-hide': function() {
+            // компонент cпрячется (меняется лейаут)
+        },
+        'ns-view-htmldestroy': function() {
+            // компонент обновится
+        }
+    }
+})
+```
+
+Порядок всплытия событий сохраняется. `ns.Update.prototype.perf` учитывает отрисовки и обычных и реактивных видов.
+
+**Пока нет поддержки «космических» событий ([#38](https://github.com/yandex-ui/noscript-react/issues/38))**
+
+## <a name="inheritance"></a> Наследование
+
+Как и для обычного вида, для реактивного, можно указывать базовый вид.
+
+```js
+ns.ViewReact.define('bar', {
+    methods: {
+        helloFromViewBar: function() {}
+    },
+    component: function() {
+        helloFromComponentBar: function() {}
+    }
+});
+ns.ViewReact.define('foo', {
+    events: {
+        'ns-view-htmlinit': function() {
+            // унаследовали метод родительской вьюшки
+            this.helloFromViewBar();
+        }
+    },
+    component: {
+        hello: function() {
+            // унаследовали метод родительского компонента
+            this.helloFromComponentBar();
+        }
+    }
+}, 'bar');
+```
+
+Наследуются методы родительского вида, а для компонента — методы компонента родительского вида и миксины, которые были определены у родительского компонента.
 
 ## <a name="ns-view-react"></a>API ns.ViewReact
 `ns.ViewReact` - это наследник `ns.View`, который вместо YATE использует `ReactComponent`.
