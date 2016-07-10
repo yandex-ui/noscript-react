@@ -612,6 +612,62 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             this.APP = ns.View.create('app');
         });
 
+        it('должен наследовать методы родительского ns.ViewReact', function() {
+            this.helloFromParent = this.sinon.stub();
+
+            ns.ViewReact.define('v-parent', {
+                methods: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.ViewReact.define('v-child', {
+                component: {
+                    componentDidMount: function() {
+                        this.props.view.hello();
+                    }
+                }
+            }, 'v-parent');
+
+            return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParent.calledOnce).to.be.true;
+                }, this);
+        });
+
+        it('должен наследовать методы родительского ns.View', function() {
+            this.helloFromParent = this.sinon.stub();
+
+            ns.View.define('v-parent', {
+                methods: {
+                    hello: this.helloFromParent
+                }
+            });
+            ns.ViewReact.define('v-child', {
+                component: {
+                    componentDidMount: function() {
+                        this.props.view.hello();
+                    }
+                }
+            }, 'v-parent');
+
+            return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                .then(function() {
+                    expect(this.helloFromParent.calledOnce).to.be.true;
+                }, this);
+        });
+
+        it('должен при наследовании от ns.View в качестве super_ ссылаться на ns.ViewReact', function() {
+            ns.View.define('v-parent', {
+                methods: {
+                    hello: function() {}
+                }
+            });
+            ns.ViewReact.define('v-child', {}, 'v-parent');
+            var vChild = ns.View.create('v-child');
+
+            expect(vChild.super_).to.be.equal(ns.ViewReact.prototype);
+        });
+
         it('должен вызвать метод базового компонента', function(done) {
             this.helloFromParent = this.sinon.stub();
 
@@ -661,8 +717,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 }, this);
         });
 
-        // @todo множественное наследование
-        xit('должен вызвать метод родителя базового компонента при множественном наследовании', function(done) {
+        it('должен вызвать метод родителя базового компонента при множественном наследовании', function(done) {
             this.helloFromParentParent = this.sinon.stub();
 
             ns.ViewReact.define('v-parent-parent', {
@@ -698,7 +753,8 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 }
             }, 'v-parent');
 
-            expect(ns.View.info('v-parent')).to.not.have.property('iAmChild');
+            expect(ns.View.infoLite('v-parent').component).to.not.have.property('iAmChild');
+            expect(ns.View.infoLite('v-parent').componentDecl).to.not.have.property('iAmChild');
         });
 
         describe('миксины ->', function() {
@@ -725,13 +781,12 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                     }, this);
             });
 
-            // @todo множественное наследование
-            xit('должен вызвать метод, который был в миксине родителя базового компонента, при множественном наследовании', function(done) {
+            it('должен вызвать метод, который был в миксине родителя базового компонента, при множественном наследовании', function() {
                 this.helloFromParentParent = this.sinon.stub();
 
                 ns.ViewReact.define('v-parent-parent', {
                     component: {
-                        mixin: [{ hello: this.helloFromParentParent }]
+                        mixins: [{ hello: this.helloFromParentParent }]
                     }
                 });
                 ns.ViewReact.define('v-parent', {}, 'v-parent-parent');
@@ -743,10 +798,9 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                     }
                 }, 'v-parent');
 
-                new ns.Update(this.APP, ns.layout.page('app'), {}).render()
+                return new ns.Update(this.APP, ns.layout.page('app'), {}).render()
                     .then(function() {
                         expect(this.helloFromParentParent.calledOnce).to.be.true;
-                        done();
                     }, this);
             });
         });
