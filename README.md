@@ -11,6 +11,8 @@
  * [Как это работает](#how-does-it-work)
  * [Серверный рендеринг](#rendering-on-the-server-side)
  * [События](#events)
+   * [Встроенные](#events__view)
+   * [«Космические»](#events__global)
  * [Наследование](#inheritance)
  * [API ns.ViewReact](#ns-view-react)
    * [#mixComponent](#ns-view-react__mixComponent)
@@ -109,6 +111,8 @@ update.generateHTML()
 
 ## <a name="events"></a> События
 
+### <a name="events__view"></a> Встроенные
+
 Для реактивной вьюшки работают [встроенные события](https://github.com/yandex-ui/noscript/blob/master/doc/ns.view.md#Встроенные-события).
 
 ```js
@@ -135,7 +139,18 @@ ns.ViewReact.define('foo', {
 
 Порядок всплытия событий сохраняется. `ns.Update.prototype.perf` учитывает отрисовки и обычных и реактивных видов.
 
-**Пока нет поддержки «космических» событий ([#38](https://github.com/yandex-ui/noscript-react/issues/38))**
+### <a name="events__global"></a> «Космические»
+
+Работают [«космические» события по аналогии с обычными вью](https://github.com/yandex-ui/noscript/blob/master/doc/ns.view.md#Космические-события-noscript).
+
+```js
+ns.ViewReact.define('foo', {
+    events: {
+        'my-global-event@show': function() {},
+        'my-global-event@init': function() {}
+    }
+})
+```
 
 ## <a name="inheritance"></a> Наследование
 
