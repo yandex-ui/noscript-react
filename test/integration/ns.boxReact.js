@@ -1105,7 +1105,8 @@ describe('ns.BoxReact', function() {
                             this.createChildren({
                                 p1: '1',
                                 p2: '2',
-                                p3: '3'
+                                p3: '3',
+                                type: 'foo'
                             })
                         );
                     }
@@ -1165,6 +1166,9 @@ describe('ns.BoxReact', function() {
         it('не должен передать props для потомков дочерних view бокса', function() {
             expect(this.app.node.querySelector('.content3').innerHTML).to.be.equal('correct');
         });
-    });
 
+        it('[#49] не должен добавлять props в виде атрибутов своей ноды', function() {
+            expect(this.app.node.querySelector('.someBox').getAttribute('type')).to.be.not.ok;
+        });
+    });
 });
