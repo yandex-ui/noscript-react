@@ -257,18 +257,19 @@
          * @returns {ReactElement}
          */
         render: function() {
-            if (this.props.view.isLoading()) {
-                return React.createElement(
-                    'div',
-                    this.props
-                );
-            } else {
-                return React.createElement(
-                    'div',
-                    this.props,
-                    this.createChildren()
-                );
-            }
+            var _this = this;
+            var props = ['className', 'data-key'];
+
+            return React.createElement(
+                'div',
+                props.reduce(function(memo, key) {
+                    if (_this.props[key]) {
+                        memo[key] = _this.props[key];
+                    }
+                    return memo;
+                }, {}),
+                this.props.view.isLoading() ? null : this.createChildren()
+            );
         },
 
         /**

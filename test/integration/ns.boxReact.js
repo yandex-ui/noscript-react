@@ -1105,7 +1105,8 @@ describe('ns.BoxReact', function() {
                             this.createChildren({
                                 p1: '1',
                                 p2: '2',
-                                p3: '3'
+                                p3: '3',
+                                type: 'foo'
                             })
                         );
                     }
@@ -1165,6 +1166,24 @@ describe('ns.BoxReact', function() {
         it('не должен передать props для потомков дочерних view бокса', function() {
             expect(this.app.node.querySelector('.content3').innerHTML).to.be.equal('correct');
         });
-    });
 
+        describe('[#49] Обработка props в дефолтном render', function() {
+            beforeEach(function() {
+                this.boxNode = this.app.node.querySelector('.someBox');
+            });
+
+            it('не должен добавлять произвольные атрибуты', function() {
+                expect(this.boxNode.getAttribute('type')).to.be.not.ok;
+            });
+
+            describe('должен добавить', function() {
+                it('className', function() {
+                    expect(this.boxNode.getAttribute('class')).to.be.eql('someBox');
+                });
+                it('data-key', function() {
+                    expect(this.boxNode.getAttribute('data-key')).to.be.eql('box=someBox');
+                });
+            });
+        });
+    });
 });
