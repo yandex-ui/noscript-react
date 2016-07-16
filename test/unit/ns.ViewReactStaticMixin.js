@@ -112,5 +112,4 @@ describe('ns.ViewReactStaticMixin', function() {
             expect(ns.ViewReactStaticMixin.getDisplayNameById('mySuperView')).to.be.eql('my-super-view');
         });
     });
-
 });

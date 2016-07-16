@@ -263,7 +263,9 @@
             return React.createElement(
                 'div',
                 props.reduce(function(memo, key) {
-                    memo[key] = _this.props[key];
+                    if (_this.props[key]) {
+                        memo[key] = _this.props[key];
+                    }
                     return memo;
                 }, {}),
                 this.props.view.isLoading() ? null : this.createChildren()

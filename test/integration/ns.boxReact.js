@@ -1167,8 +1167,23 @@ describe('ns.BoxReact', function() {
             expect(this.app.node.querySelector('.content3').innerHTML).to.be.equal('correct');
         });
 
-        it('[#49] не должен добавлять props в виде атрибутов своей ноды', function() {
-            expect(this.app.node.querySelector('.someBox').getAttribute('type')).to.be.not.ok;
+        describe('[#49] Обработка props в дефолтном render', function() {
+            beforeEach(function() {
+                this.boxNode = this.app.node.querySelector('.someBox');
+            });
+
+            it('не должен добавлять произвольные атрибуты', function() {
+                expect(this.boxNode.getAttribute('type')).to.be.not.ok;
+            });
+
+            describe('должен добавить', function() {
+                it('className', function() {
+                    expect(this.boxNode.getAttribute('class')).to.be.eql('someBox');
+                });
+                it('data-key', function() {
+                    expect(this.boxNode.getAttribute('data-key')).to.be.eql('box=someBox');
+                });
+            });
         });
     });
 });
