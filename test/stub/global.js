@@ -39,6 +39,12 @@ beforeEach(function() {
                 'data-key': this.key
             }, props));
         };
+
+    this.appendAppNode = function() {
+        var appNode = document.createElement('div');
+        appNode.setAttribute('id', 'app');
+        document.body.appendChild(appNode);
+    };
 });
 
 afterEach(function() {

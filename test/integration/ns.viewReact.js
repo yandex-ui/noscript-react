@@ -805,4 +805,84 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             });
         });
     });
+
+    describe('[#41] componentDidMount вложенных реактовых компонент', function() {
+        beforeEach(function() {
+            ns.layout.define('app', {
+                app: 'v-1'
+            });
+            ns.layout.define('app2', {
+                app: {
+                    'v-2': 'v-1'
+                }
+            });
+            ns.layout.define('app3', {
+                app: {
+                    'boxYate@': 'v-1'
+                }
+            });
+            ns.layout.define('app4', {
+                app: {
+                    'v-2': {
+                        'boxReact@': 'v-1'
+                    }
+                }
+            });
+            var _this = this;
+
+            ns.View.define('app');
+            ns.ViewReact.define('v-1', {
+                component: {
+                    render: function() {
+                        return React.createElement(React.createClass({
+                            componentDidMount: function() {
+                                _this.nodeV1 = ReactDOM.findDOMNode(this);
+                            },
+                            render: function() {
+                                return React.createElement('div', {}, 'Hello, world!');
+                            }
+                        }));
+                    }
+                }
+            });
+            ns.ViewReact.define('v-2');
+
+            this.appendAppNode();
+            ns.initMainView();
+        });
+        afterEach(function() {
+            ns.MAIN_VIEW.destroy();
+        });
+
+        describe('должен вызываться когда нода находится в DOM', function() {
+            it('для обычной вьюшки', function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', {}), {})
+                    .render()
+                    .then(function() {
+                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
+                    }, this);
+            });
+            it('для вложенной вьюшки', function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app2', {}), {})
+                    .render()
+                    .then(function() {
+                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
+                    }, this);
+            });
+            it('для вьюшки в ns-боксе', function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
+                    .render()
+                    .then(function() {
+                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
+                    }, this);
+            });
+            it('для вьюшки в реакт-боксе', function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), {})
+                    .render()
+                    .then(function() {
+                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
+                    }, this);
+            });
+        });
+    });
 });
