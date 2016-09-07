@@ -80,3 +80,15 @@
         }
         this.__itemsToRemove = [];
     };
+
+    /**
+     * @param {function} callback
+     * @private
+     */
+    ns.ViewReactCollection.prototype._apply = function(callback) {
+        for (var id in this.views) {
+            if (this.views.hasOwnProperty(id)) {
+                callback(this.views[id], id);
+            }
+        }
+    };

@@ -381,7 +381,7 @@
                  * @see http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
                  * В нашем случае так бывает при вызове createChildren
                  */
-                key: this.key
+                key: this.getReactKey()
             }));
         },
 
@@ -455,6 +455,8 @@
         _updateHTML: function(node, options, events) {
             node = node || null;
             options = options || {};
+
+            this.setReactKey();
 
             switch (this.reactComponentType) {
                 case 'none':
@@ -618,12 +620,14 @@
          * Подготовка обновления дерева React компонентов
          * @param {string} componentType
          * @param {Object} [events]
+         * @param {string} [key]
          * @private
          */
-        _prepareRenderElement: function(componentType, events) {
+        _prepareRenderElement: function(componentType, events, key) {
             if (this.reactComponentType === 'destroyed') {
                 return;
             }
+            this.setReactKey(key);
 
             this.beforePrepareRenderElement(componentType);
 
@@ -660,8 +664,8 @@
         hasChildrenNeedBeUpdated: function(events) {
             var hasChildrenNeedBeUpdated = false;
 
-            this._apply(function(childView) {
-                childView._prepareRenderElement('child', events);
+            this._apply(function(childView, key) {
+                childView._prepareRenderElement('child', events, key);
 
                 if (childView._needBeUpdated) {
                     hasChildrenNeedBeUpdated = true;
@@ -669,6 +673,26 @@
             });
 
             return hasChildrenNeedBeUpdated;
+        },
+
+        /**
+         * Определяет ключ для реакт-компонента:
+         * - по умолчанию однозначно соответствует id вьюшки
+         * - в случае коллекции ключ устанавливается по ключу вьюшки, а не id
+         *
+         * @param {string} [key]
+         */
+        setReactKey: function(key) {
+            this._reactKey = key || this.id;
+        },
+
+        /**
+         * Возвращает ключ реакт-компонент,
+         * который соответствует экземпляру вьюшки
+         * @return {string}
+         */
+        getReactKey: function() {
+            return this._reactKey;
         },
 
         /**
