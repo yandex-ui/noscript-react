@@ -7,6 +7,13 @@
      */
     ns.ViewReact = function() {};
 
+    /**
+     * Флаг удаления компонента из DOM при скрытии вида.
+     * @static
+     * @type {boolean}
+     */
+    ns.ViewReact.UNMOUNT_MODE = true;
+
     // унаследуем прототип ns.View с расширением его для работы с реакт компонентом
     no.inherit(ns.ViewReact, ns.View, ns.ViewReactMixin);
     // унаследуем статические методы c расширением их для работы с реакт компонентом

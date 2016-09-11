@@ -322,7 +322,9 @@
                         this._hideNode();
                     }
                     this.reactComponentType = 'none';
-                    ReactDOM.unmountComponentAtNode(this.node);
+                    if (ns.ViewReact.UNMOUNT_MODE) {
+                        ReactDOM.unmountComponentAtNode(this.node);
+                    }
                     break;
                 case 'child':
                     this.reactComponentType = 'none';
