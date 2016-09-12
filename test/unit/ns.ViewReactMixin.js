@@ -34,7 +34,7 @@ describe('ns.ViewReactMixin', function() {
         });
 
         it('должен вызвать удаление компонента для `root` React компонента, если флаг UNMOUNT_MODE равен true', function() {
-            this.sinon.stub(ns.ViewReact, 'UNMOUNT_MODE', true);
+            this.sinon.stub(ns, 'REACT_UNMOUNT_MODE', true);
 
             this.view.reactComponentType = 'root';
             this.view.hideAndUnbindEvents();
@@ -43,7 +43,7 @@ describe('ns.ViewReactMixin', function() {
         });
 
         it('не должен вызвать удаление компонента для `root` React компонента, если флаг UNMOUNT_MODE равен false', function() {
-            this.sinon.stub(ns.ViewReact, 'UNMOUNT_MODE', false);
+            this.sinon.stub(ns, 'REACT_UNMOUNT_MODE', false);
 
             this.view.reactComponentType = 'root';
             this.view.hideAndUnbindEvents();

@@ -12,7 +12,7 @@
      * @static
      * @type {boolean}
      */
-    ns.ViewReact.UNMOUNT_MODE = true;
+    ns.REACT_UNMOUNT_MODE = true;
 
     // унаследуем прототип ns.View с расширением его для работы с реакт компонентом
     no.inherit(ns.ViewReact, ns.View, ns.ViewReactMixin);
