@@ -317,15 +317,8 @@
         hideAndUnbindEvents: function() {
             switch (this.reactComponentType) {
                 case 'root':
-                    // FIXME (rebulus) для совместимости с ns v0.7.x
-                    if (typeof this._hideNode === 'function') {
-                        this._hideNode();
-                    }
-                    this.reactComponentType = 'none';
-                    ReactDOM.unmountComponentAtNode(this.node);
-                    break;
-                case 'child':
-                    this.reactComponentType = 'none';
+                    this._hideNode();
+                    this.reactComponentType = 'hidden';
                     break;
             }
 
@@ -481,6 +474,10 @@
                 case 'child':
                     this._prepareRenderElement('child', events);
                     this._renderElement();
+                    break;
+                case 'hidden':
+                    this.reactComponentType = 'root';
+                    this._showNode();
                     break;
             }
         },
