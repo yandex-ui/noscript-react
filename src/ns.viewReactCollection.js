@@ -63,7 +63,11 @@
      * Проходит по всем доступным для работы дочерним view
      * @param {Function} callback
      */
-    ns.ViewReactCollection.prototype.forEachItem = ns.ViewCollection.prototype.forEachItem;
+    ns.ViewReactCollection.prototype.forEachItem = function(callback) {
+        return ns.ViewCollection.prototype.forEachItem.call(this, function(view) {
+            return callback(view, view.key);
+        });
+    }
 
     /**
      * Предобработка перед подготовкой обновления дерева React компонентов

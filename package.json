@@ -33,7 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^2.1.4",
-    "noscript": "^0.8.6",
+    "noscript": "^0.7.2",
     "noscript-bosphorus": "0.0.5",
     "react": "^0.14.1",
     "react-dom": "^0.14.1",

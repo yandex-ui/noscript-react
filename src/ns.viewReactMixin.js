@@ -129,6 +129,9 @@
             var viewChild = this.props.view.getChildView(id);
 
             if (viewChild) {
+                no.extend(props, {
+                    _reactKey: viewChild.key
+                });
                 return viewChild.createElement(this.__extendDestroyToProps(props));
             }
             return null;
@@ -146,7 +149,10 @@
             var children = [];
             var _this = this;
 
-            this.props.view.forEachItem(function(childView) {
+            this.props.view.forEachItem(function(childView, id) {
+                no.extend(props, {
+                    _reactKey: id || childView.id
+                });
                 children.push(childView.createElement(_this.__extendDestroyToProps(props)));
             });
 
@@ -257,19 +263,18 @@
          * @returns {ReactElement}
          */
         render: function() {
-            var _this = this;
-            var props = ['className', 'data-key'];
-
-            return React.createElement(
-                'div',
-                props.reduce(function(memo, key) {
-                    if (_this.props[key]) {
-                        memo[key] = _this.props[key];
-                    }
-                    return memo;
-                }, {}),
-                this.props.view.isLoading() ? null : this.createChildren()
-            );
+            if (this.props.view.isLoading()) {
+                return React.createElement(
+                    'div',
+                    this.props
+                );
+            } else {
+                return React.createElement(
+                    'div',
+                    this.props,
+                    this.createChildren()
+                );
+            }
         },
 
         /**
@@ -382,7 +387,7 @@
                  * @see http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
                  * В нашем случае так бывает при вызове createChildren
                  */
-                key: this.key
+                key: props._reactKey
             }));
         },
 
