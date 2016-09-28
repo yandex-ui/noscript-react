@@ -460,7 +460,7 @@
             switch (this.reactComponentType) {
                 case 'none':
                     if (!this.isValid()) {
-                        this._updateNode(node);
+                        this._updateNode(node, true);
                     // FIXME (rebulus) для совместимости с ns v0.7.x
                     } else if (typeof this._showNode === 'function') {
                         this._showNode();
@@ -473,7 +473,7 @@
                     // то нужно привязать другую ноду к элементу
                     if (!options.toplevel && options.parent_added) {
                         this.hideAndUnbindEvents();
-                        this._updateNode(node);
+                        this._updateNode(node, false);
                     }
                     this._prepareRenderElement('root', events);
                     this._renderElement();
@@ -488,11 +488,16 @@
         /**
          * Обновляет node связанную с `root` элементом
          * @param {Node} node
+         * @param {boolean} [replaceNode = false]
          * @private
          */
-        _updateNode: function(node) {
+        _updateNode: function(node, replaceNode) {
             var viewNode = this._extractNode(node);
             ns.View.assert(!!viewNode, 6, [this.id]);
+
+            if (this.node && replaceNode) {
+                ns.replaceNode(this.node, viewNode);
+            }
 
             this.node = viewNode;
             this.$node = $(viewNode);

@@ -893,7 +893,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                     'yateBox@': function(p) {
                         if (p.show) {
                             return {
-                                'yateView': 'reactView'
+                                yateView: 'reactView'
                             };
                         }
                     }
@@ -908,7 +908,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 },
                 component: {
                     render: function() {
-                        return React.createElement('div', {className: 'reactView-inner'});
+                        return React.createElement('div', { className: 'reactView-inner' });
                     }
                 }
             });
