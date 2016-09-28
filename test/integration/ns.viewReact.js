@@ -885,4 +885,51 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             });
         });
     });
+
+    describe('[#40]', function() {
+        beforeEach(function() {
+            ns.layout.define('app', {
+                app: {
+                    'yateBox@': function(p) {
+                        if (p.show) {
+                            return {
+                                yateView: 'reactView'
+                            };
+                        }
+                    }
+                }
+            });
+
+            ns.View.define('app');
+            ns.View.define('yateView');
+            ns.ViewReact.define('reactView', {
+                events: {
+                    'ns-view-hide': 'invalidate'
+                },
+                component: {
+                    render: function() {
+                        return React.createElement('div', { className: 'reactView-inner' });
+                    }
+                }
+            });
+
+            this.appendAppNode();
+            ns.initMainView();
+        });
+
+        describe('если реактивная вьюшка, которая находится внутри яте-вьюшки в боксе, была инвалидирована после скрытия, то после повторного показа', function() {
+            beforeEach(function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', { show: true }), {}).render()
+                    .then(function() {
+                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', { show: false }), {}).render();
+                    })
+                    .then(function() {
+                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', { show: true }), {}).render();
+                    });
+            });
+            it('нода должна содержать контент реакт-компонента', function() {
+                expect(document.body.querySelectorAll('.reactView-inner')).to.have.length(1);
+            });
+        });
+    });
 });
