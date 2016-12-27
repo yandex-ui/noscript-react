@@ -918,14 +918,12 @@ describe('ns.ViewCollection', function() {
                         if (this.props.view.isLoading()) {
                             return React.createElement(
                                 'div',
-                                no.extend({}, this.props, {
-                                    className: 'vc async'
-                                })
+                                { className: 'vc async' }
                             );
                         } else {
                             return React.createElement(
                                 'div',
-                                this.props,
+                                { className: this.props.className },
                                 this.createChildren()
                             );
                         }
