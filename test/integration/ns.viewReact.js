@@ -170,12 +170,12 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                             if (this.props.view.isLoading()) {
                                 return React.createElement(
                                     'span',
-                                    this.props
+                                    { className: this.props.className }
                                 );
                             } else {
                                 return React.createElement(
                                     'div',
-                                    this.props,
+                                    { className: this.props.className },
                                     this.createChildren()
                                 );
                             }
