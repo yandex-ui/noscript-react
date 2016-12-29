@@ -883,7 +883,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), {})
                     .render()
                     .then(function() {
-                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), { foo: true }).render()
+                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), { foo: true }).render();
                     })
                     .then(function() {
                         expect(this.isViewInDOMOnComponentDidMount).to.be.true;
@@ -894,7 +894,9 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
                 .render()
                 .then(null, function(err) {
-                    expect(function() { throw err; }).to.throw(
+                    expect(function() {
+                        throw err;
+                    }).to.throw(
                         '[ns.View] Tried to render react-view `v-1` inside yate-box `boxYate`, please, wrap react-view into regular one'
                     );
                 });

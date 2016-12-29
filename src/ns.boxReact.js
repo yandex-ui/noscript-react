@@ -191,7 +191,7 @@
         return ns.ViewReactMixin.destroy.apply(this, arguments);
     };
 
-    _baseAddView = ns.Box.prototype._addView;
+    var _baseAddView = ns.Box.prototype._addView;
 
     /**
      * @param {string} id
