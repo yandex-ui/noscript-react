@@ -2,24 +2,26 @@ describe('ns.ViewReactСollection встроенные события', function
     beforeEach(function() {
         ns.layout.define('app', {
             app: {
-                'content@': true
+                wrapper: {
+                    'content@': true
+                }
             }
         });
 
         ns.layout.define('content1', {
-            'app content@': {
+            'app wrapper content@': {
                 'content-collection': true
             }
         }, 'app');
 
         ns.layout.define('content2', {
-            'app content@': {
+            'app wrapper content@': {
                 content2: true
             }
         }, 'app');
 
         ns.layout.define('content3', {
-            'app content@': {
+            'app wrapper content@': {
                 'content-collection&': true
             }
         }, 'app');
@@ -70,7 +72,7 @@ describe('ns.ViewReactСollection встроенные события', function
             models: ['model-collection-item']
         });
 
-        var views = ['head', 'content-collection@model-collection', 'content2'];
+        var views = ['head', 'content-collection@model-collection', 'content2', 'wrapper'];
         var events = ['ns-view-async', 'ns-view-init', 'ns-view-htmlinit', 'ns-view-show', 'ns-view-touch', 'ns-view-hide', 'ns-view-htmldestroy'];
 
         for (var i = 0, j = views.length; i < j; i++) {

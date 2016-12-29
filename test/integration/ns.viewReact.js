@@ -832,14 +832,17 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
 
             ns.View.define('app');
             ns.ViewReact.define('v-1', {
+                'params+': {
+                    foo: null
+                },
                 component: {
                     render: function() {
                         return React.createElement(React.createClass({
                             componentDidMount: function() {
-                                _this.nodeV1 = ReactDOM.findDOMNode(this);
+                                _this.isViewInDOMOnComponentDidMount = document.querySelectorAll('.v-1-inner').length > 0;
                             },
                             render: function() {
-                                return React.createElement('div', {}, 'Hello, world!');
+                                return React.createElement('div', { className: 'v-1-inner' }, 'Hello, world!');
                             }
                         }));
                     }
@@ -859,30 +862,44 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                 return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', {}), {})
                     .render()
                     .then(function() {
-                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
+                        expect(this.isViewInDOMOnComponentDidMount).to.be.true;
                     }, this);
             });
             it('для вложенной вьюшки', function() {
                 return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app2', {}), {})
                     .render()
                     .then(function() {
-                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
-                    }, this);
-            });
-            it('для вьюшки в ns-боксе', function() {
-                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
-                    .render()
-                    .then(function() {
-                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
+                        expect(this.isViewInDOMOnComponentDidMount).to.be.true;
                     }, this);
             });
             it('для вьюшки в реакт-боксе', function() {
                 return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), {})
                     .render()
                     .then(function() {
-                        expect($('body').find(this.nodeV1)).to.have.length.above(0);
+                        expect(this.isViewInDOMOnComponentDidMount).to.be.true;
                     }, this);
             });
+            it('для второго экземпляра вьюшки в реакт-боксе', function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), {})
+                    .render()
+                    .then(function() {
+                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), { foo: true }).render();
+                    })
+                    .then(function() {
+                        expect(this.isViewInDOMOnComponentDidMount).to.be.true;
+                    }, this);
+            });
+        });
+        it('должна быть ошибка при попытке создания реакт-вьюшки непосредственно в ns-боксе', function() {
+            return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
+                .render()
+                .then(null, function(err) {
+                    expect(function() {
+                        throw err;
+                    }).to.throw(
+                        '[ns.View] Tried to render react-view `v-1` inside yate-box `boxYate`, please, wrap react-view into regular one'
+                    );
+                });
         });
     });
 

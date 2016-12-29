@@ -190,3 +190,27 @@
         this.previousActive = null;
         return ns.ViewReactMixin.destroy.apply(this, arguments);
     };
+
+    var _baseAddView = ns.Box.prototype._addView;
+
+    /**
+     * @param {string} id
+     * @param {object} params
+     * @param {ns.L} type
+     * @returns {ns.View}
+     * @private
+     */
+    ns.Box.prototype._addView = function() {
+        var view = _baseAddView.apply(this, arguments);
+        var hasReactViewCreated = (
+            view instanceof ns.ViewReact ||
+            view instanceof ns.ViewReactCollection
+        );
+
+        ns.View.assert(
+            !hasReactViewCreated,
+            'view-react-2',
+            [view.id, this.id]
+        );
+        return view;
+    };
