@@ -872,13 +872,6 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                         expect(this.isViewInDOMOnComponentDidMount).to.be.true;
                     }, this);
             });
-            it('для вьюшки в ns-боксе', function() {
-                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
-                    .render()
-                    .then(function() {
-                        expect(this.isViewInDOMOnComponentDidMount).to.be.true;
-                    }, this);
-            });
             it('для вьюшки в реакт-боксе', function() {
                 return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), {})
                     .render()
@@ -886,16 +879,25 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                         expect(this.isViewInDOMOnComponentDidMount).to.be.true;
                     }, this);
             });
-            it('для второго экземпляра вьюшки в боксе', function() {
-                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
+            it('для второго экземпляра вьюшки в реакт-боксе', function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), {})
                     .render()
                     .then(function() {
-                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), { foo: true }).render()
+                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app4', {}), { foo: true }).render()
                     })
                     .then(function() {
                         expect(this.isViewInDOMOnComponentDidMount).to.be.true;
                     }, this);
             });
+        });
+        it('должна быть ошибка при попытке создания реакт-вьюшки непосредственно в ns-боксе', function() {
+            return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
+                .render()
+                .then(null, function(err) {
+                    expect(function() { throw err; }).to.throw(
+                        '[ns.View] Tried to render react-view `v-1` inside yate-box `boxYate`, please, wrap react-view into regular one'
+                    );
+                });
         });
     });
 

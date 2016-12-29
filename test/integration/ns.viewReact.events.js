@@ -3,12 +3,14 @@ describe('ns.ViewReact встроенные события', function() {
         ns.layout.define('app', {
             app: {
                 head: true,
-                'content@': true
+                wrapper: {
+                    'content@': true
+                }
             }
         });
 
         ns.layout.define('content1', {
-            'app content@': {
+            'app wrapper content@': {
                 content1: {
                     'content1-inner': true
                 }
@@ -16,14 +18,14 @@ describe('ns.ViewReact встроенные события', function() {
         }, 'app');
 
         ns.layout.define('content2', {
-            'app content@': {
+            'app wrapper content@': {
                 content2: {
                     'content2-inner': true
                 }
             }
         }, 'app');
 
-        var views = ['app', 'head', 'content1', 'content1-async@content1-async-model', 'content2-async@content2-async-model', 'content1-inner', 'content2', 'content2-inner'];
+        var views = ['app', 'head', 'content1', 'content1-async@content1-async-model', 'content2-async@content2-async-model', 'content1-inner', 'content2', 'content2-inner', 'wrapper'];
         var events = ['ns-view-async', 'ns-view-init', 'ns-view-htmlinit', 'ns-view-show', 'ns-view-touch', 'ns-view-hide', 'ns-view-htmldestroy'];
 
         this.events = {};
@@ -300,7 +302,7 @@ describe('ns.ViewReact встроенные события', function() {
     describe('асинхронные вьюшки', function() {
         beforeEach(function() {
             ns.layout.define('content1-async', {
-                'app content@': {
+                'app wrapper content@': {
                     'content1-async&': {
                         'content1-inner': true
                     }
@@ -410,7 +412,7 @@ describe('ns.ViewReact встроенные события', function() {
     describe('вложенные асинхронные вьюшки', function() {
         beforeEach(function() {
             ns.layout.define('content2-async', {
-                'app content@': {
+                'app wrapper content@': {
                     'content2-inner': {
                         'content2-async&': true
                     }

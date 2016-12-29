@@ -1,4 +1,5 @@
     ns.View.ERROR_CODES['view-react-1'] = 'Can\'t render string template of child\'s ns.ViewReact `%s`';
+    ns.View.ERROR_CODES['view-react-2'] = 'Tried to render react-view `%s` inside yate-box `%s`, please, wrap react-view into regular one';
 
     /**
      * Расширяет возможности React компонента, созданного для ns.ViewReact, ns.ViewReactCollection, ns.BoxReact
