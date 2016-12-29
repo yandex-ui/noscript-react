@@ -2,10 +2,13 @@
   "name": "noscript-react",
   "version": "1.0.7",
   "description": "Расширение noscript, позволяющее использовать React компоненты в качестве отображения",
-  "main": "index.js",
+  "main": "./dist/noscript-react.module.js",
+  "browser": "./dist/noscript-react.min.js",
   "scripts": {
     "eslint": "eslint --ignore-path .gitignore --fix src test",
-    "test": "yate ./test/test.yate -o ./test/test.yate.js & ./node_modules/karma/bin/karma start karma.conf.js --single-run=true"
+    "test": "yate ./test/test.yate -o ./test/test.yate.js & ./node_modules/karma/bin/karma start karma.conf.js --single-run=true",
+    "build": "gulp",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -63,5 +66,9 @@
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "watchify": "^3.7.0"
-  }
+  },
+  "files": [
+    "dist",
+    "yate"
+  ]
 }

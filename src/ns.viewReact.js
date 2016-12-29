@@ -1,4 +1,3 @@
-(function() {
     /**
      * @class ns.ViewReact
      * @augments ns.View
@@ -63,4 +62,3 @@
         }
         return view;
     };
-}());

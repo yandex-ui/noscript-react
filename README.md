@@ -38,10 +38,15 @@
 Подключение npm пакета `noscript-react` в CommonJS стиле производится следующим образом:
 
 ```js
-require('noscript-react')
+var NSReact = require('noscript-react');
+var NS = require('noscript');
+var ns = NS();
+
+// Наложение расширения на noscript
+NSReact(ns);
 ```
 
-В этом случае `React` и `ReactDOM` будут подключены через `require`. Стоит помнить, что `noscript` пока не имеет хорошего модульного подключения. Поэтому, он, как и `jQuery`, должен располагаться в `global`
+В этом случае `React` и `ReactDOM` будут подключены через `require` в пакете `noscript-react`.
 
 ## <a name="how-does-it-work"></a>Как это работает
 

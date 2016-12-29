@@ -1,4 +1,3 @@
-(function() {
     /**
      * @class ns.BoxReact
      * @augments ns.Box
@@ -191,4 +190,3 @@
         this.previousActive = null;
         return ns.ViewReactMixin.destroy.apply(this, arguments);
     };
-}());
