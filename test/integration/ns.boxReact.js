@@ -1044,16 +1044,16 @@ describe('ns.BoxReact', function() {
             expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('change');
         });
 
-        it('должен при смене отображаемого вью показать стейт нового React компонента', function() {
+        it('должен при появлении нового экземпляра вью сохранить стейт', function() {
             ns.events.trigger('change-state', 'change');
             return new ns.Update(this.app, this.indexPageLayout, { p: 2 })
                 .render()
                 .then(function() {
-                    expect(this.app.node.querySelector('.content2').innerHTML).to.be.equal('start');
+                    expect(this.app.node.querySelector('.content2').innerHTML).to.be.equal('change');
                 }, this);
         });
 
-        it('не должен сохранять стейт React компонента при скрытии, а затем показе связанного с ним вью', function() {
+        it('должен сохранять стейт React компонента при скрытии, а затем показе связанного с ним вью', function() {
             ns.events.trigger('change-state', 'change');
             expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('change');
             // Скрываем [view=reactView&p=1], в замен отображаем [view=reactView&p=2]
@@ -1064,7 +1064,7 @@ describe('ns.BoxReact', function() {
                     return new ns.Update(this.app, this.indexPageLayout, { p: 1 })
                         .render()
                         .then(function() {
-                            expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('start');
+                            expect(this.app.node.querySelector('.content1').innerHTML).to.be.equal('change');
                         }, this);
                 }, this);
         });

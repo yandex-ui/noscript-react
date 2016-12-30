@@ -949,4 +949,77 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             });
         });
     });
+
+    describe('ключ реакт-компонента ->', function() {
+        describe('вложенные в yate-бокс', function() {
+            beforeEach(function() {
+                ns.layout.define('app', {
+                    app: {
+                        'wrapper@': {
+                            v1: true
+                        }
+                    }
+                });
+
+                ns.View.define('app');
+                ns.ViewReact.define('v1', {
+                    params: {
+                        foo: null
+                    }
+                });
+
+                this.appendAppNode();
+                ns.initMainView();
+            });
+
+            [
+                { viewId: 'v1', reactKey: 'v1', params: { foo: 1 } },
+                { viewId: 'v1', reactKey: 'v1', params: { foo: 2 } }
+            ].forEach(describeTest);
+        });
+
+        describe('вложенные в ns-бокс', function() {
+            beforeEach(function() {
+                ns.layout.define('app', {
+                    app: {
+                        v1: {
+                            'wrapper@': {
+                                v2: true
+                            }
+                        }
+                    }
+                });
+
+                ns.View.define('app');
+                ns.ViewReact.define('v1');
+                ns.ViewReact.define('v2', {
+                    params: {
+                        foo: null
+                    }
+                });
+
+                this.appendAppNode();
+                ns.initMainView();
+            });
+
+            [
+                { viewId: 'v2', reactKey: 'wrapper__v2', params: { foo: 1 } },
+                { viewId: 'v2', reactKey: 'wrapper__v2', params: { foo: 2 } }
+            ].forEach(describeTest);
+        });
+
+        function describeTest(test) {
+            describe('при апдейте с параметром foo=' + test.params.foo, function() {
+                var key = ns.key('view=' + test.viewId, test.params);
+
+                beforeEach(function() {
+                    return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', {}), test.params).render();
+                });
+                it('создается вьюшка с ключом ' + key + ', а реакт-компонент с ключом ' + test.reactKey, function() {
+                    var reactKey = this.sinon.getViewByKey(ns.MAIN_VIEW, key).getReactKey();
+                    expect(reactKey).to.be.eql(test.reactKey);
+                });
+            });
+        }
+    });
 });

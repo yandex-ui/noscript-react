@@ -112,7 +112,7 @@
     ns.BoxReact.prototype._apply = function(callback) {
         for (var key in this.active) {
             if (this.active.hasOwnProperty(key)) {
-                callback(this.getActiveView(key));
+                callback(this.getActiveView(key), this.id + '__' + key);
             }
         }
     };

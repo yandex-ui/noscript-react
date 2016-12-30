@@ -1197,4 +1197,60 @@ describe('ns.ViewCollection', function() {
         });
     });
 
+    describe('ключ реакт-компонента ->', function() {
+        beforeEach(function() {
+            ns.layout.define('app', {
+                app: {
+                    'v-collection': true
+                }
+            });
+
+            ns.Model.define('m-collection', {
+                isCollection: true,
+                split: {
+                    items: '.items',
+                    model_id: 'm-collection-item',
+                    params: {
+                        id: '.id'
+                    }
+                }
+            });
+            ns.Model.define('m-collection-item', {
+                params: {
+                    id: null
+                }
+            });
+            ns.Model.get('m-collection').setData({
+                items: [{ id: 1 }, { id: 2 }]
+            });
+
+            ns.View.define('app');
+            ns.ViewReactCollection.define('v-collection', {
+                models: ['m-collection'],
+                split: {
+                    byModel: 'm-collection',
+                    intoViews: 'v-collection-item'
+                }
+            });
+            ns.ViewReact.define('v-collection-item', {
+                models: ['m-collection-item']
+            });
+
+            this.appendAppNode();
+            ns.initMainView();
+
+            return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', {}), {}).render();
+        });
+
+        it('экземплярам v-collection-item соответствуют разные экземпляры реакт-компонентов', function() {
+            [
+                ns.key('view=v-collection-item', { id: 1 }),
+                ns.key('view=v-collection-item', { id: 2 })
+            ].forEach(function(key) {
+                expect(
+                    this.sinon.getViewByKey(ns.MAIN_VIEW, key).getReactKey()
+                ).to.be.eql(key);
+            }, this);
+        });
+    });
 });
