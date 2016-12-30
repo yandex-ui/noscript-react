@@ -18,6 +18,19 @@ module.exports = function(config) {
             './node_modules/noscript/dist/noscript.js',
             './node_modules/yate/lib/runtime.js',
             './node_modules/noscript-bosphorus/noscript-bosphorus.js',
+
+            // WARNING - only for version 0.0.32 nommon
+            './node_modules/nommon/lib/no.base.js',
+            './node_modules/nommon/lib/no.string.js',
+            './node_modules/nommon/lib/no.array.js',
+            './node_modules/nommon/lib/no.object.js',
+            './node_modules/nommon/lib/no.events.js',
+            './node_modules/nommon/lib/no.parser.js',
+            './node_modules/nommon/lib/no.jpath.js',
+            './node_modules/nommon/lib/no.promise.js',
+            './node_modules/nommon/lib/no.date.js',
+            // ----------------------------------------
+
             './test/test.yate.js',
             './test/test.bundle.js',
 
