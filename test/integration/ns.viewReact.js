@@ -955,7 +955,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             beforeEach(function() {
                 ns.layout.define('app', {
                     app: {
-                        'wrapper@': {
+                        v2: {
                             v1: true
                         }
                     }
@@ -967,6 +967,7 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
                         foo: null
                     }
                 });
+                ns.ViewReact.define('v2');
 
                 this.appendAppNode();
                 ns.initMainView();
