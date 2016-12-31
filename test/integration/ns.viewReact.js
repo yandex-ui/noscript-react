@@ -891,6 +891,11 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
             });
         });
         it('должна быть ошибка при попытке создания реакт-вьюшки непосредственно в ns-боксе', function() {
+            // Выключаем логирование ошибок
+            ns.log.exception.restore();
+            // убираем логи из консоли
+            this.sinon.stub(ns.log, 'exception');
+
             return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app3', {}), {})
                 .render()
                 .then(null, function(err) {
