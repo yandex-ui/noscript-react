@@ -17,7 +17,7 @@ describe('no.action', function() {
 
         it('should return empty object if attribute "data-params" is not valid JSON', function() {
             var node = document.createElement('div');
-            node.setAttribute('data-params', "{'bar': 'foo'}");
+            node.setAttribute('data-params', '{\'bar\': \'foo\'}');
             var params = ns.action.getParams(node);
             expect(params).to.be.eql({});
         });
@@ -26,7 +26,7 @@ describe('no.action', function() {
             var node = document.createElement('div');
             node.setAttribute('data-params', '{"bar": "foo"}');
             var params = ns.action.getParams(node);
-            expect(params).to.be.eql({'bar': 'foo'});
+            expect(params).to.be.eql({ bar: 'foo' });
         });
 
     });
@@ -48,5 +48,5 @@ describe('no.action', function() {
             expect(fn).to.throw();
         });
 
-    })
+    });
 });

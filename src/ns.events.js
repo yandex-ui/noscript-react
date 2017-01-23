@@ -20,11 +20,11 @@ ns.Events = {};
  * @returns {ns.Events}
  */
 ns.Events.on = function(name, handler) {
-    var handlers = this._nsevents_handlers || (( this._nsevents_handlers = {} ));
+    var handlers = this._nsevents_handlers || ((this._nsevents_handlers = {}));
 
     ns.assert(typeof handler === 'function', 'ns.Events', 'Handler for event "%s" in not a function.', name);
 
-    ( handlers[name] || (( handlers[name] = [] )) ).push(handler);
+    (handlers[name] || ((handlers[name] = []))).push(handler);
 
     return this;
 };
@@ -38,7 +38,7 @@ ns.Events.on = function(name, handler) {
 ns.Events.once = function(name, handler) {
     var that = this;
     var once = function() {
-        that.off( name, once );
+        that.off(name, once);
         handler.apply(this, arguments);
     };
     once.__original = handler;
@@ -99,8 +99,8 @@ ns.Events.trigger = function(name, params) {
             // оборачиваем обработчики в try-catch, чтобы не ломать очередь
             try {
                 handlers[i].apply(this, arguments);
-            } catch(e) {
-                ns.log.exception('ns.events', e, {name: name});
+            } catch (e) {
+                ns.log.exception('ns.events', e, { name: name });
             }
         }
     }
@@ -139,4 +139,4 @@ ns.Events.forward = function(name, object) {
  * Global events bus.
  * @mixes ns.Events
  */
-ns.events = no.extend( {}, ns.Events );
+ns.events = no.extend({}, ns.Events);

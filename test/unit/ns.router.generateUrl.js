@@ -6,7 +6,9 @@ describe('generate url', function() {
         });
 
         it('if page name is unknown', function() {
-            expect(function() { ns.router.generateUrl('new-page'); }).to.throw();
+            expect(function() {
+                ns.router.generateUrl('new-page');
+            }).to.throw();
         });
     });
 
@@ -22,14 +24,14 @@ describe('generate url', function() {
         });
 
         it('baseDir not specified', function() {
-            expect( ns.router.generateUrl('root') ).to.be.equal('/');
-            expect( ns.router.generateUrl('index') ).to.be.equal('/index');
+            expect(ns.router.generateUrl('root')).to.be.equal('/');
+            expect(ns.router.generateUrl('index')).to.be.equal('/index');
         });
 
         it('baseDir specified', function() {
             ns.router.baseDir = '/the-base';
-            expect( ns.router.generateUrl('root') ).to.be.equal('/the-base');
-            expect( ns.router.generateUrl('index') ).to.be.equal('/the-base/index');
+            expect(ns.router.generateUrl('root')).to.be.equal('/the-base');
+            expect(ns.router.generateUrl('index')).to.be.equal('/the-base/index');
         });
     });
 
@@ -47,25 +49,25 @@ describe('generate url', function() {
         });
 
         it('not specified', function() {
-            expect( ns.router.generateUrl('folder') ).to.be.equal('/folder');
-            expect( ns.router.generateUrl('folder', {}) ).to.be.equal('/folder');
-            expect( ns.router.generateUrl('folder', { id: 5 }) ).to.be.equal('/folder?id=5');
+            expect(ns.router.generateUrl('folder')).to.be.equal('/folder');
+            expect(ns.router.generateUrl('folder', {})).to.be.equal('/folder');
+            expect(ns.router.generateUrl('folder', { id: 5 })).to.be.equal('/folder?id=5');
         });
 
         it('tail optional parameter', function() {
-            expect( ns.router.generateUrl('folder', { name: 'favorites' }) ).to.be.equal('/folder/favorites');
-            expect( ns.router.generateUrl('folder', { name: 'inbox' }) ).to.be.equal('/folder/inbox');
+            expect(ns.router.generateUrl('folder', { name: 'favorites' })).to.be.equal('/folder/favorites');
+            expect(ns.router.generateUrl('folder', { name: 'inbox' })).to.be.equal('/folder/inbox');
         });
 
         it('head optional parameter', function() {
-            expect( ns.router.generateUrl('alert-somewhere') ).to.be.equal('/alert');
-            expect( ns.router.generateUrl('alert-somewhere', { context: 'inbox' }) ).to.be.equal('/inbox/alert');
+            expect(ns.router.generateUrl('alert-somewhere')).to.be.equal('/alert');
+            expect(ns.router.generateUrl('alert-somewhere', { context: 'inbox' })).to.be.equal('/inbox/alert');
         });
 
         it('middle optional parameter', function() {
-            expect( ns.router.generateUrl('folder-file') ).to.be.equal('/folder/file');
-            expect( ns.router.generateUrl('folder-file', { name: 'inbox' }) ).to.be.equal('/folder/inbox/file');
-            expect( ns.router.generateUrl('folder-file', { name: 'favorites' }) ).to.be.equal('/folder/favorites/file');
+            expect(ns.router.generateUrl('folder-file')).to.be.equal('/folder/file');
+            expect(ns.router.generateUrl('folder-file', { name: 'inbox' })).to.be.equal('/folder/inbox/file');
+            expect(ns.router.generateUrl('folder-file', { name: 'favorites' })).to.be.equal('/folder/favorites/file');
         });
     });
 
@@ -81,8 +83,12 @@ describe('generate url', function() {
         });
 
         it('not specified', function() {
-            expect(function() { ns.router.generateUrl('folder'); }).to.throw();
-            expect(function() { ns.router.generateUrl('file', { name: 'inbox' }); }).to.throw();
+            expect(function() {
+                ns.router.generateUrl('folder');
+            }).to.throw();
+            expect(function() {
+                ns.router.generateUrl('file', { name: 'inbox' });
+            }).to.throw();
         });
     });
 
@@ -97,14 +103,22 @@ describe('generate url', function() {
             ns.router.init();
         });
 
-        it ('default type is id', function() {
-            expect(function() { ns.router.generateUrl('folder', { name: 'abc' }); }).not.to.throw();
-            expect(function() { ns.router.generateUrl('folder', { name: '1' }); }).to.throw();
+        it('default type is id', function() {
+            expect(function() {
+                ns.router.generateUrl('folder', { name: 'abc' });
+            }).not.to.throw();
+            expect(function() {
+                ns.router.generateUrl('folder', { name: '1' });
+            }).to.throw();
         });
 
-        it ('type specified directly', function() {
-            expect(function() { ns.router.generateUrl('file', { name: 'abc', file: 7 }); }).not.to.throw();
-            expect(function() { ns.router.generateUrl('file', { name: 'abc', file: 'myfile.txt' }); }).to.throw();
+        it('type specified directly', function() {
+            expect(function() {
+                ns.router.generateUrl('file', { name: 'abc', file: 7 });
+            }).not.to.throw();
+            expect(function() {
+                ns.router.generateUrl('file', { name: 'abc', file: 'myfile.txt' });
+            }).to.throw();
         });
     });
 
@@ -129,19 +143,19 @@ describe('generate url', function() {
             },
             {
                 layout: 'compose',
-                params: {mid: '1'},
+                params: { mid: '1' },
                 url: '/compose/1'
             },
             {
                 layout: 'compose',
-                params: {mid: '2', oper: 'reply'},
+                params: { mid: '2', oper: 'reply' },
                 url: '/compose/reply/2'
             }
         ];
 
         TESTS.forEach(function(test) {
 
-            it('should generate "' + test.url +'" for "' + test.layout + '" ' + JSON.stringify(test.params), function() {
+            it('should generate "' + test.url + '" for "' + test.layout + '" ' + JSON.stringify(test.params), function() {
                 expect(
                     ns.router.generateUrl(test.layout, test.params)
                 ).to.be.equal(test.url);
@@ -221,7 +235,7 @@ describe('generate url', function() {
 
     describe('special chars in url', function() {
         beforeEach(function() {
-            ns.router.regexps['any'] = '.+';
+            ns.router.regexps.any = '.+';
             ns.router.routes = {
                 route: {
                     '/tag/{tag:any}': 'tag'
@@ -254,19 +268,19 @@ describe('generate url', function() {
         });
 
         it('должен сгенерить /index/1?p=foo', function() {
-            expect(ns.router.generateUrl('index', {id: 1, p: 'foo'})).to.be.equal('/index/1?p=foo');
+            expect(ns.router.generateUrl('index', { id: 1, p: 'foo' })).to.be.equal('/index/1?p=foo');
         });
 
         it('должен сгенерить /index/1?p=foo%20bar', function() {
-            expect(ns.router.generateUrl('index', {id: 1, p: 'foo bar'})).to.be.equal('/index/1?p=foo%20bar');
+            expect(ns.router.generateUrl('index', { id: 1, p: 'foo bar' })).to.be.equal('/index/1?p=foo%20bar');
         });
 
         it('должен сгенерить /index/1?p=foo&p=bar', function() {
-            expect(ns.router.generateUrl('index', {id: 1, p: ['foo', 'bar']})).to.be.equal('/index/1?p=foo&p=bar');
+            expect(ns.router.generateUrl('index', { id: 1, p: ['foo', 'bar'] })).to.be.equal('/index/1?p=foo&p=bar');
         });
 
         it('должен сгенерить /index/1?p=foo&p=bar', function() {
-            expect(ns.router.generateUrl('index', {id: 1, p: ['1 1', '2 2']})).to.be.equal('/index/1?p=1%201&p=2%202');
+            expect(ns.router.generateUrl('index', { id: 1, p: ['1 1', '2 2'] })).to.be.equal('/index/1?p=1%201&p=2%202');
         });
 
     });

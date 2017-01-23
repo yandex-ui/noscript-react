@@ -22,8 +22,8 @@ describe('ns.ModelCollection', function() {
             },
 
             events: {
-                'event1': 'onEvent1',
-                'event2': function() {
+                event1: 'onEvent1',
+                event2: function() {
                     methodCallback();
                 },
                 'ns-model-changed': changedCallback,
@@ -79,8 +79,8 @@ describe('ns.ModelCollection', function() {
                 });
                 ns.Model.define('someModel');
 
-                var collection = ns.Model.get('someCollection').setData({foo: 'bar'});
-                var someModel = ns.Model.get('someModel').setData({foo: 'bar'});
+                var collection = ns.Model.get('someCollection').setData({ foo: 'bar' });
+                var someModel = ns.Model.get('someModel').setData({ foo: 'bar' });
                 this.callbackEvent0 = sinon.spy();
 
                 collection.bindModel(someModel, 'event0', this.callbackEvent0);
@@ -133,9 +133,9 @@ describe('ns.ModelCollection', function() {
             });
 
             it('should set params to nested models', function() {
-                expect(this.models[0].params).to.eql({id: '1', foo: 'foo'});
-                expect(this.models[1].params).to.eql({id: '2', foo: 'bar'});
-                expect(this.models[2].params).to.eql({id: '3', foo: 'baz'});
+                expect(this.models[0].params).to.eql({ id: '1', foo: 'foo' });
+                expect(this.models[1].params).to.eql({ id: '2', foo: 'bar' });
+                expect(this.models[2].params).to.eql({ id: '3', foo: 'baz' });
             });
 
             it('should call _beforeSetData for split-models', function() {
@@ -208,7 +208,7 @@ describe('ns.ModelCollection', function() {
 
                 this.model.setData(data, { silent: true });
 
-                model.setData({id: 1, foo: 'foo', bar: 'bar'});
+                model.setData({ id: 1, foo: 'foo', bar: 'bar' });
 
                 expect(this.changedCallback.called).not.to.be.equal(true);
             });
@@ -225,16 +225,20 @@ describe('ns.ModelCollection', function() {
                 var removed;
                 var inserted;
 
-                this.model.on('ns-model-insert', function(name, models){ inserted = models[0].getData(); });
-                this.model.on('ns-model-remove', function(name, models){ removed = models[0].getData(); });
+                this.model.on('ns-model-insert', function(name, models) {
+                    inserted = models[0].getData();
+                });
+                this.model.on('ns-model-remove', function(name, models) {
+                    removed = models[0].getData();
+                });
                 this.model.setData(this.newData);
 
-                expect(removed).to.eql({id: '3', value: 'baz'});
-                expect(inserted).to.eql({id: '4', value: 'zzap'});
+                expect(removed).to.eql({ id: '3', value: 'baz' });
+                expect(inserted).to.eql({ id: '4', value: 'zzap' });
             });
 
             it('should not trigger ns-model-insert or ns-model-remove on setData with old data', function() {
-                var collection = ns.Model.get('mc0', {id : Math.random()});
+                var collection = ns.Model.get('mc0', { id: Math.random() });
                 var insertCallback = this.sinon.spy();
                 var removeCallback = this.sinon.spy();
 
@@ -258,15 +262,15 @@ describe('ns.ModelCollection', function() {
                 ns.Model.define('mc', {
                     split: {
                         items: '/',
-                        params: {id: '.id'},
+                        params: { id: '.id' },
                         model_id: 'mc-item'
                     }
                 });
                 ns.Model.define('mc-item', {
-                    params: {id: null}
+                    params: { id: null }
                 });
 
-                this.model = ns.Model.get('mc').setData([ {id: 1, val:1}, {id:2, val:2}  ])
+                this.model = ns.Model.get('mc').setData([{ id: 1, val: 1 }, { id: 2, val: 2 }]);
             });
 
             it('должен вернуть массив из 2-элементов', function() {
@@ -360,7 +364,7 @@ describe('ns.ModelCollection', function() {
             });
 
             it('should insert item in non empty collection without split', function() {
-                this.modelEmptyWithoutSplit.setData({someData: 'a', someOtherData: 'b'});
+                this.modelEmptyWithoutSplit.setData({ someData: 'a', someOtherData: 'b' });
                 this.modelEmptyWithoutSplit.insert(this.item1);
                 expect(this.modelEmptyWithoutSplit.getData().jpathItems[0]).to.eql(this.item1.getData());
             });
@@ -440,7 +444,7 @@ describe('ns.ModelCollection', function() {
 
             it('should binding `ns-model-changed` event', function() {
                 this.model.insert(this.item1, 2);
-                this.models[2].setData({id: 100, value: 'ololo'});
+                this.models[2].setData({ id: 100, value: 'ololo' });
                 expect(this.changedCallback.callCount).to.be.equal(1);
             });
 
@@ -568,24 +572,24 @@ describe('ns.ModelCollection', function() {
                             model_id: 'item',
                             items: '/',
                             params: {
-                                'id': '.id'
+                                id: '.id'
                             }
                         }
                     });
 
-                    ns.Model.define('item', {params: {id: null}});
+                    ns.Model.define('item', { params: { id: null } });
 
                     /**
                      * @type ns.ModelCollection
                      */
                     this.items = ns.Model.get('items');
-                    this.items.setData([{id: 0}, {id:1}, {id:2}, {id:3}, {id:4}]);
+                    this.items.setData([{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
                 });
 
                 describe('в прямом порядке', function() {
 
                     beforeEach(function() {
-                        this.items.remove([1,3]);
+                        this.items.remove([1, 3]);
                     });
 
                     checkDeletionFromCollection();
@@ -594,7 +598,7 @@ describe('ns.ModelCollection', function() {
                 describe('в обратном порядке', function() {
 
                     beforeEach(function() {
-                        this.items.remove([3,1]);
+                        this.items.remove([3, 1]);
                     });
 
                     checkDeletionFromCollection();
@@ -607,15 +611,15 @@ describe('ns.ModelCollection', function() {
                     });
 
                     it('должен оставить 0-й элемент', function() {
-                        expect(this.items.models[0]).to.be.equal(ns.Model.get('item', {id: 0}))
+                        expect(this.items.models[0]).to.be.equal(ns.Model.get('item', { id: 0 }));
                     });
 
                     it('должен оставить 2-й элемент', function() {
-                        expect(this.items.models[1]).to.be.equal(ns.Model.get('item', {id: 2}))
+                        expect(this.items.models[1]).to.be.equal(ns.Model.get('item', { id: 2 }));
                     });
 
                     it('должен оставить 4-й элемент', function() {
-                        expect(this.items.models[2]).to.be.equal(ns.Model.get('item', {id: 4}))
+                        expect(this.items.models[2]).to.be.equal(ns.Model.get('item', { id: 4 }));
                     });
                 }
 
@@ -708,7 +712,7 @@ describe('ns.ModelCollection', function() {
 
                 expect(this.touchSpy.callCount).to.be.equal(0);
                 expect(this.changedCallback.callCount).to.be.equal(1);
-                expect(this.changedCallback.calledWithExactly('ns-model-changed', { 'model': changedModel, 'jpath': ''})).to.be.equal(true);
+                expect(this.changedCallback.calledWithExactly('ns-model-changed', { model: changedModel, jpath: '' })).to.be.equal(true);
             });
 
             it('ns-model-touched', function() {
@@ -836,11 +840,11 @@ describe('ns.ModelCollection', function() {
 
             this.model = ns.Model.get('mc-mixed').setData({
                 item: [
-                    {type: 1},
-                    {type: 2},
-                    {type: 3}
+                    { type: 1 },
+                    { type: 2 },
+                    { type: 3 }
                 ]
-            })
+            });
         });
 
         afterEach(function() {
@@ -882,12 +886,12 @@ describe('ns.ModelCollection', function() {
 
             this.collection = ns.Model.get('test-mc');
             this.collection.setData({
-                items: [{id: 1}, {id: 2}, {id: 3}]
+                items: [{ id: 1 }, { id: 2 }, { id: 3 }]
             });
         });
 
         it('должен разбить коллекцию на три элемента', function() {
             expect(this.collection.models).to.have.length(3);
-        })
-    })
+        });
+    });
 });

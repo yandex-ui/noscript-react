@@ -20,7 +20,8 @@ module.exports = {
         no: true,
         React: true,
         ReactDOM: true,
-        ReactDOMServer: true
+        ReactDOMServer: true,
+        Vow: true
     },
     rules: {
         'space-before-function-paren': [2, { anonymous: 'never', named: 'never' }],
@@ -37,6 +38,7 @@ module.exports = {
         'no-console': 0,
         'wrap-iife': [2, "outside"],
         'no-unused-vars': [2, { "vars": "all", "args": "none" }],
-        'no-invalid-this': 0
+        'no-invalid-this': 0,
+        'consistent-this': ["error", "that"]
     }
 };

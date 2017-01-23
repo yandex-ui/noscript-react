@@ -37,7 +37,7 @@ ns.parseQuery = function(s) {
             } else {
                 try {
                     value = decodeURIComponent(value);
-                } catch(e) {
+                } catch (e) {
                     value = '';
                     ns.log.info('ns.parseQuery.invalid-param', {
                         query: s,
@@ -52,7 +52,7 @@ ns.parseQuery = function(s) {
 
                 // если массива еще нет, то создаем его
                 if (!Array.isArray(o[name])) {
-                    o[name] = [ o[name] ];
+                    o[name] = [o[name]];
                 }
 
                 o[name].push(value);
@@ -66,29 +66,6 @@ ns.parseQuery = function(s) {
 };
 
 /**
- * Накладывает шаблон.
- * @param {*} json
- * @param {string} mode Модификатор.
- * @param {string} [module='main'] Название модуля.
- * @returns {string}
- */
-ns.renderString = function(json, mode, module) {
-    return yr.run(module || 'main', json, mode);
-};
-
-/**
- * Накладывает шаблон и возвращает полученную ноду.
- * @param {*} json Данные
- * @param {string} mode Модификатор.
- * @param {string} [module='main'] Название модуля.
- * @returns {?HTMLElement}
- */
-ns.renderNode = function(json, mode, module) {
-    var node = ns.html2node(ns.renderString(json, mode, module));
-    return node ? node.firstChild : null;
-};
-
-/**
  * Производит первоначальную инициализацию noscript.
  */
 ns.init = function() {
@@ -96,21 +73,6 @@ ns.init = function() {
     ns.router.init();
     ns.history.init();
     ns.initMainView();
-};
-
-/**
- * Инициализирует корневой View.
- */
-ns.initMainView = function() {
-    var mainView = ns.View.create('app');
-    mainView._setNode(document.getElementById('app'));
-    mainView.invalidate();
-
-    /**
-     * Корневой View.
-     * @type {ns.View}
-     */
-    ns.MAIN_VIEW = mainView;
 };
 
 /**
@@ -192,8 +154,6 @@ ns.reset = function() {
     ns.request._reset();
     ns.page._reset();
     ns.page.history.reset();
-
-    ns.MAIN_VIEW = null;
 };
 
 module.exports = ns;

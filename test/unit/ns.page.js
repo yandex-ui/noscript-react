@@ -87,7 +87,7 @@ describe('ns.page', function() {
                 this.sinon.spy(ns.page, '_fillHistory');
                 this.sinon.stub(ns.page, 'startUpdate', function() {
                     return Vow.fulfill();
-                })
+                });
             });
 
             it('должен записать переход в историю', function() {
