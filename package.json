@@ -1,13 +1,13 @@
 {
   "name": "noscript-react",
-  "version": "1.1.2",
+  "version": "2.0.0-alpha",
   "description": "Расширение noscript, позволяющее использовать React компоненты в качестве отображения",
   "main": "./dist/noscript-react.module.js",
   "browser": "./dist/noscript-react.min.js",
   "scripts": {
     "eslint": "eslint --ignore-path .gitignore --fix src test",
-    "test": "yate ./test/test.yate -o ./test/test.yate.js & ./node_modules/karma/bin/karma start karma.conf.js --single-run=true",
-    "build": "gulp",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run=true",
+    "build": "./node_modules/.bin/webpack",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -18,17 +18,10 @@
     "url": "https://github.com/yandex-ui/noscript-react/issues"
   },
   "author": {
-    "name": "Aleksei Simachik",
-    "email": "rebulus@gmail.com",
-    "url": "https://github.com/rebulus"
+    "name": "Viktor Karpov",
+    "email": "viktor.s.karpov@gmail.com",
+    "url": "https://github.com/vitkarpov"
   },
-  "contributors": [
-    {
-      "name": "Viktor Karpov",
-      "email": "viktor.s.karpov@gmail.com",
-      "url": "https://github.com/vitkarpov"
-    }
-  ],
   "keywords": [
     "noscript",
     "react"
@@ -36,12 +29,9 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^2.1.4",
-    "nommon": "0.0.32",
-    "noscript": "^0.8.4",
-    "noscript-bosphorus": "1.0.2",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
-    "yate": "0.0.80"
+    "vow": "^0.3.13"
   },
   "devDependencies": {
     "browserify": "^13.0.0",
@@ -61,6 +51,7 @@
     "karma-sinon-chai": "^1.1.0",
     "lolex": "^1.4.0",
     "mocha": "^2.3.4",
+    "nommon": "0.0.32",
     "phantomjs-prebuilt": "^2.1.7",
     "react-addons-test-utils": "^15.0.2",
     "sinon": "^1.17.3",
@@ -68,7 +59,6 @@
     "watchify": "^3.7.0"
   },
   "files": [
-    "dist",
-    "yate"
+    "dist"
   ]
 }
