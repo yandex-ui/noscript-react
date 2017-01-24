@@ -3,9 +3,7 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha', 'sinon-chai'],
         files: [
-            './node_modules/jquery/dist/jquery.js',
-
-            // VOW
+            // VOW для тестов
             './node_modules/vow/lib/vow.js',
             // ----------------------------------------
 

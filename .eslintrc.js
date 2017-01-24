@@ -20,8 +20,7 @@ module.exports = {
         no: true,
         React: true,
         ReactDOM: true,
-        ReactDOMServer: true,
-        Vow: true
+        ReactDOMServer: true
     },
     rules: {
         'space-before-function-paren': [2, { anonymous: 'never', named: 'never' }],

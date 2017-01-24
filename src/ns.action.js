@@ -1,4 +1,5 @@
 var ns = require('./ns');
+var Vow = require('vow');
 
 /**
  * Объект, реализующий экшены.

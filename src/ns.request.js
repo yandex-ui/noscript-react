@@ -1,5 +1,6 @@
 var ns = require('./ns');
 var utils = require('./ns.utils');
+var Vow = require('vow');
 var REQUEST_ID = 0;
 
 var Request = function(models, options) {

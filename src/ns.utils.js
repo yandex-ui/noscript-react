@@ -1,4 +1,5 @@
 var ns = require('./ns');
+var Vow = require('vow');
 
 var Parser = function(rules, tokens) {
     this._rules = rules;

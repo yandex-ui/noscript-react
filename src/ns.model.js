@@ -1,5 +1,6 @@
 var ns = require('./ns');
 var utils = require('./ns.utils');
+var Vow = require('vow');
 
 /**
  * @classdesc Базовый класс для моделей. Конструктор пустой, чтобы легче было наследоваться.
