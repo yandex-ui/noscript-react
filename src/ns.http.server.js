@@ -1,5 +1,6 @@
 var ns = require('./ns');
 var utils = require('./ns.utils');
+var Vow = require('vow');
 
 /**
  * Creates and executes http request (a POST request with json return data type by default).
