@@ -6,7 +6,7 @@ describe('ns.Events', function() {
             this.spy = this.sinon.spy();
             /** @mixes ns.Events */
             this.foo = {};
-            no.extend(this.foo, ns.Events);
+            ns.utils.extend(this.foo, ns.Events);
             this.foo.on('bar', this.spy);
         });
 
@@ -55,7 +55,7 @@ describe('ns.Events', function() {
             this.spy1 = this.sinon.spy();
             this.spy2 = this.sinon.spy();
             this.foo = {};
-            no.extend(this.foo, ns.Events);
+            ns.utils.extend(this.foo, ns.Events);
             this.foo.on('bar', this.spy1);
             this.foo.on('bar', this.spy2);
         });
@@ -91,7 +91,7 @@ describe('ns.Events', function() {
 
         it('должен бросить исключение, если не передан обработчик', function() {
             this.foo = {};
-            no.extend(this.foo, ns.Events);
+            ns.utils.extend(this.foo, ns.Events);
 
             var fn = function() {
                 ns.Events.on('event');
@@ -102,7 +102,7 @@ describe('ns.Events', function() {
 
         it('должен бросить исключение, если передана не функция', function() {
             this.foo = {};
-            no.extend(this.foo, ns.Events);
+            ns.utils.extend(this.foo, ns.Events);
 
             var fn = function() {
                 ns.Events.on('event', {});
@@ -160,7 +160,7 @@ describe('ns.Events', function() {
         beforeEach(function() {
             this.spy = this.sinon.stub();
             this.foo = {};
-            no.extend(this.foo, ns.Events);
+            ns.utils.extend(this.foo, ns.Events);
             this.foo.on('bar', this.spy);
         });
 

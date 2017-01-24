@@ -131,7 +131,7 @@ describe('ns.page', function() {
     describe('getDefaultUrl', function() {
 
         beforeEach(function() {
-            this.sinon.stub(ns.router, 'url', no.nop);
+            this.sinon.stub(ns.router, 'url', function() {});
         });
 
         it('should exists', function() {

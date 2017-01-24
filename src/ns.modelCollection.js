@@ -1,4 +1,5 @@
 var ns = require('./ns');
+var utils = require('./ns.utils');
 
 /**
  * Создает модель-коллекцию.
@@ -9,7 +10,7 @@ var ns = require('./ns');
  */
 ns.ModelCollection = function() {};
 
-no.inherit(ns.ModelCollection, ns.Model);
+utils.inherit(ns.ModelCollection, ns.Model);
 
 /**
  * Дефолтное значение jpath
@@ -73,10 +74,10 @@ ns.ModelCollection.prototype.getData = function() {
 
         } else {
             // делаем нужное поле в .data и делаем его пустым
-            no.jpath.set(jpathItems, this.data, []);
+            utils.jpath.set(jpathItems, this.data, []);
         }
         // ссылка куда вставлять данные моделей
-        var items = no.jpath(jpathItems, this.data);
+        var items = utils.jpath(jpathItems, this.data);
 
         // пишем новые
         this.models.forEach(function(model) {
@@ -108,7 +109,7 @@ ns.ModelCollection.prototype._beforeSetData = function(data, options) {
 
     if (splitInfo) {
         // по умолчанию будем искать коллекцию в поле items
-        var items = no.jpath(splitInfo.items || this.DEFAULT_ITEMS_SPLIT, data);
+        var items = utils.jpath(splitInfo.items || this.DEFAULT_ITEMS_SPLIT, data);
         var models = this._splitModels(items, options);
 
         var insert = this.__filterExistsModels(this.models, models);
@@ -145,7 +146,7 @@ ns.ModelCollection.prototype._splitModels = function(items, options) {
 
         var params = {};
         for (var key in splitInfo.params) {
-            params[key] = no.jpath(splitInfo.params[key], item);
+            params[key] = utils.jpath(splitInfo.params[key], item);
         }
 
         // идентификатор подмодели берется из info.model_id

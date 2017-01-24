@@ -3,7 +3,7 @@ describe('ns.request.js', function() {
     describe('ns.request()', function() {
 
         beforeEach(function() {
-            this.sinon.stub(ns.request, 'models', no.nop);
+            this.sinon.stub(ns.request, 'models', function() {});
 
             ns.Model.define('test-model');
             ns.Model.define('test-model2');
@@ -513,7 +513,7 @@ describe('ns.request.js', function() {
                 a: 1,
                 b: 2
             };
-            ns.request.requestParams = no.extend({}, this.originalParams);
+            ns.request.requestParams = ns.utils.extend({}, this.originalParams);
             this.sinon.spy(ns.request, 'addRequestParams');
 
             ns.request('test-model-addRequestParams');
