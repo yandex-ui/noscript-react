@@ -57,3 +57,21 @@ ns.test.modelsValidAutorespondByMock = function(sinon, mock) {
         );
     });
 };
+
+/**
+ * Эмулирует клик по ноде
+ * @param  {Element}  el
+ * @param  {Boolean} [isDouble]
+ */
+ns.test.clickOnElement = function(el, isDouble) {
+    var ev = document.createEvent('MouseEvent');
+    ev.initMouseEvent(
+        isDouble ? 'dblclick' : 'click',
+        true, true,
+        window, null,
+        0, 0, 0, 0,
+        false, false, false, false,
+        0, null
+    );
+    el.dispatchEvent(ev);
+};

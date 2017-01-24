@@ -1267,6 +1267,24 @@ function compileSetter(jpath) {
     return new Function('data', 'value', body);
 }
 
+/**
+ * @param {String} url
+ * @param {Object} params
+ */
+function addParametersToURL(url, params) {
+    var paramsEncoded = [];
+    for (var key in params) {
+        if (params.hasOwnProperty(key) && typeof params[key] !== 'undefined') {
+            paramsEncoded.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+        }
+    }
+    var addedParams = paramsEncoded.join('&');
+    if (addedParams) {
+        url += (url.indexOf('?') === -1 ? '?' : '&') + addedParams;
+    }
+    return url;
+}
+
 var utils = {
     /**
      * @param {Object} dest
@@ -1304,6 +1322,50 @@ var utils = {
         proto.constructor = ctor;
 
         return ctor;
+    },
+
+    /**
+     * @param  {Object} options
+     * @return {Vow.Promise}
+     */
+    ajax: function(options) {
+        var promise = new Vow.Promise();
+        var xhr = new XMLHttpRequest();
+
+        if (options.type === 'GET') {
+            options.url = addParametersToURL(options.url, options.data || {});
+        }
+
+        xhr.open(options.type, options.url, true);
+        xhr.withCredentials = true;
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.addEventListener('error', function(error) {
+            promise.reject({
+                error: error
+            });
+        });
+        xhr.addEventListener('load', function() {
+            var status = String(xhr.status);
+            var data = null;
+            try {
+                data = JSON.parse(xhr.responseText);
+            } catch (e) {
+                promise.reject({
+                    error: e
+                });
+            }
+            if (status === '200') {
+                promise.fulfill(data);
+            } else {
+                promise.reject({
+                    error: 'unknown error'
+                });
+            }
+        });
+        xhr.send(options.type !== 'GET' ? options.data : null);
+
+        return promise;
     }
 };
 

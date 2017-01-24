@@ -11,15 +11,15 @@ ns.history = {};
  * Ицициализирует обработчики события popstate/hashchange и кликов по ссылкам (<a href=""/>).
  */
 ns.history.init = function() {
-    $(window).on('popstate', function(e) {
+    window.onpopstate = function(e) {
         // прибиваем событие, чтобы не дергалась адресная строка
         e.preventDefault();
         e.stopPropagation();
 
         ns.history.onpopstate(e);
-    });
+    };
 
-    $(document).on(ns.V.EVENTS.click, 'a', ns.history._onAnchorClick);
+    document.addEventListener('click', ns.history._onAnchorClick);
 };
 
 /**
@@ -76,7 +76,11 @@ ns.history.followAnchorHref = function(href, target) {
  * @private
  */
 ns.history._onAnchorClick = function(e) {
-    var target = e.currentTarget;
+    var target = e.target;
+
+    if (target.nodeName.toLowerCase() !== 'a') {
+        return true;
+    }
 
     // Чтобы работал Cmd/Ctrl/Shift + click на ссылках (открыть в новом табе/окне).
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
