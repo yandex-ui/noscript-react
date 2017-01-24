@@ -14,18 +14,5 @@ ns.http = function(url, params, options) {
     options.url = url;
     options.data = params;
 
-    var promise = new Vow.Promise();
-    $.ajax(options)
-        .done(function(data) {
-            promise.fulfill(data);
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            var error = errorThrown || textStatus || 'unknown error';
-            promise.reject({
-                error: error,
-                xhr: jqXHR
-            });
-        });
-
-    return promise;
+    return utils.ajax(options);
 };

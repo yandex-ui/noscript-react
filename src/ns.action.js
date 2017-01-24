@@ -89,14 +89,13 @@ ns.action.init = function() {
 
     _inited = true;
 
-    var $body = $('body');
-    var selector = '.ns-action';
     var events = [
-        ns.V.EVENTS.click,
-        ns.V.EVENTS.dblclick
-    ].join(' ');
-
-    $body.on(events, selector, this._process);
+        'click',
+        'dblclick'
+    ];
+    events.forEach(function(event) {
+        document.body.addEventListener(event, ns.action._process);
+    });
 };
 
 /**
@@ -106,7 +105,11 @@ ns.action.init = function() {
  * @private
  */
 ns.action._process = function(e) {
-    var target = e.currentTarget;
+    var target = e.target;
+
+    if (!target.classList.contains('ns-action')) {
+        return;
+    }
     var action = (e.type === 'dblclick') ? target.getAttribute('data-dblclick-action') : target.getAttribute('data-click-action');
     var returnValue = true;
 
