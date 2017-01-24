@@ -11,7 +11,7 @@ ns.router = function(url) {
     var baseDir = ns.router.baseDir;
     var routesDef = ns.router._routes;
 
-    if ( url.indexOf(baseDir) !== 0) {
+    if (url.indexOf(baseDir) !== 0) {
         // Ничего подходящего не нашли.
         return {
             page: ns.R.NOT_APP_URL,
@@ -118,7 +118,7 @@ ns.router._getParamsRouteFromUrl = function(route, parsedChunks) {
             // try to decode
             try {
                 paramValueFromURL = ns.router.decodeParamValue(paramValueFromURL, rparam.name);
-            } catch(e) {
+            } catch (e) {
                 // fallback to default value
                 paramValueFromURL = '';
             }
@@ -212,9 +212,11 @@ ns.router.init = function() {
 
     var compiledRoutes = [];
     var compiledRoutesHash = {};
+    var page;
+    var compiled;
     for (var route in rawRoutes) {
-        var page = rawRoutes[route];
-        var compiled = ns.router.compile(route);
+        page = rawRoutes[route];
+        compiled = ns.router.compile(route);
         compiled.page = page;
         compiledRoutes.push(compiled);
         compiledRoutesHash[page] = compiledRoutesHash[page] || [];
@@ -226,7 +228,7 @@ ns.router.init = function() {
     var rawRedirects = routes.redirect || {};
     var compiledRedirects = [];
     for (var redirect in rawRedirects) {
-        var compiled = ns.router.compile(redirect);
+        compiled = ns.router.compile(redirect);
         compiledRedirects.push({
             regexp: compiled.regexp,
             path: rawRedirects[redirect],
@@ -257,7 +259,7 @@ ns.router.generateUrl = function(id, params) {
     var routes = ns.router._routes.routeHash[id];
     params = params || {};
 
-    ns.assert(routes && routes.length, 'ns.router', "Could not find route with id '%s'!", id);
+    ns.assert(routes && routes.length, 'ns.router', 'Could not find route with id \'%s\'!', id);
 
     for (var i = 0; i < routes.length; i++) {
         url = ns.router._generateUrl(routes[i], params);
@@ -266,7 +268,7 @@ ns.router.generateUrl = function(id, params) {
         }
     }
 
-    ns.assert(url !== null, 'ns.router', "Could not generate url for layout id '%s'!", id);
+    ns.assert(url !== null, 'ns.router', 'Could not generate url for layout id \'%s\'!', id);
 
     return ns.router.url(url);
 };
@@ -401,7 +403,9 @@ ns.router.compile = function(route) {
     // Вычленяем только параметры.
     var params = [];
     sections.forEach(function(s) {
-        params = params.concat(s.items.filter(function(p) { return !!p.name; }));
+        params = params.concat(s.items.filter(function(p) {
+            return !!p.name;
+        }));
     });
 
     // Добавляем "якоря" ^ и $;
@@ -459,7 +463,9 @@ ns.router._parseSection = function(rawSection) {
 
     return {
         // Секция опциональна когда все параметры опциональны.
-        is_optional: items.length && items.filter(function(p) { return p.is_optional; }).length === items.length,
+        is_optional: items.length && items.filter(function(p) {
+            return p.is_optional;
+        }).length === items.length,
         items: items
     };
 };
@@ -492,8 +498,8 @@ ns.router._parseParam = function(param) {
         param_is_filter = true;
         param_filter_value = chunks[2];
 
-        ns.assert(param_filter_value, 'ns.router', "Parameter '%s' value must be specified", paramName);
-        ns.assert(ns.router._isParamValid(param_filter_value, param_type), 'ns.router', "Wrong value for '%s' parameter", paramName);
+        ns.assert(param_filter_value, 'ns.router', 'Parameter \'%s\' value must be specified', paramName);
+        ns.assert(ns.router._isParamValid(param_filter_value, param_type), 'ns.router', 'Wrong value for \'%s\' parameter', paramName);
 
     } else {
         // если в декларации одно "=", то параметр опциональный
@@ -551,7 +557,7 @@ ns.router._generateParamRegexp = function(p) {
 
     // validate parameter type is known (if specified)
     if (p.type) {
-        ns.assert((p.type in regexps), 'ns.router', "Could not find regexp for type '%s'!", p.type);
+        ns.assert((p.type in regexps), 'ns.router', 'Could not find regexp for type \'%s\'!', p.type);
     }
 
     // parameter with filter (param==value)
@@ -579,7 +585,7 @@ ns.router._generateParamRegexp = function(p) {
  */
 ns.router._isParamValid = function(pvalue, ptype) {
     var _regexp = ns.router._regexps[ptype];
-    ns.assert(_regexp, 'ns.router', "Could not find regexp for type '%s'!", ptype);
+    ns.assert(_regexp, 'ns.router', 'Could not find regexp for type \'%s\'!', ptype);
     return _regexp.test(pvalue);
 };
 
@@ -613,8 +619,8 @@ ns.router._reset = function() {
      * @type {object}
      */
     this.regexps = {
-        'id': '[A-Za-z_][A-Za-z0-9_-]*',
-        'int': '[0-9]+'
+        id: '[A-Za-z_][A-Za-z0-9_-]*',
+        int: '[0-9]+'
     };
 };
 

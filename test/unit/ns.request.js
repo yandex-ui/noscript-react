@@ -35,7 +35,7 @@ describe('ns.request.js', function() {
         describe('ns.request("modelName", params)', function() {
 
             beforeEach(function() {
-                ns.request('test-model-with-params', {id: 1});
+                ns.request('test-model-with-params', { id: 1 });
             });
 
             it('should call ns.request.models once', function() {
@@ -43,7 +43,7 @@ describe('ns.request.js', function() {
             });
 
             it('should call ns.request.models with requested model', function() {
-                var model = ns.Model.get('test-model-with-params', {id: 1});
+                var model = ns.Model.get('test-model-with-params', { id: 1 });
                 expect(
                     ns.request.models.calledWith([model])
                 ).to.be.equal(true);
@@ -73,7 +73,7 @@ describe('ns.request.js', function() {
         describe('ns.request( ["modelName1", "modelName2"], params )', function() {
 
             beforeEach(function() {
-                ns.request(['test-model', 'test-model-with-params'], {id: 1});
+                ns.request(['test-model', 'test-model-with-params'], { id: 1 });
             });
 
             it('should call ns.request.models once', function() {
@@ -82,7 +82,7 @@ describe('ns.request.js', function() {
 
             it('should call ns.request.models with requested models', function() {
                 var model1 = ns.Model.get('test-model');
-                var model2 = ns.Model.get('test-model-with-params', {id: 1});
+                var model2 = ns.Model.get('test-model-with-params', { id: 1 });
 
                 expect(
                     ns.request.models.calledWith([model1, model2])
@@ -112,7 +112,7 @@ describe('ns.request.js', function() {
 
             it('should call ns.request.models with requested models', function() {
                 var model1 = ns.Model.get('test-model');
-                var model2 = ns.Model.get('test-model-with-params', {id: 2});
+                var model2 = ns.Model.get('test-model-with-params', { id: 2 });
 
                 expect(
                     ns.request.models.calledWith([model1, model2])
@@ -205,7 +205,7 @@ describe('ns.request.js', function() {
             ns.forcedRequest('test-forcedRequest');
 
             expect(
-                ns.request.models.getCall(0).args[1]['forced']
+                ns.request.models.getCall(0).args[1].forced
             ).to.be.equal(true);
         });
     });
@@ -256,10 +256,10 @@ describe('ns.request.js', function() {
 
                 this.sinon.server.requests[0].respond(
                     200,
-                    {"Content-Type": "application/json"},
+                    { 'Content-Type': 'application/json' },
                     JSON.stringify({
                         models: [
-                            {data: true}
+                            { data: true }
                         ]
                     })
                 );
@@ -311,10 +311,10 @@ describe('ns.request.js', function() {
 
                     this.sinon.server.requests[0].respond(
                         200,
-                        {"Content-Type": "application/json"},
+                        { 'Content-Type': 'application/json' },
                         JSON.stringify({
                             models: [
-                                {data: true}
+                                { data: true }
                             ]
                         })
                     );
@@ -357,10 +357,10 @@ describe('ns.request.js', function() {
 
                     this.sinon.server.requests[0].respond(
                         500,
-                        {"Content-Type": "application/json"},
+                        { 'Content-Type': 'application/json' },
                         JSON.stringify({
                             models: [
-                                {data: false}
+                                { data: false }
                             ]
                         })
                     );
@@ -388,10 +388,10 @@ describe('ns.request.js', function() {
 
                     this.sinon.server.requests[0].respond(
                         500,
-                        {"Content-Type": "application/json"},
+                        { 'Content-Type': 'application/json' },
                         JSON.stringify({
                             models: [
-                                {data: false}
+                                { data: false }
                             ]
                         })
                     );
@@ -407,7 +407,7 @@ describe('ns.request.js', function() {
 
                 it('should set status to STATUS.ERROR', function(done) {
                     this.promise.then(function() {
-                        done('fulfill')
+                        done('fulfill');
                     }, function() {
                         expect(this.model.status).to.be.equal(this.model.STATUS.ERROR);
                         done();
@@ -428,10 +428,10 @@ describe('ns.request.js', function() {
                 beforeEach(function(done) {
                     this.sinon.server.requests[0].respond(
                         500,
-                        {"Content-Type": "application/json"},
+                        { 'Content-Type': 'application/json' },
                         JSON.stringify({
                             models: [
-                                {data: false}
+                                { data: false }
                             ]
                         })
                     );
@@ -468,10 +468,10 @@ describe('ns.request.js', function() {
                             }
                             request.respond(
                                 500,
-                                {"Content-Type": "application/json"},
+                                { 'Content-Type': 'application/json' },
                                 JSON.stringify({
                                     models: [
-                                        {data: false}
+                                        { data: false }
                                     ]
                                 })
                             );
@@ -556,7 +556,7 @@ describe('ns.request.js', function() {
 
                 this.promises[0].fulfill({
                     models: [
-                        {data: true}
+                        { data: true }
                     ]
                 });
             });
@@ -614,7 +614,7 @@ describe('ns.request.js', function() {
             it('should not resolve first promise after first response', function() {
                 this.promises[0].fulfill({
                     models: [
-                        {data: true}
+                        { data: true }
                     ]
                 });
 
@@ -626,7 +626,7 @@ describe('ns.request.js', function() {
             it('should not resolve second promise after first response', function() {
                 this.promises[0].fulfill({
                     models: [
-                        {data: true}
+                        { data: true }
                     ]
                 });
 
@@ -638,7 +638,7 @@ describe('ns.request.js', function() {
             it('should resolve first promise after second response', function(finish) {
                 this.promises[1].fulfill({
                     models: [
-                        {data: 'second response1'}
+                        { data: 'second response1' }
                     ]
                 });
 
@@ -670,7 +670,7 @@ describe('ns.request.js', function() {
                 ns.Model.define('test-model');
 
                 // делаем модель валидной
-                ns.Model.get('test-model').setData({type: 'old'});
+                ns.Model.get('test-model').setData({ type: 'old' });
 
                 this.request1 = ns.forcedRequest('test-model');
                 this.request2 = ns.request('test-model');
@@ -691,12 +691,12 @@ describe('ns.request.js', function() {
                 this.sinon.server.respond(function(xhr) {
                     xhr.respond(
                         200,
-                        {"Content-Type": "application/json"},
+                        { 'Content-Type': 'application/json' },
                         JSON.stringify({
                             models: [
                                 {
                                     data: {
-                                        'type': 'new'
+                                        type: 'new'
                                     }
                                 }
                             ]
@@ -719,13 +719,13 @@ describe('ns.request.js', function() {
                 this.sinon.server.respond(function(xhr) {
                     xhr.respond(
                         200,
-                        {"Content-Type": "application/json"},
+                        { 'Content-Type': 'application/json' },
                         JSON.stringify({
                             // возвращаем одну модель, хотя запрошено 2
                             models: [
                                 {
                                     data: {
-                                        'type': 'new'
+                                        type: 'new'
                                     }
                                 }
                             ]
@@ -796,7 +796,7 @@ describe('ns.request.js', function() {
             this.sinon.server.respond(function(xhr) {
                 xhr.respond(
                     200,
-                    {"Content-Type": "application/json"},
+                    { 'Content-Type': 'application/json' },
                     JSON.stringify({
                         models: [
                             { error: 'unknown error' }
@@ -828,7 +828,7 @@ describe('ns.request.js', function() {
             // Тут какая-то хитрая комбинация запросов должна была быть, чтобы в какой-то момент при запросе модели она бы оказалась
             // уже запрошена и мы бы просто проставили ей руками статус ok.
 
-            ns.request([ 'model1', 'model2' ]).then(null, handleModels);
+            ns.request(['model1', 'model2']).then(null, handleModels);
             ns.request('model1').then(null, handleModels);
         });
 
@@ -852,7 +852,7 @@ describe('ns.request.js', function() {
         beforeEach(function() {
             this.respond = [
                 200,
-                {"Content-Type": "application/json"},
+                { 'Content-Type': 'application/json' },
                 JSON.stringify({
                     models: [
                         { data: {} }
@@ -862,11 +862,11 @@ describe('ns.request.js', function() {
 
             this.respond2 = [
                 200,
-                {"Content-Type": "application/json"},
+                { 'Content-Type': 'application/json' },
                 JSON.stringify({
                     models: [
-                        { data: { 'r1': true } },
-                        { data: { 'r2': true } }
+                        { data: { r1: true } },
+                        { data: { r2: true } }
                     ]
                 })
             ];
@@ -910,7 +910,7 @@ describe('ns.request.js', function() {
                     try {
                         var xhr2 = this.sinon.server.requests[2];
                         xhr2.respond.apply(xhr2, this.respond);
-                    } catch(e){}
+                    } catch (e) {}
                 }, null, this);
             });
 
@@ -943,7 +943,7 @@ describe('ns.request.js', function() {
                         }
                         xhr.respond(
                             500,
-                            {"Content-Type": "application/json"},
+                            { 'Content-Type': 'application/json' },
                             JSON.stringify({
                                 models: [
                                     { error: 'unknown error' }
@@ -962,7 +962,7 @@ describe('ns.request.js', function() {
                         expect(m3Requests).to.have.length(3 /* RETRY_LIMIT */);
                     }, this);
                 }, null, this);
-            })
+            });
 
         });
 
@@ -977,19 +977,19 @@ describe('ns.request.js', function() {
             // эмулируем последовательность запросов
             var xsrfTokenResponse = {
                 models: [{
-                    data: {'token': 'new'}
+                    data: { token: 'new' }
                 }]
             };
 
             var invalidTokenResponse = {
                 models: [{
-                    error: {type: 'INVALID_TOKEN'}
+                    error: { type: 'INVALID_TOKEN' }
                 }]
             };
 
             var validTokenResponse = {
                 models: [{
-                    data: {status: 'ok'}
+                    data: { status: 'ok' }
                 }]
             };
 

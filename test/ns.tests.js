@@ -26,7 +26,7 @@ ns.test.modelsValidAutorespond = function(sinon) {
         }
         xhr.respond(
             200,
-            {"Content-Type": "application/json"},
+            { 'Content-Type': 'application/json' },
             JSON.stringify({
                 models: [
                     { data: true }
@@ -52,7 +52,7 @@ ns.test.modelsValidAutorespondByMock = function(sinon, mock) {
         }
         xhr.respond(
             200,
-            {"Content-Type": "application/json"},
+            { 'Content-Type': 'application/json' },
             JSON.stringify(mock[xhr.url])
         );
     });

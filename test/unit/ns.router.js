@@ -40,13 +40,13 @@ describe('ns.router', function() {
                 }
             };
 
-            ns.router.regexps['any'] = '.+?';
+            ns.router.regexps.any = '.+?';
 
             ns.router.init();
         });
 
         afterEach(function() {
-            delete ns.router.regexps['any'];
+            delete ns.router.regexps.any;
         });
 
         var test_route = function(url, params, test_name) {
@@ -56,34 +56,34 @@ describe('ns.router', function() {
             });
         };
 
-        test_route('', {page: ns.R.REDIRECT, params: {}, redirect: '/inbox'});
-        test_route('/', {page: ns.R.REDIRECT, params: {}, redirect: '/inbox'});
-        test_route('/inbox/old/123', {page: ns.R.REDIRECT, params: {}, redirect: '/inbox'});
-        test_route('/inbox/my', {page: ns.R.REDIRECT, params: {}, redirect: '/inbox'});
-        test_route('/inbox/my/1', {page: ns.R.REDIRECT, params: {}, redirect: '/landing'});
-        test_route('/inbox/my/123', {page: ns.R.REDIRECT, params: {}, redirect: '/inbox/123'});
-        test_route('/?foo=bar', {page: ns.R.REDIRECT, params: {}, redirect: '/inbox'});
-        test_route('/inbox', {page: 'messages', params: {}});
-        test_route('/inbox/', {page: 'messages', params: {}});
+        test_route('', { page: ns.R.REDIRECT, params: {}, redirect: '/inbox' });
+        test_route('/', { page: ns.R.REDIRECT, params: {}, redirect: '/inbox' });
+        test_route('/inbox/old/123', { page: ns.R.REDIRECT, params: {}, redirect: '/inbox' });
+        test_route('/inbox/my', { page: ns.R.REDIRECT, params: {}, redirect: '/inbox' });
+        test_route('/inbox/my/1', { page: ns.R.REDIRECT, params: {}, redirect: '/landing' });
+        test_route('/inbox/my/123', { page: ns.R.REDIRECT, params: {}, redirect: '/inbox/123' });
+        test_route('/?foo=bar', { page: ns.R.REDIRECT, params: {}, redirect: '/inbox' });
+        test_route('/inbox', { page: 'messages', params: {} });
+        test_route('/inbox/', { page: 'messages', params: {} });
 
-        test_route('/message', {page: ns.R.NOT_FOUND, params: {}});
-        test_route('/message/', {page: ns.R.NOT_FOUND, params: {}});
+        test_route('/message', { page: ns.R.NOT_FOUND, params: {} });
+        test_route('/message/', { page: ns.R.NOT_FOUND, params: {} });
 
-        test_route('/message/12345', {page: 'message', params: {mid: '12345'}});
-        test_route('/message/12345/', {page: 'message', params: {mid: '12345'}});
+        test_route('/message/12345', { page: 'message', params: { mid: '12345' } });
+        test_route('/message/12345/', { page: 'message', params: { mid: '12345' } });
 
-        test_route('/page/prefix1/', {page: 'url-with-prefix', params: {page: '1'}});
+        test_route('/page/prefix1/', { page: 'url-with-prefix', params: { page: '1' } });
 
-        test_route('/search/request/', {page: 'search', params: {request: 'request'}});
-        test_route('/search/' + encodeURIComponent('/') + '/', {page: 'search', params: {request: '/'}});
+        test_route('/search/request/', { page: 'search', params: { request: 'request' } });
+        test_route('/search/' + encodeURIComponent('/') + '/', { page: 'search', params: { request: '/' } });
         // test for invalid urlencode
-        test_route('/search/' + encodeURIComponent('/') + '%F/', {page: 'search', params: {request: undefined}});
+        test_route('/search/' + encodeURIComponent('/') + '%F/', { page: 'search', params: { request: undefined } });
     });
 
     describe('default value', function() {
 
         beforeEach(function() {
-            ns.router.regexps[ 'page' ] = 'folder|home';
+            ns.router.regexps.page = 'folder|home';
             ns.router.routes = {
                 route: {
                     '/messages/{folder:id=inbox}/{message_id:int}': 'message',
@@ -100,40 +100,40 @@ describe('ns.router', function() {
             });
         };
 
-        test_route('/folder/',        'folder', { folder: 'inbox' });
-        test_route('/folder/inbox',   'folder', { folder: 'inbox' });
+        test_route('/folder/', 'folder', { folder: 'inbox' });
+        test_route('/folder/inbox', 'folder', { folder: 'inbox' });
         test_route('/folder/starred', 'folder', { folder: 'starred' });
-        test_route('/folder',         'folder', { folder: 'inbox' }, '/folder : slash near param with default value can collapse');
+        test_route('/folder', 'folder', { folder: 'inbox' }, '/folder : slash near param with default value can collapse');
 
         test_route('/', 'page', { page: 'home' }, '/ resolved to default value of a custom type');
 
         test_route('/messages/inbox/45?var1=val1&var2=val2', 'message', { folder: 'inbox', message_id: '45', var1: 'val1', var2: 'val2' });
         //FIXME
         //test_route('/messages/inbox/45?var1=val1&',           'message', { folder: 'inbox', message_id: '45', var1: 'val1' });
-        test_route('/messages/inbox/45?var1=val1',           'message', { folder: 'inbox', message_id: '45', var1: 'val1' });
+        test_route('/messages/inbox/45?var1=val1', 'message', { folder: 'inbox', message_id: '45', var1: 'val1' });
         //  NOTE может надо какое-то другое значение для val1 ?
-        test_route('/messages/inbox/45?val1',                'message', { folder: 'inbox', message_id: '45', val1: '' });
-        test_route('/messages/inbox/45?',                    'message', { folder: 'inbox', message_id: '45' });
-        test_route('/messages/inbox/45',                     'message', { folder: 'inbox', message_id: '45' });
+        test_route('/messages/inbox/45?val1', 'message', { folder: 'inbox', message_id: '45', val1: '' });
+        test_route('/messages/inbox/45?', 'message', { folder: 'inbox', message_id: '45' });
+        test_route('/messages/inbox/45', 'message', { folder: 'inbox', message_id: '45' });
 
         test_route('/messages/45?var1=val1&var2=val2', 'message', { folder: 'inbox', message_id: '45', var1: 'val1', var2: 'val2' });
-        test_route('/messages/45?var1=val1',           'message', { folder: 'inbox', message_id: '45', var1: 'val1' });
-        test_route('/messages/45?val1',                'message', { folder: 'inbox', message_id: '45', val1: '' });
-        test_route('/messages/45?',                    'message', { folder: 'inbox', message_id: '45' });
-        test_route('/messages/45',                     'message', { folder: 'inbox', message_id: '45' });
+        test_route('/messages/45?var1=val1', 'message', { folder: 'inbox', message_id: '45', var1: 'val1' });
+        test_route('/messages/45?val1', 'message', { folder: 'inbox', message_id: '45', val1: '' });
+        test_route('/messages/45?', 'message', { folder: 'inbox', message_id: '45' });
+        test_route('/messages/45', 'message', { folder: 'inbox', message_id: '45' });
 
         // fail
         test_route('/messages//45?var1=val1&var2=val2', 'not-found', {}, '/messages//45?var1=val1&var2=val2: MUST FAIL');
-        test_route('/messages//45?var1=val1',           'not-found', {}, '/messages//45?var1=val1: MUST FAIL');
-        test_route('/messages//45?val1',                'not-found', {}, '/messages//45?val1: MUST FAIL');
-        test_route('/messages//45?',                    'not-found', {}, '/messages//45?: MUST FAIL');
-        test_route('/messages//45',                     'not-found', {}, '/messages//45: MUST FAIL');
+        test_route('/messages//45?var1=val1', 'not-found', {}, '/messages//45?var1=val1: MUST FAIL');
+        test_route('/messages//45?val1', 'not-found', {}, '/messages//45?val1: MUST FAIL');
+        test_route('/messages//45?', 'not-found', {}, '/messages//45?: MUST FAIL');
+        test_route('/messages//45', 'not-found', {}, '/messages//45: MUST FAIL');
     });
 
     describe('filter value', function() {
 
         beforeEach(function() {
-            ns.router.regexps['context'] = 'search|tag|top';
+            ns.router.regexps.context = 'search|tag|top';
             ns.router.routes = {
                 route: {
                     '/{context:context==search}/{query}/image/{id:int}': 'view',
@@ -151,8 +151,8 @@ describe('ns.router', function() {
         };
 
         test_route('/search/airport/image/1', 'view', { context: 'search', query: 'airport', id: '1' });
-        test_route('/tag/airport/image/2',    'view', { context: 'tag', tag: 'airport', id: '2' });
-        test_route('/top/image/3',            'view', { context: 'top', id: '3' });
+        test_route('/tag/airport/image/2', 'view', { context: 'tag', tag: 'airport', id: '2' });
+        test_route('/top/image/3', 'view', { context: 'top', id: '3' });
     });
 
     describe('baseDir: routing', function() {
@@ -169,7 +169,7 @@ describe('ns.router', function() {
         afterEach(function() {
             delete ns.router._routes;
             delete ns.router.routes;
-            ns.router.baseDir= '';
+            ns.router.baseDir = '';
         });
 
         it('NOT_APP_URL in case url does not match baseDir', function() {
@@ -203,7 +203,7 @@ describe('ns.router', function() {
         afterEach(function() {
             delete ns.router._routes;
             delete ns.router.routes;
-            ns.router.baseDir= '';
+            ns.router.baseDir = '';
         });
 
         // URL GENERATION
@@ -221,7 +221,7 @@ describe('ns.router', function() {
         afterEach(function() {
             delete ns.router._routes;
             delete ns.router.routes;
-            ns.router.baseDir= '';
+            ns.router.baseDir = '';
         });
 
         it('generate unprefixed url when baseDir is empty', function() {
@@ -245,22 +245,22 @@ describe('ns.router', function() {
 
         var tests = [
             {
-                'url': '/page1',
-                'route': {
-                    'page': 'layout',
-                    'params': {
-                        'id': '1'
+                url: '/page1',
+                route: {
+                    page: 'layout',
+                    params: {
+                        id: '1'
                     }
                 }
             },
 
             {
-                'url': '/page1?foo=bar',
-                'route': {
-                    'page': 'layout',
-                    'params': {
-                        'id': '1',
-                        'foo': 'bar'
+                url: '/page1?foo=bar',
+                route: {
+                    page: 'layout',
+                    params: {
+                        id: '1',
+                        foo: 'bar'
                     }
                 }
             }
@@ -301,10 +301,10 @@ describe('ns.router', function() {
             });
         };
 
-        test_route('/from/var/logs/nginx/copy|/users/me/local', { page: 'page', params: { dialog: 'copy', div: '|', 'from-path': '/var/logs/nginx', 'to-path': '/users/me/local' } } );
-        test_route('/from/var/logs/nginx/copy|', { page: 'page', params: { dialog: 'copy', div: '|', 'from-path': '/var/logs/nginx' } } );
-        test_route('/from/var/logs/nginx/copy', { page: 'page', params: { dialog: 'copy', 'from-path': '/var/logs/nginx' } } );
-        test_route('/from/var/logs/nginx', { page: 'page', params: { 'from-path': '/var/logs/nginx' } } );
+        test_route('/from/var/logs/nginx/copy|/users/me/local', { page: 'page', params: { dialog: 'copy', div: '|', 'from-path': '/var/logs/nginx', 'to-path': '/users/me/local' } });
+        test_route('/from/var/logs/nginx/copy|', { page: 'page', params: { dialog: 'copy', div: '|', 'from-path': '/var/logs/nginx' } });
+        test_route('/from/var/logs/nginx/copy', { page: 'page', params: { dialog: 'copy', 'from-path': '/var/logs/nginx' } });
+        test_route('/from/var/logs/nginx', { page: 'page', params: { 'from-path': '/var/logs/nginx' } });
     });
 
     describe('encodeParamValue and decodeParamValue', function() {
@@ -313,7 +313,7 @@ describe('ns.router', function() {
 
             ns.router.routes = {
                 route: {
-                    '/from{id:path}': 'page',
+                    '/from{id:path}': 'page'
                 }
             };
             ns.router.init();

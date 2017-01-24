@@ -8,7 +8,7 @@ describe('ns.Model#request', function() {
                     return ns.http('https://api.twitter.com', {
                         foo: 1,
                         bar: 2
-                    }, {type: 'GET'})
+                    }, { type: 'GET' })
                         .then(function(data) {
                             this.setData(data);
                         }, function(error) {
@@ -48,15 +48,15 @@ describe('ns.Model#request', function() {
             it('должен зарезолвить промис, когда запрос завершился', function(done) {
                 this.sinon.server.requests[0].respond(
                     '200',
-                    { "Content-Type": "application/json" },
+                    { 'Content-Type': 'application/json' },
                     '{ "models": [ { "data": {} } ] }'
                 );
 
                 this.request.then(function() {
-                    done()
+                    done();
                 }, function(err) {
                     done(err);
-                })
+                });
             });
 
             describe('перезапрос', function() {
@@ -103,25 +103,25 @@ describe('ns.Model#request', function() {
                 beforeEach(function() {
                     this.sinon.server.requests[0].respond(
                         '200',
-                        { "Content-Type": "application/json" },
+                        { 'Content-Type': 'application/json' },
                         '{ "models": [ { "data": {} } ] }'
                     );
                 });
 
                 it('должен зарезолвить 1-й промис, когда запрос завершился', function(done) {
                     this.request.then(function() {
-                        done()
+                        done();
                     }, function(err) {
                         done(err);
-                    })
+                    });
                 });
 
                 it('должен зарезолвить 2-й промис, когда запрос завершился', function(done) {
                     this.request1.then(function() {
-                        done()
+                        done();
                     }, function(err) {
                         done(err);
-                    })
+                    });
                 });
 
             });
@@ -139,8 +139,8 @@ describe('ns.Model#request', function() {
                     fromModel: 'model'
                 },
                 '/models/?_m=regular-model': {
-                    "models": [
-                        { "data": { fromModel: 'regular-model' } }
+                    models: [
+                        { data: { fromModel: 'regular-model' } }
                     ]
                 }
             };
@@ -149,11 +149,10 @@ describe('ns.Model#request', function() {
             this.sinon.server.respond(function(xhr) {
                 xhr.respond(
                     '200',
-                    { "Content-Type": "application/json" },
+                    { 'Content-Type': 'application/json' },
                     JSON.stringify(data[xhr.url])
                 );
             });
-
 
             ns.Model.define('regular-model');
 
@@ -166,10 +165,10 @@ describe('ns.Model#request', function() {
 
         it('должен зарезолвить промис, когда запрос завершился', function(done) {
             this.request.then(function() {
-                done()
+                done();
             }, function(err) {
                 done(err);
-            })
+            });
         });
 
         it('должен сохранить правильные данные для обычной модели', function() {
