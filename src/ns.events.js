@@ -1,11 +1,12 @@
 var ns = require('./ns');
+var utils = require('./ns.utils');
 
 /**
  * Миксин, реализующий простейший pub/sub
  * @mixin
  * @example
  * var foo = {};
- * no.extend(foo, ns.Events);
+ * utils.extend(foo, ns.Events);
  * foo.on('bar', function(e, data) {
  *   console.log(e, data);
  * });
@@ -118,9 +119,9 @@ ns.Events.atrigger = function(event, params) {
     /* jshint unused: false */
     var that = this;
     var args = arguments;
-    no.next(function() {
+    setTimeout(function() {
         that.trigger.apply(that, args);
-    });
+    }, 0);
 };
 
 /**
@@ -139,4 +140,4 @@ ns.Events.forward = function(name, object) {
  * Global events bus.
  * @mixes ns.Events
  */
-ns.events = no.extend({}, ns.Events);
+ns.events = utils.extend({}, ns.Events);

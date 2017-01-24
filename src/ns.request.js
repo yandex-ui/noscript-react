@@ -1,5 +1,5 @@
 var ns = require('./ns');
-
+var utils = require('./ns.utils');
 var REQUEST_ID = 0;
 
 var Request = function(models, options) {
@@ -107,7 +107,7 @@ Request.prototype.request = function(loading, requesting) {
     }/* else {
         //TODO: надо перепроверить поведение, если нет запросов
         // создаем фейковый зарезолвленный promise
-        httpRequest = new no.Promise().resolve();
+        httpRequest = Vow.resolve();
     }
     */
 
@@ -278,7 +278,7 @@ ns.request.requestParams = {};
  * @param {object} params Параметры запроса.
  */
 ns.request.addRequestParams = function(params) {
-    no.extend(params, ns.request.requestParams);
+    utils.extend(params, ns.request.requestParams);
 };
 
 /**

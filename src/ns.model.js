@@ -1,4 +1,5 @@
 var ns = require('./ns');
+var utils = require('./ns.utils');
 
 /**
  * @classdesc Базовый класс для моделей. Конструктор пустой, чтобы легче было наследоваться.
@@ -11,7 +12,7 @@ var ns = require('./ns');
 ns.Model = function() {};
 
 //  Добавляем методы из ns.Events: on(), off(), trigger().
-no.extend(ns.Model.prototype, ns.Events);
+utils.extend(ns.Model.prototype, ns.Events);
 
 var _ctors = {};
 var _infos = {};
@@ -66,7 +67,7 @@ ns.Model.prototype._init = function(id, params) {
     this._reset();
 
     this.info = ns.Model.info(id);
-    no.extend(this, ns.Model.getKeyAndParams(id, params, this.info));
+    utils.extend(this, ns.Model.getKeyAndParams(id, params, this.info));
 
     this._reinit();
 };
@@ -224,7 +225,7 @@ ns.Model.prototype.getData = function() {
 ns.Model.prototype.get = function(jpath) {
     var data = this.data;
     if (data) {
-        return no.jpath(jpath, data);
+        return utils.jpath(jpath, data);
     }
 };
 
@@ -237,7 +238,7 @@ ns.Model.prototype.get = function(jpath) {
 ns.Model.prototype.select = function(jpath) {
     var data = this.data;
     if (data) {
-        return no.jpath.raw(jpath, data).toArray();
+        return utils.jpath.raw(jpath, data).toArray();
     }
     return [];
 };
@@ -259,7 +260,7 @@ ns.Model.prototype.set = function(jpath, value, options) {
     //  Как бы нужно, но это довольно дорого и сложно.
     //  Пока что будет версия без сравнения.
 
-    no.jpath.set(jpath, data, value);
+    utils.jpath.set(jpath, data, value);
 
     options = options || {};
     options.jpath = jpath;
@@ -420,7 +421,9 @@ ns.Model.prototype._canRequest = function() {
  * проверку на возможность запроса модели
  * @return {boolean}
  */
-ns.Model.prototype.canRequest = no.true;
+ns.Model.prototype.canRequest = function() {
+    return true;
+};
 
 /**
  *
@@ -677,7 +680,7 @@ ns.Model.define = function(id, info, base) {
 
     var ctor = info.ctor || function() {};
     // Нужно унаследоваться от base и добавить в прототип info.methods.
-    ctor = no.inherit(ctor, baseClass, info.methods);
+    ctor = utils.inherit(ctor, baseClass, info.methods);
 
     /**
      * Флаг, что info уже подготовили
@@ -934,7 +937,7 @@ ns.Model.traverse = function(id, callback) {
  */
 ns.ModelUniq = function() {};
 
-no.inherit(ns.ModelUniq, ns.Model);
+utils.inherit(ns.ModelUniq, ns.Model);
 
 ns.ModelUniq.prototype.__superInit = ns.ModelUniq.prototype._init;
 
@@ -1012,7 +1015,7 @@ ns.ModelUniq.prototype.uniqCached = null;
 ns.ModelUniq.prototype.uniq = function(params, cached) {
     var that = this;
     var name = this.uniqName;
-    var copy = no.extend({}, params);
+    var copy = utils.extend({}, params);
     if (!this.uniqCached) {
         this.uniqCached = {};
     }

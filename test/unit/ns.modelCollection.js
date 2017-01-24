@@ -298,7 +298,9 @@ describe('ns.ModelCollection', function() {
                         'ns-model-init': 'init'
                     },
                     methods: {
-                        isValid: no.true,
+                        isValid: function() {
+                            return true;
+                        },
                         init: function() {
                             this.setData([
                                 { id: 1, name: 'test' },

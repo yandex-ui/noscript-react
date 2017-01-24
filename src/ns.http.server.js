@@ -1,4 +1,5 @@
 var ns = require('./ns');
+var utils = require('./ns.utils');
 
 /**
  * Creates and executes http request (a POST request with json return data type by default).
@@ -10,7 +11,7 @@ var ns = require('./ns');
 ns.http = function(uri, params, options) {
     var request = require('request');
 
-    options = no.extend(ns.H.DEFAULTS, options || {});
+    options = utils.extend(ns.H.DEFAULTS, options || {});
 
     var promise = new Vow.Promise();
 

@@ -1,4 +1,5 @@
 var ns = require('./ns');
+var utils = require('./ns.utils');
 
 /**
  * Find best page for url.
@@ -148,7 +149,7 @@ ns.router._parseUrl = function(route, url) {
         // Смотрим, есть ли дополнительные get-параметры, вида ?param1=value1&param2=value2...
         var query = parsedChunks[route.params.length + 1];
         if (query) {
-            no.extend(params, ns.parseQuery(query));
+            utils.extend(params, ns.parseQuery(query));
         }
 
         return params;
@@ -283,7 +284,7 @@ ns.router.generateUrl = function(id, params) {
 ns.router._generateUrl = function(def, params) {
     var url;
     var result = [];
-    var query = no.extend({}, params);
+    var query = utils.extend({}, params);
     var rewrites = ns.router._routes.rewriteUrl;
 
     var section;

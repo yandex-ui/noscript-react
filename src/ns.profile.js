@@ -1,4 +1,5 @@
 var ns = require('./ns');
+var utils = require('./ns.utils');
 
 /**
  * Профилировщик.
@@ -6,7 +7,7 @@ var ns = require('./ns');
  * @description
  * Этот mixin надо подмешивать в прототип класса.
  * ```js
- * no.extend(ns.Update.prototype, no.profile);
+ * utils.extend(ns.Update.prototype, ns.profile);
  * ```
  */
 ns.profile = {};
@@ -71,5 +72,5 @@ ns.profile.getTimer = function(label) {
  * @returns {object}
  */
 ns.profile.getTimers = function() {
-    return no.extend({}, this._profileTimes);
+    return utils.extend({}, this._profileTimes);
 };
