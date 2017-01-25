@@ -44,9 +44,14 @@ beforeEach(function() {
     this.sinon.stub(ns.log, 'exception', function(a, b, c) {
         console.error('ns.log.exception', a, b, c);
     });
+
+    this.APP_CONTAINER = document.createElement('div');
+    this.APP_CONTAINER.id = 'app';
+    document.body.appendChild(this.APP_CONTAINER);
 });
 
 afterEach(function() {
     this.sinon.restore();
     ns.reset();
+    document.body.removeChild(this.APP_CONTAINER);
 });

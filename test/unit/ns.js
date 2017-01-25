@@ -1,5 +1,15 @@
 describe('ns.js', function() {
 
+    describe('ns.init', function() {
+        describe('ns.MAIN_VIEW не определен ->', function() {
+            it('должен кинуть исключение', function() {
+                expect(function() {
+                    ns.init();
+                }).to.throw();
+            });
+        });
+    });
+
     describe('ns.parseQuery', function() {
 
         var tests = {
