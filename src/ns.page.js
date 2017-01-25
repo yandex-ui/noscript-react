@@ -96,8 +96,9 @@ ns.page.go = function(url, historyAction) {
 
             ns.page.title();
 
-            return ns.page.startUpdate(route);
-        }, triggerPageErrorLoad);
+            return ns.page.startUpdate(route)
+        }, triggerPageErrorLoad)
+        .then(triggerPageAfterLoad, triggerPageErrorLoad)
 };
 
 ns.page.followRoute = function(route) {
@@ -111,10 +112,23 @@ ns.page.followRoute = function(route) {
  * @returns {Vow.Promise}
  */
 ns.page.startUpdate = function(route) {
-    var layout = ns.layout.page(route.page, route.params);
+    var promise = new Vow.Promise();
+    var container = document.getElementById('app');
+    var APP = ns.React.createElement(ns.MAIN_VIEW, route);
 
-    var update = new ns.Update(ns.MAIN_VIEW, layout, route.params);
-    return update.start().then(triggerPageAfterLoad, triggerPageErrorLoad);
+    ns.ReactDOM.render(APP, container, function() {
+        if (ns._requestsInUpdate.length > 0) {
+            ns.request(
+                ns._requestsInUpdate
+            )
+            .then(function() {
+                ns._requestsInUpdate = [];
+                ns.page.startUpdate(route);
+            });
+        }
+        promise.fulfill();
+    });
+    return promise;
 };
 
 /**

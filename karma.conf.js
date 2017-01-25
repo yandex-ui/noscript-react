@@ -3,8 +3,10 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha', 'sinon-chai'],
         files: [
-            // VOW для тестов
+            // для тестов
             './node_modules/vow/lib/vow.js',
+            './node_modules/react/dist/react.js',
+            './node_modules/react-dom/dist/react-dom.js',
             // ----------------------------------------
 
             './dist/noscript-react.js',

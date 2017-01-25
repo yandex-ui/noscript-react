@@ -150,4 +150,28 @@ describe('ns.page', function() {
 
     });
 
+    describe('#startUpdate', function() {
+        beforeEach(function() {
+            /**
+             * В тестах ReactDOM
+             * подключен в браузере глобально
+             */
+            ns.React = React;
+            ns.ReactDOM = ReactDOM;
+            ns.MAIN_VIEW = React.createClass({
+                render: function() {
+                    return React.createElement('div', {
+                        className: 'b-app'
+                    }, this.props.page);
+                }
+            });
+            return ns.page.startUpdate({ page: 'index' });
+        });
+        it('должен нарисовать нарисовать div с контентом index', function() {
+            expect(
+                this.APP_CONTAINER.querySelector('.b-app').innerText
+            ).to.be.eql('index');
+        });
+    });
+
 });

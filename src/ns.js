@@ -72,7 +72,7 @@ ns.init = function() {
     ns.action.init();
     ns.router.init();
     ns.history.init();
-    ns.initMainView();
+    ns.assert.fail(ns.MAIN_VIEW, 'init', 'You have to define ns.MAIN_VIEW before init the app');
 };
 
 /**
@@ -155,5 +155,23 @@ ns.reset = function() {
     ns.page._reset();
     ns.page.history.reset();
 };
+
+/**
+ * Задача пользователя понять
+ * в каком окружении используется ns
+ * и передать ссылки на React и ReactDOM
+ */
+ns.React = null;
+ns.ReactDOM = null;
+
+/**
+ * Массив объектов вида { id: 'model', params: {} },
+ * которые необходимо передать в ns.request для запроса
+ * пачки моделей.
+ * Массив заполняет в ходе апдейта дата-провайдерами
+ * и очищается каждый раз по окочанию апдейта.
+ * @private
+ */
+ns._requestsInUpdate = [];
 
 module.exports = ns;
