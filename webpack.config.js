@@ -1,3 +1,10 @@
+const fs = require('fs');
+const webpack = require('webpack');
+
+const VERSION = JSON.stringify(
+    JSON.parse(fs.readFileSync('package.json', 'utf8')).version
+);
+
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -6,5 +13,8 @@ module.exports = {
         library: 'ns',
         libraryTarget: 'umd',
         umdNamedDefine: true
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({ VERSION })
+    ]
 };
