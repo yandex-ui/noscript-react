@@ -96,9 +96,9 @@ ns.page.go = function(url, historyAction) {
 
             ns.page.title();
 
-            return ns.page.startUpdate(route)
+            return ns.page.startUpdate(route);
         }, triggerPageErrorLoad)
-        .then(triggerPageAfterLoad, triggerPageErrorLoad)
+        .then(triggerPageAfterLoad, triggerPageErrorLoad);
 };
 
 ns.page.followRoute = function(route) {

@@ -49,37 +49,4 @@ describe('ns.action', function() {
         });
 
     });
-
-    describe('DOM ->', function() {
-        beforeEach(function() {
-            this.handler = this.sinon.spy();
-            ns.action.define('test', this.handler);
-            ns.action.init();
-
-            this.div = document.createElement('div');
-            this.div.classList.add('ns-action');
-            document.body.appendChild(this.div);
-        });
-        afterEach(function() {
-            this.handler.reset();
-        });
-        describe('при одиночном клике на ноду', function() {
-            beforeEach(function() {
-                this.div.setAttribute('data-click-action', 'test');
-            });
-            it('должен вызвать экшн', function() {
-                ns.test.clickOnElement(this.div);
-                expect(this.handler).to.have.callCount(1);
-            });
-        });
-        describe('при двойном клике на ноду', function() {
-            beforeEach(function() {
-                this.div.setAttribute('data-dblclick-action', 'test');
-            });
-            it('должен вызвать экшн', function() {
-                ns.test.clickOnElement(this.div, true);
-                expect(this.handler).to.have.callCount(1);
-            });
-        });
-    });
 });

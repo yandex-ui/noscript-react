@@ -1,5 +1,4 @@
 var ns = require('./ns');
-var Vow = require('vow');
 
 /**
  * Объект, реализующий экшены.
@@ -8,13 +7,6 @@ var Vow = require('vow');
 ns.action = {};
 
 var _actions = {};
-
-/**
- * Флаг инициализации событий.
- * @type {Boolean}
- * @private
- */
-var _inited = false;
 
 /**
  * Register action.
@@ -78,48 +70,6 @@ ns.action.getParams = function(node) {
 
     //TODO: parseURL?
     return {};
-};
-
-/**
- * Инициализует механизм экшенов (навешивает обработчики событий).
- */
-ns.action.init = function() {
-    if (_inited) {
-        return;
-    }
-
-    _inited = true;
-
-    var events = [
-        'click',
-        'dblclick'
-    ];
-    events.forEach(function(event) {
-        document.body.addEventListener(event, ns.action._process);
-    });
-};
-
-/**
- * Process "click" event
- * @param {Event} e
- * @returns {boolean}
- * @private
- */
-ns.action._process = function(e) {
-    var target = e.target;
-
-    if (!target.classList.contains('ns-action')) {
-        return;
-    }
-    var action = (e.type === 'dblclick') ? target.getAttribute('data-dblclick-action') : target.getAttribute('data-click-action');
-    var returnValue = true;
-
-    // если есть action
-    if (action) {
-        returnValue = ns.action.run(action, ns.action.getParams(target), target, e);
-    }
-
-    return (returnValue === undefined || Vow.isPromise(returnValue)) ? false : returnValue;
 };
 
 ns.action._reset = function() {
