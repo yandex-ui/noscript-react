@@ -17,5 +17,6 @@ require('./ns.request.manager');
 require('./ns.router');
 
 ns.utils = require('./ns.utils');
+ns.DataProvider = require('./ns.DataProvider');
 
 module.exports = ns;

@@ -73,3 +73,12 @@ ns.H = {
         type: 'POST'
     }
 };
+
+/**
+ * @enum {string}
+ */
+ns.V = {
+    OK: 'ok',
+    ERROR: 'error',
+    LOADING: 'loading'
+};
