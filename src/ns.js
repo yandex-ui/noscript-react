@@ -1,12 +1,12 @@
 /**
  * noscript MVC framework
  * @namespace
- * @version 0.2.0
  * @tutotial entities
  */
 var ns = {};
 
-ns.VERSION = 'borschik:include:../.version';
+// eslint-disable-next-line no-undef
+ns.VERSION = VERSION;
 
 /**
  * Удобная функция для расстановки TODO, кидает исключение при вызове.
