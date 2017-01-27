@@ -12,6 +12,7 @@ module.exports = function(config) {
             './dist/noscript-react.js',
             './test/stub.js',
             './test/ns.tests.js',
+            './test/integration/*.js',
             './test/unit/*.js'
         ],
         reporters: ['progress'],

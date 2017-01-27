@@ -116,18 +116,28 @@ ns.page.startUpdate = function(route) {
     var container = document.getElementById('app');
     var APP = ns.React.createElement(ns.MAIN_VIEW, route);
 
-    ns.ReactDOM.render(APP, container, function() {
-        if (ns._requestsInUpdate.length > 0) {
-            ns.request(
-                ns._requestsInUpdate
-            )
-            .then(function() {
-                ns._requestsInUpdate = [];
-                ns.page.startUpdate(route);
-            });
-        }
-        promise.fulfill();
-    });
+    try {
+        ns.ReactDOM.render(APP, container, function() {
+            if (ns._requestsInUpdate.length > 0) {
+                ns.request(
+                    ns._requestsInUpdate
+                )
+                .then(function() {
+                    ns._requestsInUpdate = [];
+                    ns.page.startUpdate(route)
+                        .then(
+                            triggerPageAfterLoad,
+                            triggerPageErrorLoad
+                        );
+                }, function() {
+                    ns._requestsInUpdate = [];
+                });
+            }
+            promise.fulfill();
+        });
+    } catch (e) {
+        promise.reject(e);
+    }
     return promise;
 };
 

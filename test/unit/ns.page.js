@@ -152,12 +152,6 @@ describe('ns.page', function() {
 
     describe('#startUpdate', function() {
         beforeEach(function() {
-            /**
-             * В тестах ReactDOM
-             * подключен в браузере глобально
-             */
-            ns.React = React;
-            ns.ReactDOM = ReactDOM;
             ns.MAIN_VIEW = React.createClass({
                 render: function() {
                     return React.createElement('div', {

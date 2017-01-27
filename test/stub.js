@@ -33,6 +33,13 @@ ns.Model.TESTDATA = {
     }
 };
 
+/**
+ * В тестах ReactDOM
+ * подключен в браузере глобально
+ */
+ns.React = React;
+ns.ReactDOM = ReactDOM;
+
 beforeEach(function() {
     this.sinon = sinon.sandbox.create({
         useFakeServer: true
