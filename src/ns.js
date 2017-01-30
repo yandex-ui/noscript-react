@@ -69,10 +69,9 @@ ns.parseQuery = function(s) {
  * Производит первоначальную инициализацию noscript.
  */
 ns.init = function() {
-    ns.action.init();
     ns.router.init();
     ns.history.init();
-    ns.assert.fail(ns.MAIN_VIEW, 'init', 'You have to define ns.MAIN_VIEW before init the app');
+    ns.assert(ns.MAIN_VIEW, 'init', 'You have to define ns.MAIN_VIEW before init the app');
 };
 
 /**
@@ -145,15 +144,13 @@ ns.params2query = function(params) {
  * Clean internal data after tests
  */
 ns.reset = function() {
-    // в сборке для node.js его нет
-    if (ns.action) {
-        ns.action._reset();
-    }
+    ns.action._reset();
     ns.router._reset();
     ns.Model._reset();
     ns.request._reset();
     ns.page._reset();
     ns.page.history.reset();
+    ns.MAIN_VIEW = null;
 };
 
 /**
