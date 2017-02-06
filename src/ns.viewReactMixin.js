@@ -462,7 +462,7 @@
             switch (this.reactComponentType) {
                 case 'none':
                     if (!this.isValid()) {
-                        this._updateNode(node, true);
+                        this._updateNode(node, !options.parent_added);
                     // FIXME (rebulus) для совместимости с ns v0.7.x
                     } else if (typeof this._showNode === 'function') {
                         this._showNode();

@@ -955,6 +955,53 @@ describe('ns.ViewReact интеграционные тесты ->', function() {
         });
     });
 
+    describe('[#92]', function() {
+        beforeEach(function() {
+            ns.layout.define('app', {
+                app: {
+                    'asideBox@': {
+                        aside: 'publish'
+                    }
+                }
+            });
+
+            ns.View.define('app');
+            ns.View.define('aside', {
+                params: {
+                    id: null
+                },
+                events: {
+                    'ns-view-hide': 'invalidate'
+                }
+            });
+            ns.ViewReact.define('publish', {
+                component: {
+                    render: function() {
+                        return React.createElement('div', { className: 'publish-inner' });
+                    }
+                }
+            });
+
+            this.appendAppNode();
+            ns.initMainView();
+        });
+
+        describe('яте-вью инвалидируется при скрытии в боксе ->', function() {
+            beforeEach(function() {
+                return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', { id: 1 }), { id: 1 }).render()
+                    .then(function() {
+                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', { id: 2 }), { id: 2 }).render();
+                    })
+                    .then(function() {
+                        return new ns.Update(ns.MAIN_VIEW, ns.layout.page('app', { id: 1 }), { id: 1 }).render();
+                    });
+            });
+            it('при переключении разных экземпляров яте-вью реакт-вью должна остаться на месте', function() {
+                expect(document.body.querySelectorAll('.publish-inner')).to.have.length(1);
+            });
+        });
+    });
+
     describe('ключ реакт-компонента ->', function() {
         describe('вложенные в yate-бокс', function() {
             beforeEach(function() {
