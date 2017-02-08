@@ -636,7 +636,7 @@
                 this.__fillEventsQueue(events);
             }
 
-            var hasChildrenNeedBeUpdated = this.hasChildrenNeedBeUpdated(events);
+            var hasChildrenNeedBeUpdated = !this.asyncState && this.hasChildrenNeedBeUpdated(events);
 
             /**
              * Условия обновления React компонента
