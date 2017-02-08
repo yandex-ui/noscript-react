@@ -33,11 +33,22 @@ describe('ns.ViewReactMixin', function() {
             this.sinon.stub(ReactDOM, 'unmountComponentAtNode');
         });
 
-        it('должен вызвать удаление компонента для `root` React компонента', function() {
+        it('должен вызвать удаление компонента для `root` React компонента, если флаг UNMOUNT_MODE равен true', function() {
+            this.sinon.stub(ns, 'REACT_UNMOUNT_MODE', true);
+
             this.view.reactComponentType = 'root';
             this.view.hideAndUnbindEvents();
 
             expect(ReactDOM.unmountComponentAtNode).to.be.called;
+        });
+
+        it('не должен вызвать удаление компонента для `root` React компонента, если флаг UNMOUNT_MODE равен false', function() {
+            this.sinon.stub(ns, 'REACT_UNMOUNT_MODE', false);
+
+            this.view.reactComponentType = 'root';
+            this.view.hideAndUnbindEvents();
+
+            expect(ReactDOM.unmountComponentAtNode).to.be.notCalled;
         });
 
         ['root', 'child', 'none'].forEach(function(componentType) {

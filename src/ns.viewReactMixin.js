@@ -322,7 +322,11 @@
                         this._hideNode();
                     }
                     this.reactComponentType = 'none';
-                    ReactDOM.unmountComponentAtNode(this.node);
+                    // FIXME (bt4r9) Этот флаг в положении false сохраняет привычное поведение ns v0.7.x.
+                    // FIXME Но для v0.8.x это спорное действие, так как нода в любом случае будет удалена из DOM.
+                    if (ns.REACT_UNMOUNT_MODE) {
+                        ReactDOM.unmountComponentAtNode(this.node);
+                    }
                     break;
                 case 'child':
                     this.reactComponentType = 'none';
